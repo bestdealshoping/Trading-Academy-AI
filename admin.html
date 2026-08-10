@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>
+    Admin Dashboard | Trading Academy AI
+</title>
+
+
+<style>
+
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #172033;
+}
+
+
+/* =========================================
+   APP
+========================================= */
+
+.app {
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+
+    width: 255px;
+
+    position: fixed;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    background: #0f172a;
+
+    color: white;
+
+    padding: 22px 15px;
+
+    z-index: 1000;
+
+    transition: .3s;
+
+    overflow-y: auto;
+}
+
+
+.logo {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    padding:
+        8px 12px 22px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+
+    margin-bottom: 18px;
+}
+
+
+.logo span {
+    color: #3b82f6;
+}
+
+
+.admin-badge {
+
+    margin:
+        0 10px 20px;
+
+    padding: 10px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(37,99,235,.15);
+
+    color: #bfdbfe;
+
+    font-size: 12px;
+
+    border:
+        1px solid
+        rgba(59,130,246,.2);
+}
+
+
+.menu-title {
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    padding:
+        10px 12px;
+}
+
+
+.menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-bottom: 10px;
+}
+
+
+.menu button {
+
+    width: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #cbd5e1;
+
+    text-align: left;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+.menu button:hover,
+.menu button.active {
+
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.menu-icon {
+
+    display: inline-block;
+
+    width: 28px;
+}
+
+
+.sidebar-bottom {
+
+    margin-top: 25px;
+}
+
+
+.logout {
+
+    width: 100%;
+
+    border: 0;
+
+    background:
+        rgba(239,68,68,.12);
+
+    color: #fca5a5;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.logout:hover {
+
+    background: #dc2626;
+
+    color: white;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main {
+
+    margin-left: 255px;
+
+    min-height: 100vh;
+
+    padding: 25px 30px;
+}
+
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+
+.title-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.title-area h1 {
+
+    margin: 0;
+
+    font-size: 27px;
+}
+
+
+.title-area p {
+
+    margin:
+        6px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+.mobile-menu {
+
+    display: none;
+
+    border: 0;
+
+    background: white;
+
+    border-radius: 8px;
+
+    padding: 9px;
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn-primary {
+
+    border: 0;
+
+    background: #2563eb;
+
+    color: white;
+
+    padding:
+        11px 17px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.btn-primary:hover {
+
+    background: #1d4ed8;
+}
+
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+
+.stat-card {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.stat-card p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+.stat-card h2 {
+
+    margin:
+        7px 0 0;
+
+    font-size: 27px;
+}
+
+
+.stat-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+
+/* =========================================
+   PANELS
+========================================= */
+
+.panel {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 21px;
+
+    margin-bottom: 20px;
+}
+
+
+.panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+
+.panel-header h2 {
+
+    margin: 0;
+
+    font-size: 18px;
+}
+
+
+.panel-header span {
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   RECENT COURSES
+========================================= */
+
+.course-item {
+
+    padding:
+        15px 0;
+
+    border-bottom:
+        1px solid #f1f5f9;
+}
+
+
+.course-item:last-child {
+
+    border-bottom: 0;
+}
+
+
+.course-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.course-title {
+
+    font-weight: bold;
+
+    font-size: 15px;
+}
+
+
+.course-meta {
+
+    margin-top: 7px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+.badge {
+
+    padding:
+        5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    height: max-content;
+}
+
+
+.badge-published {
+
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+
+.badge-draft {
+
+    background: #fef3c7;
+
+    color: #92400e;
+}
+
+
+/* =========================================
+   QUICK ACTIONS
+========================================= */
+
+.quick-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+.quick {
+
+    background: #f8fafc;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    padding: 16px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.quick:hover {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+}
+
+
+.quick strong {
+
+    display: block;
+
+    margin-bottom: 5px;
+}
+
+
+.quick small {
+
+    color: #64748b;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty {
+
+    text-align: center;
+
+    padding: 30px;
+
+    color: #64748b;
+}
+
+
+.empty-icon {
+
+    font-size: 35px;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: #f4f7fb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 5000;
+
+    font-size: 16px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:1000px) {
+
+    .stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media(max-width:700px) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+    }
+
+
+    .sidebar.open {
+
+        transform:
+            translateX(0);
+    }
+
+
+    .main {
+
+        margin-left: 0;
+
+        padding: 18px;
+    }
+
+
+    .mobile-menu {
+
+        display: block;
+    }
+
+
+    .topbar {
+
+        align-items:
+            flex-start;
+    }
+
+
+    .topbar > .btn-primary {
+
+        padding:
+            9px 12px;
+
+        font-size: 12px;
+    }
+
+
+    .stats {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .quick-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     LOADING
+========================================= -->
+
+<div
+    id="loading"
+    class="loading">
+
+    Vérification des privilèges...
+
+</div>
+
+
+
+<div
+    id="app"
+    class="app"
+    style="display:none;">
+
+
+<!-- =========================================
+     SIDEBAR
+========================================= -->
+
+<aside
+    id="sidebar"
+    class="sidebar">
+
+
+    <div class="logo">
+
+        Trading Academy
+        <span>AI</span>
+
+    </div>
+
+
+    <div class="admin-badge">
+
+        👑 Super Admin
+
+    </div>
+
+
+    <div class="menu-title">
+        Principal
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            class="active"
+            onclick="goDashboard()">
+
+            <span class="menu-icon">
+                📊
+            </span>
+
+            Dashboard
+
+        </button>
+
+
+        <button
+            onclick="goCourses()">
+
+            <span class="menu-icon">
+                📚
+            </span>
+
+            Cours
+
+        </button>
+
+
+        <button
+            <button
+    <button
+    onclick="window.location.href='gestion_modules.html'">
+
+            <span class="menu-icon">
+                📦
+            </span>
+
+            Modules
+
+        </button>
+
+
+        <button
+            onclick="window.location.href='gestion_lessons.html'">
+
+            <span class="menu-icon">
+                📝
+            </span>
+
+            Lessons
+
+        </button>
+
+    </nav>
+
+
+    <div class="menu-title">
+        Utilisateurs
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            onclick="alert('Gestion des utilisateurs: prochaine étape.')">
+
+            <span class="menu-icon">
+                👥
+            </span>
+
+            Utilisateurs
+
+        </button>
+
+
+        <button
+            onclick="alert('Gestion des administrateurs: prochaine étape.')">
+
+            <span class="menu-icon">
+                👑
+            </span>
+
+            Administrateurs
+
+        </button>
+
+    </nav>
+
+
+    <div class="menu-title">
+        Système
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            onclick="alert('Statistiques détaillées: prochaine étape.')">
+
+            <span class="menu-icon">
+                📈
+            </span>
+
+            Statistiques
+
+        </button>
+
+
+        <button
+            onclick="alert('Paramètres: prochaine étape.')">
+
+            <span class="menu-icon">
+                ⚙️
+            </span>
+
+            Paramètres
+
+        </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            id="logout"
+            class="logout">
+
+            🚪 Déconnexion
+
+        </button>
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+
+        <div class="title-area">
+
+
+            <button
+                id="mobileMenu"
+                class="mobile-menu">
+
+                ☰
+
+            </button>
+
+
+            <div>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Centre de contrôle de Trading Academy AI
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn-primary"
+            onclick="goCourses()">
+
+            + Ajouter un cours
+
+        </button>
+
+
+    </header>
+
+
+
+    <!-- =====================================
+         STATISTICS
+    ====================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Courses
+                </p>
+
+                <h2 id="courseCount">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                📚
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Modules
+                </p>
+
+                <h2 id="moduleCount">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Lessons
+                </p>
+
+                <h2 id="lessonCount">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                📝
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Utilisateurs
+                </p>
+
+                <h2 id="userCount">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         RECENT COURSES
+    ====================================== -->
+
+    <section class="panel">
+
+
+        <div class="panel-header">
+
+            <h2>
+                Cours récents
+            </h2>
+
+
+            <button
+                class="btn-primary"
+                onclick="goCourses()">
+
+                Gérer les cours
+
+            </button>
+
+        </div>
+
+
+        <div id="recentCourses">
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                Chargement des cours...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         QUICK ACTIONS
+    ====================================== -->
+
+    <section class="panel">
+
+
+        <div class="panel-header">
+
+            <h2>
+                Actions rapides
+            </h2>
+
+            <span>
+                CMS
+            </span>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+
+            <button
+                class="quick"
+                onclick="goCourses()">
+
+                <strong>
+                    ➕ Ajouter un cours
+                </strong>
+
+                <small>
+                    Créer un nouveau cours
+                </small>
+
+            </button>
+
+
+            <button
+                class="quick"
+                <button
+    onclick="window.location.href='gestion_modules.html'"
+                <strong>
+                    📦 Ajouter un module
+                </strong>
+
+                <small>
+                    Ajouter un module à un cours
+                </small>
+
+            </button>
+
+
+            <button
+                class="quick"
+                onclick="window.location.href='gestion_lessons.html'"
+
+                <strong>
+                    📝 Ajouter une lesson
+                </strong>
+
+                <small>
+                    Créer une nouvelle leçon
+                </small>
+
+            </button>
+
+
+            <button
+                class="quick"
+                onclick="alert('Gestion utilisateurs ap vini nan pwochen etap la.')">
+
+                <strong>
+                    👥 Gérer les utilisateurs
+                </strong>
+
+                <small>
+                    Voir les utilisateurs
+                </small>
+
+            </button>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</div>
+
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================
+   SUPABASE CONFIG
+========================================= */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+
+const supabaseClient =
+window.supabase.createClient(
+
+    SUPABASE_URL,
+
+    SUPABASE_PUBLISHABLE_KEY
+
+);
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goDashboard(){
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+function goCourses(){
+
+    window.location.href =
+        "gestion_courses.html";
+
+}
+
+
+/* =========================================
+   VERIFY ADMIN
+========================================= */
+
+async function verifyAdmin(){
+
+    try {
+
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+        if(
+            error ||
+            !data.user
+        ){
+
+            window.location.href =
+                "admin-login.html";
+
+            return;
+
+        }
+
+
+        const user =
+            data.user;
+
+
+        /* ================================
+           GET ROLE
+        ================================= */
+
+        const {
+            data: userRoles,
+            error: roleError
+        } =
+        await supabaseClient
+
+            .from("user_roles")
+
+            .select(`
+                role_id,
+                roles (
+                    id,
+                    name
+                )
+            `)
+
+            .eq(
+                "user_id",
+                user.id
+            );
+
+
+        if(roleError){
+
+            console.error(
+                "ROLE ERROR:",
+                roleError
+            );
+
+            window.location.href =
+                "admin-login.html";
+
+            return;
+
+        }
+
+
+        const isAdmin =
+        userRoles.some(
+
+            row => {
+
+                if(!row.roles){
+
+                    return false;
+
+                }
+
+
+                const role =
+                row.roles.name
+                    .trim()
+                    .toLowerCase();
+
+
+                return (
+                    role === "admin" ||
+                    role === "super admin"
+                );
+
+            }
+
+        );
+
+
+        if(!isAdmin){
+
+            window.location.href =
+                "dashboard.html";
+
+            return;
+
+        }
+
+
+        /* ================================
+           SHOW APP
+        ================================= */
+
+        document
+            .getElementById("loading")
+            .style.display = "none";
+
+
+        document
+            .getElementById("app")
+            .style.display = "block";
+
+
+        loadStatistics();
+
+        loadRecentCourses();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "ADMIN VERIFY ERROR:",
+            error
+        );
+
+
+        window.location.href =
+            "admin-login.html";
+
+    }
+
+}
+
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+async function loadStatistics(){
+
+    try {
+
+
+        /* COURSES */
+
+        const courses =
+        await supabaseClient
+
+            .from("courses")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            );
+
+
+        document
+            .getElementById(
+                "courseCount"
+            )
+            .textContent =
+                courses.error
+                ? "0"
+                : (
+                    courses.count || 0
+                );
+
+
+        /* MODULES */
+
+        const modules =
+        await supabaseClient
+
+            .from("modules")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            );
+
+
+        document
+            .getElementById(
+                "moduleCount"
+            )
+            .textContent =
+                modules.error
+                ? "0"
+                : (
+                    modules.count || 0
+                );
+
+
+        /* LESSONS */
+
+        const lessons =
+        await supabaseClient
+
+            .from("lessons")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            );
+
+
+        document
+            .getElementById(
+                "lessonCount"
+            )
+            .textContent =
+                lessons.error
+                ? "0"
+                : (
+                    lessons.count || 0
+                );
+
+
+        /* USERS */
+
+        const users =
+        await supabaseClient
+
+            .from("users")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            );
+
+
+        document
+            .getElementById(
+                "userCount"
+            )
+            .textContent =
+                users.error
+                ? "0"
+                : (
+                    users.count || 0
+                );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "STATISTICS ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   RECENT COURSES
+========================================= */
+
+async function loadRecentCourses(){
+
+    const container =
+        document.getElementById(
+            "recentCourses"
+        );
+
+
+    try {
+
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from("courses")
+
+            .select(`
+                id,
+                title,
+                level,
+                language,
+                is_free,
+                is_published,
+                created_at
+            `)
+
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            )
+
+            .limit(5);
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            data.length === 0
+        ){
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        📚
+                    </div>
+
+                    Aucun cours pour le moment.
+
+                    <br><br>
+
+                    <button
+                        class="btn-primary"
+                        onclick="goCourses()">
+
+                        + Ajouter un cours
+
+                    </button>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        data.forEach(
+            course => {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "course-item";
+
+
+                const status =
+                    course.is_published
+
+                    ? `
+                        <span
+                            class="badge badge-published">
+                            Publié
+                        </span>
+                      `
+
+                    : `
+                        <span
+                            class="badge badge-draft">
+                            Brouillon
+                        </span>
+                      `;
+
+
+                item.innerHTML = `
+
+                    <div class="course-top">
+
+                        <div>
+
+                            <div class="course-title">
+
+                                ${escapeHTML(
+                                    course.title ||
+                                    "Sans titre"
+                                )}
+
+                            </div>
+
+
+                            <div class="course-meta">
+
+                                Niveau:
+                                ${escapeHTML(
+                                    course.level ||
+                                    "-"
+                                )}
+
+                                ·
+
+                                Langue:
+                                ${escapeHTML(
+                                    course.language ||
+                                    "-"
+                                )}
+
+                                ·
+
+                                ${
+                                    course.is_free
+                                    ? "Gratuit"
+                                    : "Payant"
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        ${status}
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "COURSES ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                ❌ Impossible de charger
+                les cours.
+
+                <br><br>
+
+                <small>
+                    ${escapeHTML(
+                        error.message || ""
+                    )}
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   HTML SECURITY
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+document
+    .getElementById(
+        "mobileMenu"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            document
+                .getElementById(
+                    "sidebar"
+                )
+                .classList
+                .toggle("open");
+
+        }
+    );
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document
+    .getElementById(
+        "logout"
+    )
+    .addEventListener(
+        "click",
+        async function(){
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            window.location.href =
+                "admin-login.html";
+
+        }
+    );
+
+
+/* =========================================
+   START
+========================================= */
+
+verifyAdmin();
+
+</script>
+
+</body>
+
+</html>

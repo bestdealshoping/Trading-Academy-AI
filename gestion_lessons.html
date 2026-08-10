@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des lessons | Trading Academy AI</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.header{
+    background:#0f172a;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.logo span{color:#3b82f6}
+
+.back{
+    color:white;
+    text-decoration:none;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:25px 18px;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.top h1{margin:0}
+
+.top p{color:#64748b}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:22px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.full{grid-column:1/-1}
+
+label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+input,textarea,select{
+    width:100%;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+    background:white;
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.checkbox input{width:auto}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.btn{
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.btn-secondary{
+    background:#e2e8f0;
+    color:#172033;
+}
+
+.message{
+    margin-top:15px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.success{color:#15803d}
+.error{color:#b91c1c}
+
+.hidden{display:none}
+
+.lesson-list{
+    display:grid;
+    gap:15px;
+}
+
+.lesson{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:18px;
+}
+
+.lesson-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.lesson-number{
+    display:inline-block;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:5px 9px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.lesson h3{
+    margin:0 0 8px;
+}
+
+.lesson p{
+    color:#64748b;
+    line-height:1.5;
+}
+
+.meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.meta span{
+    background:#f1f5f9;
+    padding:5px 9px;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.badge{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.published{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.draft{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.info{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+    color:#1e40af;
+    font-size:13px;
+}
+
+.loading,.empty{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+.link-preview{
+    margin-top:8px;
+    font-size:12px;
+    word-break:break-all;
+}
+
+.link-preview a{
+    color:#2563eb;
+}
+
+@media(max-width:700px){
+
+    .top{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .lesson-header{
+        flex-direction:column;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Trading Academy <span>AI</span>
+    </div>
+
+    <a href="admin.html" class="back">
+        ← Dashboard
+    </a>
+
+</header>
+
+
+<main class="container">
+
+    <div class="top">
+
+        <div>
+            <h1>Gestion des lessons</h1>
+            <p>
+                Créez les leçons à l'intérieur de vos modules.
+            </p>
+        </div>
+
+        <button
+            class="btn btn-primary"
+            onclick="showForm()">
+
+            + Ajouter une lesson
+
+        </button>
+
+    </div>
+
+
+    <!-- FORMULAIRE -->
+
+    <section
+        id="formCard"
+        class="card hidden">
+
+        <h2>Créer une nouvelle lesson</h2>
+
+        <form id="lessonForm">
+
+            <div class="form-grid">
+
+                <!-- COURSE -->
+
+                <div>
+
+                    <label for="course_id">
+                        Cours *
+                    </label>
+
+                    <select
+                        id="course_id"
+                        required>
+
+                        <option value="">
+                            Chargement...
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MODULE -->
+
+                <div>
+
+                    <label for="module_id">
+                        Module *
+                    </label>
+
+                    <select
+                        id="module_id"
+                        required
+                        disabled>
+
+                        <option value="">
+                            Sélectionnez d'abord un cours
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LESSON NUMBER -->
+
+                <div>
+
+                    <label for="lesson_number">
+                        Numéro de lesson *
+                    </label>
+
+                    <input
+                        id="lesson_number"
+                        type="number"
+                        min="1"
+                        required
+                        placeholder="Ex: 1">
+
+                </div>
+
+
+                <!-- DURATION -->
+
+                <div>
+
+                    <label for="estimated_duration">
+                        Durée estimée (minutes)
+                    </label>
+
+                    <input
+                        id="estimated_duration"
+                        type="number"
+                        min="0"
+                        placeholder="Ex: 15">
+
+                </div>
+
+
+                <!-- TITLE -->
+
+                <div class="full">
+
+                    <label for="title">
+                        Titre *
+                    </label>
+
+                    <input
+                        id="title"
+                        type="text"
+                        required
+                        placeholder="Ex: Kisa trading ye?">
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="full">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Contenu ou résumé de la lesson..."></textarea>
+
+                </div>
+
+
+                <!-- VIDEO -->
+
+                <div>
+
+                    <label for="video_url">
+                        URL vidéo
+                    </label>
+
+                    <input
+                        id="video_url"
+                        type="url"
+                        placeholder="https://youtube.com/...">
+
+                </div>
+
+
+                <!-- AUDIO -->
+
+                <div>
+
+                    <label for="audio_url">
+                        URL audio
+                    </label>
+
+                    <input
+                        id="audio_url"
+                        type="url"
+                        placeholder="https://...">
+
+                </div>
+
+
+                <!-- PUBLISH -->
+
+                <div>
+
+                    <label>
+                        Publication
+                    </label>
+
+                    <div class="checkbox">
+
+                        <input
+                            id="is_published"
+                            type="checkbox">
+
+                        <label
+                            for="is_published"
+                            style="margin:0">
+
+                            Publier immédiatement
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="moduleInfo"
+                class="info hidden">
+            </div>
+
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    id="saveButton"
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Enregistrer la lesson
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="hideForm()">
+
+                    Annuler
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- LISTE -->
+
+    <section class="card">
+
+        <div class="top">
+
+            <div>
+                <h2>Lessons existantes</h2>
+
+                <p>
+                    Filtrez les lessons par cours et module.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div>
+
+                <label for="filterCourse">
+                    Filtrer par cours
+                </label>
+
+                <select id="filterCourse">
+
+                    <option value="">
+                        Tous les cours
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label for="filterModule">
+                    Filtrer par module
+                </label>
+
+                <select
+                    id="filterModule"
+                    disabled>
+
+                    <option value="">
+                        Tous les modules
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <div
+            id="lessonList"
+            class="lesson-list">
+
+            <div class="loading">
+                Chargement des lessons...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const formCard =
+document.getElementById("formCard");
+
+const form =
+document.getElementById("lessonForm");
+
+const courseSelect =
+document.getElementById("course_id");
+
+const moduleSelect =
+document.getElementById("module_id");
+
+const filterCourse =
+document.getElementById("filterCourse");
+
+const filterModule =
+document.getElementById("filterModule");
+
+const lessonList =
+document.getElementById("lessonList");
+
+const message =
+document.getElementById("message");
+
+const saveButton =
+document.getElementById("saveButton");
+
+const moduleInfo =
+document.getElementById("moduleInfo");
+
+
+/* =========================================
+   FORM
+========================================= */
+
+function showForm(){
+
+    formCard.classList.remove("hidden");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+function hideForm(){
+
+    formCard.classList.add("hidden");
+
+    form.reset();
+
+    moduleSelect.innerHTML = `
+        <option value="">
+            Sélectionnez d'abord un cours
+        </option>
+    `;
+
+    moduleSelect.disabled = true;
+
+    moduleInfo.classList.add("hidden");
+
+    message.textContent = "";
+}
+
+
+/* =========================================
+   LOAD COURSES
+========================================= */
+
+async function loadCourses(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("courses")
+        .select(`
+            id,
+            title,
+            level,
+            language
+        `)
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+        if(error){
+            throw error;
+        }
+
+
+        courseSelect.innerHTML = `
+            <option value="">
+                Sélectionner un cours
+            </option>
+        `;
+
+        filterCourse.innerHTML = `
+            <option value="">
+                Tous les cours
+            </option>
+        `;
+
+
+        if(!data || data.length === 0){
+
+            courseSelect.innerHTML = `
+                <option value="">
+                    Aucun cours disponible
+                </option>
+            `;
+
+            return;
+        }
+
+
+        data.forEach(course => {
+
+            const option =
+            document.createElement("option");
+
+            option.value = course.id;
+
+            option.textContent =
+                course.title;
+
+            courseSelect.appendChild(option);
+
+
+            const filterOption =
+            document.createElement("option");
+
+            filterOption.value =
+                course.id;
+
+            filterOption.textContent =
+                course.title;
+
+            filterCourse.appendChild(
+                filterOption
+            );
+
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "COURSES ERROR:",
+            error
+        );
+
+        courseSelect.innerHTML = `
+            <option value="">
+                Erreur de chargement
+            </option>
+        `;
+    }
+}
+
+
+/* =========================================
+   LOAD MODULES FOR COURSE
+========================================= */
+
+async function loadModulesForCourse(
+    courseId,
+    targetSelect
+){
+
+    targetSelect.innerHTML = `
+        <option value="">
+            Chargement des modules...
+        </option>
+    `;
+
+    targetSelect.disabled = true;
+
+
+    if(!courseId){
+
+        targetSelect.innerHTML = `
+            <option value="">
+                Sélectionnez d'abord un cours
+            </option>
+        `;
+
+        return;
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("modules")
+        .select(`
+            id,
+            module_number,
+            title
+        `)
+        .eq(
+            "course_id",
+            courseId
+        )
+        .order(
+            "module_number",
+            {
+                ascending:true
+            }
+        );
+
+
+        if(error){
+            throw error;
+        }
+
+
+        targetSelect.innerHTML = `
+            <option value="">
+                Sélectionner un module
+            </option>
+        `;
+
+
+        if(!data || data.length === 0){
+
+            targetSelect.innerHTML = `
+                <option value="">
+                    Aucun module pour ce cours
+                </option>
+            `;
+
+            return;
+        }
+
+
+        data.forEach(module => {
+
+            const option =
+            document.createElement("option");
+
+            option.value =
+                module.id;
+
+            option.textContent =
+                "Module " +
+                module.module_number +
+                " — " +
+                module.title;
+
+            targetSelect.appendChild(option);
+
+        });
+
+
+        targetSelect.disabled = false;
+
+
+    }
+    catch(error){
+
+        console.error(
+            "MODULE ERROR:",
+            error
+        );
+
+        targetSelect.innerHTML = `
+            <option value="">
+                Erreur de chargement
+            </option>
+        `;
+    }
+}
+
+
+/* =========================================
+   COURSE CHANGE
+========================================= */
+
+courseSelect.addEventListener(
+    "change",
+    async function(){
+
+        await loadModulesForCourse(
+            this.value,
+            moduleSelect
+        );
+
+        moduleInfo.classList.add(
+            "hidden"
+        );
+    }
+);
+
+
+/* =========================================
+   MODULE CHANGE
+========================================= */
+
+moduleSelect.addEventListener(
+    "change",
+    function(){
+
+        if(!this.value){
+
+            moduleInfo.classList.add(
+                "hidden"
+            );
+
+            return;
+        }
+
+
+        const option =
+            this.options[
+                this.selectedIndex
+            ];
+
+
+        moduleInfo.innerHTML = `
+            <strong>
+                Module sélectionné:
+            </strong>
+            ${escapeHTML(
+                option.textContent
+            )}
+        `;
+
+
+        moduleInfo.classList.remove(
+            "hidden"
+        );
+    }
+);
+
+
+/* =========================================
+   CREATE LESSON
+========================================= */
+
+form.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+        saveButton.disabled = true;
+
+        message.className =
+            "message";
+
+        message.textContent =
+            "Enregistrement...";
+
+
+        try{
+
+            const {
+                data: userData,
+                error: userError
+            } =
+            await supabaseClient
+            .auth
+            .getUser();
+
+
+            if(
+                userError ||
+                !userData.user
+            ){
+
+                throw new Error(
+                    "Session administrateur expirée."
+                );
+            }
+
+
+            const module_id =
+                moduleSelect.value;
+
+
+            const lesson_number =
+                Number(
+                    document
+                    .getElementById(
+                        "lesson_number"
+                    )
+                    .value
+                );
+
+
+            const title =
+                document
+                .getElementById("title")
+                .value
+                .trim();
+
+
+            const description =
+                document
+                .getElementById("description")
+                .value
+                .trim();
+
+
+            const video_url =
+                document
+                .getElementById("video_url")
+                .value
+                .trim() || null;
+
+
+            const audio_url =
+                document
+                .getElementById("audio_url")
+                .value
+                .trim() || null;
+
+
+            const durationValue =
+                document
+                .getElementById(
+                    "estimated_duration"
+                )
+                .value;
+
+
+            const estimated_duration =
+                durationValue === ""
+                ? null
+                : Number(durationValue);
+
+
+            const is_published =
+                document
+                .getElementById(
+                    "is_published"
+                )
+                .checked;
+
+
+            if(!module_id){
+
+                throw new Error(
+                    "Veuillez sélectionner un module."
+                );
+            }
+
+
+            if(!lesson_number){
+
+                throw new Error(
+                    "Veuillez entrer le numéro de la lesson."
+                );
+            }
+
+
+            if(!title){
+
+                throw new Error(
+                    "Veuillez entrer le titre de la lesson."
+                );
+            }
+
+
+            const {
+                error
+            } =
+            await supabaseClient
+            .from("lessons")
+            .insert({
+
+                module_id,
+
+                lesson_number,
+
+                title,
+
+                description,
+
+                video_url,
+
+                audio_url,
+
+                estimated_duration,
+
+                is_published
+
+            });
+
+
+            if(error){
+
+                console.error(
+                    "LESSON INSERT ERROR:",
+                    error
+                );
+
+                throw error;
+            }
+
+
+            message.className =
+                "message success";
+
+            message.textContent =
+                "✅ Lesson créée avec succès.";
+
+
+            form.reset();
+
+
+            moduleSelect.innerHTML = `
+                <option value="">
+                    Sélectionnez d'abord un cours
+                </option>
+            `;
+
+            moduleSelect.disabled = true;
+
+            moduleInfo.classList.add(
+                "hidden"
+            );
+
+
+            await loadLessons();
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            message.className =
+                "message error";
+
+            message.textContent =
+                "❌ " +
+                (
+                    error.message ||
+                    "Erreur lors de la création."
+                );
+        }
+
+
+        saveButton.disabled = false;
+
+    }
+);
+
+
+/* =========================================
+   FILTER COURSE CHANGE
+========================================= */
+
+filterCourse.addEventListener(
+    "change",
+    async function(){
+
+        await loadModulesForCourse(
+            this.value,
+            filterModule
+        );
+
+        if(!this.value){
+
+            filterModule.innerHTML = `
+                <option value="">
+                    Tous les modules
+                </option>
+            `;
+
+            filterModule.disabled = true;
+        }
+
+        await loadLessons();
+    }
+);
+
+
+/* =========================================
+   FILTER MODULE
+========================================= */
+
+filterModule.addEventListener(
+    "change",
+    loadLessons
+);
+
+
+/* =========================================
+   LOAD LESSONS
+========================================= */
+
+async function loadLessons(){
+
+    lessonList.innerHTML = `
+        <div class="loading">
+            Chargement des lessons...
+        </div>
+    `;
+
+
+    try{
+
+        let query =
+        supabaseClient
+        .from("lessons")
+        .select(`
+            id,
+            module_id,
+            lesson_number,
+            title,
+            description,
+            video_url,
+            audio_url,
+            estimated_duration,
+            is_published,
+            created_at,
+            modules (
+                id,
+                module_number,
+                title,
+                course_id,
+                courses (
+                    id,
+                    title
+                )
+            )
+        `)
+        .order(
+            "lesson_number",
+            {
+                ascending:true
+            }
+        );
+
+
+        if(filterCourse.value){
+
+            query =
+                query.eq(
+                    "modules.course_id",
+                    filterCourse.value
+                );
+        }
+
+
+        if(filterModule.value){
+
+            query =
+                query.eq(
+                    "module_id",
+                    filterModule.value
+                );
+        }
+
+
+        const {
+            data,
+            error
+        } =
+        await query;
+
+
+        if(error){
+            throw error;
+        }
+
+
+        if(!data || data.length === 0){
+
+            lessonList.innerHTML = `
+                <div class="empty">
+
+                    <div style="font-size:35px;">
+                        📝
+                    </div>
+
+                    Aucune lesson trouvée.
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        lessonList.innerHTML = "";
+
+
+        data.forEach(lesson => {
+
+            const div =
+                document.createElement("div");
+
+            div.className =
+                "lesson";
+
+
+            const status =
+                lesson.is_published
+
+                ? `
+                    <span class="badge published">
+                        Publié
+                    </span>
+                  `
+
+                : `
+                    <span class="badge draft">
+                        Brouillon
+                    </span>
+                  `;
+
+
+            const module =
+                lesson.modules;
+
+
+            const course =
+                module &&
+                module.courses
+                ? module.courses
+                : null;
+
+
+            div.innerHTML = `
+
+                <div class="lesson-header">
+
+                    <div>
+
+                        <div class="lesson-number">
+
+                            Lesson
+                            ${lesson.lesson_number}
+
+                        </div>
+
+
+                        <h3>
+
+                            ${escapeHTML(
+                                lesson.title || ""
+                            )}
+
+                        </h3>
+
+
+                        <div
+                            style="
+                                color:#2563eb;
+                                font-size:13px;
+                                font-weight:bold;
+                            ">
+
+                            📚
+                            ${escapeHTML(
+                                course
+                                ? course.title
+                                : "Cours inconnu"
+                            )}
+
+                            <br>
+
+                            📦
+                            ${escapeHTML(
+                                module
+                                ? "Module " +
+                                  module.module_number +
+                                  " — " +
+                                  module.title
+                                : "Module inconnu"
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    ${status}
+
+                </div>
+
+
+                <p>
+
+                    ${escapeHTML(
+                        lesson.description ||
+                        "Aucune description."
+                    )}
+
+                </p>
+
+
+                <div class="meta">
+
+                    <span>
+
+                        ⏱️
+                        ${
+                            lesson.estimated_duration
+                            ??
+                            "-"
+                        }
+                        min
+
+                    </span>
+
+
+                    ${
+                        lesson.video_url
+                        ? "<span>🎬 Vidéo</span>"
+                        : ""
+                    }
+
+
+                    ${
+                        lesson.audio_url
+                        ? "<span>🎧 Audio</span>"
+                        : ""
+                    }
+
+                </div>
+
+
+                ${
+                    lesson.video_url
+
+                    ? `
+                        <div class="link-preview">
+
+                            🎬
+                            <a
+                                href="${escapeHTML(
+                                    lesson.video_url
+                                )}"
+                                target="_blank">
+
+                                Voir la vidéo
+
+                            </a>
+
+                        </div>
+                      `
+
+                    : ""
+                }
+
+
+                ${
+                    lesson.audio_url
+
+                    ? `
+                        <div class="link-preview">
+
+                            🎧
+                            <a
+                                href="${escapeHTML(
+                                    lesson.audio_url
+                                )}"
+                                target="_blank">
+
+                                Écouter l'audio
+
+                            </a>
+
+                        </div>
+                      `
+
+                    : ""
+                }
+
+            `;
+
+
+            lessonList.appendChild(div);
+
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "LESSONS LOAD ERROR:",
+            error
+        );
+
+
+        lessonList.innerHTML = `
+
+            <div class="empty error">
+
+                ❌ Impossible de charger les lessons.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message || ""
+                )}
+
+            </div>
+
+        `;
+    }
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+async function init(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .auth
+    .getUser();
+
+
+    if(
+        error ||
+        !data.user
+    ){
+
+        window.location.href =
+            "admin-login.html";
+
+        return;
+    }
+
+
+    await loadCourses();
+
+    await loadLessons();
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>

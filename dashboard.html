@@ -1,0 +1,3517 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Trading Academy AI</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #172033;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: #0f172a;
+            color: white;
+            z-index: 1000;
+            transition: transform .3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .sidebar-logo {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .sidebar-logo span {
+            color: #3b82f6;
+        }
+
+        .close-sidebar {
+            border: 0;
+            background: rgba(255,255,255,.08);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .sidebar-menu {
+            padding: 18px 12px;
+            flex: 1;
+        }
+
+        .menu-title {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px;
+        }
+
+        .menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border: 0;
+            background: transparent;
+            color: #cbd5e1;
+            border-radius: 9px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(37,99,235,.18);
+            color: white;
+        }
+
+        .menu-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .user-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-mini-info {
+            min-width: 0;
+        }
+
+        .user-mini-name {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-mini-level {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        /* =========================
+           OVERLAY
+        ========================= */
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 900;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            min-height: 100vh;
+            margin-left: 260px;
+            transition: margin-left .3s ease;
+        }
+
+        .main.expanded {
+            margin-left: 0;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+
+        .menu-toggle {
+            width: 42px;
+            height: 42px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 21px;
+            color: #172033;
+        }
+
+        .topbar-title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .topbar-spacer {
+            flex: 1;
+        }
+
+        .topbar-user {
+            color: #475569;
+            font-size: 14px;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            max-width: 1250px;
+            margin: auto;
+            padding: 28px 22px;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 22px;
+        }
+
+        .welcome-card h1 {
+            margin: 0 0 8px;
+            font-size: 27px;
+        }
+
+        .welcome-card p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 21px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           PROGRESS
+        ========================= */
+
+        .progress-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width .5s ease;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+        }
+
+        .section-header p {
+            margin: 5px 0 0;
+            color: #64748b;
+        }
+
+        /* =========================
+           COURSES
+        ========================= */
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .course-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: .2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15,23,42,.08);
+        }
+
+        .course-thumbnail {
+            height: 150px;
+            background: linear-gradient(135deg,#0f172a,#2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            overflow: hidden;
+        }
+
+        .course-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-body {
+            padding: 18px;
+        }
+
+        .course-body h3 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .course-description {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+            min-height: 40px;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 12px 0;
+        }
+
+        .meta-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .course-button {
+            width: 100%;
+            border: 0;
+            background: #2563eb;
+            color: white;
+            padding: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* =========================
+           COURSE DETAIL
+        ========================= */
+
+        .back-button {
+            border: 1px solid #e2e8f0;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 18px;
+        }
+
+        .course-detail-header {
+            background: linear-gradient(135deg,#0f172a,#1e40af);
+            color: white;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 22px;
+        }
+
+        .course-detail-header h1 {
+            margin: 0 0 10px;
+        }
+
+        .course-detail-header p {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           MODULES
+        ========================= */
+
+        .module-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .module-header {
+            padding: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .module-header:hover {
+            background: #f8fafc;
+        }
+
+        .module-number {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .module-title {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .module-description {
+            color: #64748b;
+            font-size: 13px;
+            margin: 5px 0 0;
+        }
+
+        .module-arrow {
+            font-size: 20px;
+        }
+
+        .module-card.open .module-arrow {
+            transform: rotate(180deg);
+        }
+
+        .lesson-list {
+            display: none;
+            border-top: 1px solid #e2e8f0;
+            padding: 8px 15px 15px;
+        }
+
+        .module-card.open .lesson-list {
+            display: block;
+        }
+
+        /* =========================
+           LESSON
+        ========================= */
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .lesson-item:hover {
+            background: #f1f5f9;
+        }
+
+        .lesson-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lesson-icon.completed {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .lesson-info {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .lesson-duration {
+            color: #64748b;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .completed-badge {
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 11px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           LESSON VIEWER
+        ========================= */
+
+        .lesson-viewer {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .lesson-viewer h1 {
+            margin-top: 0;
+        }
+
+        .lesson-description {
+            color: #475569;
+            line-height: 1.7;
+            white-space: pre-line;
+            margin: 18px 0;
+        }
+
+        .media-box {
+            margin-top: 20px;
+            background: #0f172a;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .media-box iframe {
+            width: 100%;
+            min-height: 420px;
+            border: 0;
+        }
+
+        .audio-box {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-top: 18px;
+        }
+
+        .audio-box audio {
+            width: 100%;
+        }
+
+        /* =========================
+           COMPLETE BUTTON
+        ========================= */
+
+        .complete-box {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .complete-button {
+            border: 0;
+            background: #2563eb;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .complete-button:hover {
+            background: #1d4ed8;
+        }
+
+        .complete-button.completed {
+            background: #16a34a;
+            cursor: default;
+        }
+
+        .xp-message {
+            margin-top: 10px;
+            color: #16a34a;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           GENERAL
+        ========================= */
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #64748b;
+        }
+
+        .empty {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            text-align: center;
+            padding: 45px 20px;
+            color: #64748b;
+        }
+
+        .profile-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .profile-row {
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .profile-row:last-child {
+            border-bottom: 0;
+        }
+
+        .profile-label {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .profile-value {
+            font-weight: bold;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:900px) {
+
+            .course-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+        }
+
+        @media(max-width:700px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main,
+            .main.expanded {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 20px 14px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar-user {
+                display: none;
+            }
+
+            .media-box iframe {
+                min-height: 240px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside
+    id="sidebar"
+    class="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-logo">
+
+            Trading Academy
+            <span>AI</span>
+
+        </div>
+
+        <button
+            id="closeSidebar"
+            class="close-sidebar">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <nav class="sidebar-menu">
+
+        <div class="menu-title">
+            Navigation
+        </div>
+
+
+        <button
+            class="menu-item active"
+            data-page="dashboard">
+
+            <span class="menu-icon">
+                🏠
+            </span>
+
+            Dashboard
+
+        </button>
+
+
+        <button
+            class="menu-item"
+            data-page="courses">
+
+            <span class="menu-icon">
+                📚
+            </span>
+
+            Mes cours
+
+        </button>
+
+
+        <button
+            class="menu-item"
+            data-page="progress">
+
+            <span class="menu-icon">
+                📊
+            </span>
+
+            Ma progression
+
+        </button>
+
+
+        <div class="menu-title">
+            Compte
+        </div>
+
+
+        <button
+            class="menu-item"
+            data-page="profile">
+
+            <span class="menu-icon">
+                👤
+            </span>
+
+            Mon profil
+
+        </button>
+
+
+        <button
+            id="sidebarLogout"
+            class="menu-item">
+
+            <span class="menu-icon">
+                🚪
+            </span>
+
+            Déconnexion
+
+        </button>
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+        <div class="user-mini">
+
+            <div
+                id="avatar"
+                class="avatar">
+
+                T
+
+            </div>
+
+
+            <div class="user-mini-info">
+
+                <div
+                    id="sidebarName"
+                    class="user-mini-name">
+
+                    Trader
+
+                </div>
+
+
+                <div
+                    id="sidebarLevel"
+                    class="user-mini-level">
+
+                    Débutant
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay">
+</div>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main
+    id="main"
+    class="main">
+
+
+    <header class="topbar">
+
+        <button
+            id="menuToggle"
+            class="menu-toggle">
+
+            ☰
+
+        </button>
+
+
+        <div
+            id="topbarTitle"
+            class="topbar-title">
+
+            Dashboard
+
+        </div>
+
+
+        <div class="topbar-spacer"></div>
+
+
+        <div class="topbar-user">
+
+            👤
+
+            <span id="topbarName">
+                Trader
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+
+        <div
+            id="loading"
+            class="loading">
+
+            Chajman dashboard la...
+
+        </div>
+
+
+        <!-- =========================
+             DASHBOARD
+        ========================== -->
+
+        <section
+            id="page-dashboard"
+            class="page-section active">
+
+
+            <div class="welcome-card">
+
+                <h1>
+
+                    Bon retou,
+                    <span id="fullName">
+                        Trader
+                    </span>
+                    👋
+
+                </h1>
+
+
+                <p>
+
+                    Kontinye aprann,
+                    pratike, epi konstwi
+                    konpetans ou.
+
+                </p>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Nivo aktyèl
+                    </div>
+
+                    <div
+                        id="level"
+                        class="stat-value">
+
+                        Débutant
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        XP
+                    </div>
+
+                    <div
+                        id="xp"
+                        class="stat-value">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Leçons terminées
+                    </div>
+
+                    <div
+                        id="lessons"
+                        class="stat-value">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-card">
+
+                <div class="progress-header">
+
+                    <strong>
+                        Pwogrè fòmasyon
+                    </strong>
+
+                    <strong
+                        id="progressText">
+
+                        0%
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        id="progressFill"
+                        class="progress-fill">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Mes cours
+                    </h2>
+
+                    <p>
+                        Kontinye aprantisaj ou.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="dashboardCourses"
+                class="course-grid">
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             COURSES
+        ========================== -->
+
+        <section
+            id="page-courses"
+            class="page-section">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Mes cours
+                    </h2>
+
+                    <p>
+                        Chwazi yon kou pou kòmanse.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="courseGrid"
+                class="course-grid">
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             COURSE DETAIL
+        ========================== -->
+
+        <section
+            id="page-course-detail"
+            class="page-section">
+
+
+            <button
+                class="back-button"
+                onclick="showPage('courses')">
+
+                ← Retounen
+
+            </button>
+
+
+            <div
+                id="courseDetailHeader"
+                class="course-detail-header">
+            </div>
+
+
+            <div
+                id="moduleContainer">
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             LESSON
+        ========================== -->
+
+        <section
+            id="page-lesson"
+            class="page-section">
+
+
+            <button
+                id="backToCourse"
+                class="back-button">
+
+                ← Retounen
+
+            </button>
+
+
+            <div
+                id="lessonViewer"
+                class="lesson-viewer">
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROGRESS
+        ========================== -->
+
+        <section
+            id="page-progress"
+            class="page-section">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Ma progression
+                    </h2>
+
+                    <p>
+                        Swiv evolisyon ou.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-card">
+
+                <div class="progress-header">
+
+                    <strong>
+                        Progression générale
+                    </strong>
+
+                    <strong
+                        id="progressPageText">
+
+                        0%
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        id="progressPageFill"
+                        class="progress-fill">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Leçons terminées
+                    </div>
+
+                    <div
+                        id="progressLessons"
+                        class="stat-value">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        XP gagné
+                    </div>
+
+                    <div
+                        id="progressXP"
+                        class="stat-value">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Niveau
+                    </div>
+
+                    <div
+                        id="progressLevel"
+                        class="stat-value">
+
+                        Débutant
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROFILE
+        ========================== -->
+
+        <section
+            id="page-profile"
+            class="page-section">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Mon profil
+                    </h2>
+
+                    <p>
+                        Informations de votre compte.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-card">
+
+
+                <div class="profile-row">
+
+                    <div class="profile-label">
+                        Nom complet
+                    </div>
+
+                    <div
+                        id="profileName"
+                        class="profile-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <div class="profile-label">
+                        Username
+                    </div>
+
+                    <div
+                        id="profileUsername"
+                        class="profile-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <div class="profile-label">
+                        Email
+                    </div>
+
+                    <div
+                        id="profileEmail"
+                        class="profile-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <div class="profile-label">
+                        Niveau
+                    </div>
+
+                    <div
+                        id="profileLevel"
+                        class="profile-value">
+
+                        Débutant
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     SUPABASE
+========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let currentUser = null;
+let currentProfile = null;
+let currentCourseId = null;
+let currentLesson = null;
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const main =
+    document.getElementById("main");
+
+const overlay =
+    document.getElementById("sidebarOverlay");
+
+
+function toggleSidebar() {
+
+    if (window.innerWidth <= 700) {
+
+        sidebar.classList.toggle("open");
+
+        overlay.classList.toggle("show");
+
+    } else {
+
+        sidebar.classList.toggle("closed");
+
+        main.classList.toggle("expanded");
+
+    }
+
+}
+
+
+function closeSidebarMenu() {
+
+    if (window.innerWidth <= 700) {
+
+        sidebar.classList.remove("open");
+
+        overlay.classList.remove("show");
+
+    } else {
+
+        sidebar.classList.add("closed");
+
+        main.classList.add("expanded");
+
+    }
+
+}
+
+
+document
+    .getElementById("menuToggle")
+    .addEventListener(
+        "click",
+        toggleSidebar
+    );
+
+
+document
+    .getElementById("closeSidebar")
+    .addEventListener(
+        "click",
+        closeSidebarMenu
+    );
+
+
+overlay.addEventListener(
+    "click",
+    closeSidebarMenu
+);
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+document
+    .querySelectorAll(".menu-item[data-page]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                document
+                    .querySelectorAll(".menu-item")
+                    .forEach(item => {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                this.classList.add("active");
+
+
+                showPage(
+                    this.dataset.page
+                );
+
+
+                if (
+                    window.innerWidth <= 700
+                ) {
+
+                    closeSidebarMenu();
+
+                }
+
+            }
+        );
+
+    });
+
+
+function showPage(page) {
+
+    document
+        .querySelectorAll(".page-section")
+        .forEach(section => {
+
+            section.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    const target =
+        document.getElementById(
+            "page-" + page
+        );
+
+
+    if (target) {
+
+        target.classList.add("active");
+
+    }
+
+
+    const titles = {
+
+        dashboard:
+            "Dashboard",
+
+        courses:
+            "Mes cours",
+
+        "course-detail":
+            "Cours",
+
+        lesson:
+            "Lesson",
+
+        progress:
+            "Ma progression",
+
+        profile:
+            "Mon profil"
+
+    };
+
+
+    document.getElementById(
+        "topbarTitle"
+    ).textContent =
+        titles[page] || "Trading Academy AI";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================
+   FORMAT LEVEL
+========================================= */
+
+function formatLevel(level) {
+
+    const levels = {
+
+        debutant:
+            "Débutant",
+
+        professionnel_analyste:
+            "Professional Analyst",
+
+        expert:
+            "Expert",
+
+        super_expert:
+            "Super Expert"
+
+    };
+
+
+    return levels[level] ||
+           level ||
+           "Débutant";
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   LOAD PROFILE
+========================================= */
+
+async function loadProfile() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("profils")
+            .select(`
+                nom_complet,
+                username,
+                niveau,
+                progression,
+                lecons_terminees,
+                xp
+            `)
+            .eq("id", currentUser.id)
+            .single();
+
+
+    if (error) {
+
+        throw error;
+
+    }
+
+
+    currentProfile = data;
+
+
+    updateProfileUI();
+
+}
+
+
+/* =========================================
+   UPDATE PROFILE UI
+========================================= */
+
+function updateProfileUI() {
+
+    const data =
+        currentProfile;
+
+
+    const name =
+        data.nom_complet ||
+        data.username ||
+        "Trader";
+
+
+    const level =
+        formatLevel(data.niveau);
+
+
+    const xp =
+        Number(data.xp || 0);
+
+
+    const lessons =
+        Number(
+            data.lecons_terminees || 0
+        );
+
+
+    const progression =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(
+                    data.progression || 0
+                )
+            )
+        );
+
+
+    document.getElementById(
+        "fullName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "topbarName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "sidebarName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "sidebarLevel"
+    ).textContent = level;
+
+
+    document.getElementById(
+        "level"
+    ).textContent = level;
+
+
+    document.getElementById(
+        "xp"
+    ).textContent = xp;
+
+
+    document.getElementById(
+        "lessons"
+    ).textContent = lessons;
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        progression + "%";
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        progression + "%";
+
+
+    document.getElementById(
+        "progressPageText"
+    ).textContent =
+        progression + "%";
+
+
+    document.getElementById(
+        "progressPageFill"
+    ).style.width =
+        progression + "%";
+
+
+    document.getElementById(
+        "progressLessons"
+    ).textContent =
+        lessons;
+
+
+    document.getElementById(
+        "progressXP"
+    ).textContent =
+        xp;
+
+
+    document.getElementById(
+        "progressLevel"
+    ).textContent =
+        level;
+
+
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "profileUsername"
+    ).textContent =
+        data.username || "-";
+
+
+    document.getElementById(
+        "profileEmail"
+    ).textContent =
+        currentUser.email || "-";
+
+
+    document.getElementById(
+        "profileLevel"
+    ).textContent =
+        level;
+
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        name
+            .trim()
+            .charAt(0)
+            .toUpperCase() || "T";
+
+}
+
+
+/* =========================================
+   LOAD PUBLISHED LESSON COUNT
+========================================= */
+
+async function getTotalPublishedLessons() {
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from("lessons")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "is_published",
+                true
+            );
+
+
+    if (error) {
+
+        console.error(
+            "COUNT LESSON ERROR:",
+            error
+        );
+
+        return 0;
+
+    }
+
+
+    return count || 0;
+
+}
+
+
+/* =========================================
+   LOAD USER COMPLETED LESSONS
+========================================= */
+
+async function getCompletedLessons() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "user_lesson_progress"
+            )
+            .select(
+                "lesson_id"
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .eq(
+                "completed",
+                true
+            );
+
+
+    if (error) {
+
+        console.error(
+            "PROGRESS ERROR:",
+            error
+        );
+
+        return [];
+
+    }
+
+
+    return data || [];
+
+}
+
+
+/* =========================================
+   RECALCULATE PROGRESS
+========================================= */
+
+async function recalculateProgress() {
+
+    const total =
+        await getTotalPublishedLessons();
+
+
+    const completed =
+        await getCompletedLessons();
+
+
+    const completedCount =
+        completed.length;
+
+
+    let percentage = 0;
+
+
+    if (total > 0) {
+
+        percentage =
+            Math.round(
+                (
+                    completedCount /
+                    total
+                ) * 100
+            );
+
+    }
+
+
+    /*
+       Mete val yo nan profil la.
+    */
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("profils")
+            .update({
+
+                progression:
+                    percentage,
+
+                lecons_terminees:
+                    completedCount
+
+            })
+            .eq(
+                "id",
+                currentUser.id
+            )
+            .select()
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "PROFILE UPDATE ERROR:",
+            error
+        );
+
+    } else {
+
+        currentProfile =
+            data;
+
+        updateProfileUI();
+
+    }
+
+
+    return {
+        total,
+        completedCount,
+        percentage
+    };
+
+}
+
+
+/* =========================================
+   COURSE CARD
+========================================= */
+
+function createCourseCard(course) {
+
+    return `
+
+        <article class="course-card">
+
+            <div class="course-thumbnail">
+
+                ${
+                    course.thumbnail_url
+
+                    ? `
+                        <img
+                            src="${escapeHTML(
+                                course.thumbnail_url
+                            )}"
+                            alt="${escapeHTML(
+                                course.title
+                            )}">
+                      `
+
+                    : "📈"
+                }
+
+            </div>
+
+
+            <div class="course-body">
+
+                <h3>
+                    ${escapeHTML(
+                        course.title
+                    )}
+                </h3>
+
+
+                <div
+                    class="course-description">
+
+                    ${escapeHTML(
+                        course.description ||
+                        "Découvrez ce cours."
+                    )}
+
+                </div>
+
+
+                <div class="course-meta">
+
+                    <span class="meta-badge">
+
+                        🎓
+                        ${escapeHTML(
+                            formatLevel(
+                                course.level
+                            )
+                        )}
+
+                    </span>
+
+
+                    <span class="meta-badge">
+
+                        🌐
+                        ${escapeHTML(
+                            course.language ||
+                            "-"
+                        )}
+
+                    </span>
+
+
+                    <span class="meta-badge">
+
+                        ⏱️
+                        ${course.duration_minutes ?? "-"}
+                        min
+
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="course-button"
+                    onclick="openCourse('${course.id}')">
+
+                    Voir le cours →
+
+                </button>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================
+   LOAD COURSES
+========================================= */
+
+async function loadCourses() {
+
+    const grids = [
+        document.getElementById(
+            "courseGrid"
+        ),
+        document.getElementById(
+            "dashboardCourses"
+        )
+    ];
+
+
+    grids.forEach(grid => {
+
+        grid.innerHTML = `
+            <div class="loading">
+                Chajman courses...
+            </div>
+        `;
+
+    });
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("courses")
+            .select(`
+                id,
+                title,
+                description,
+                level,
+                language,
+                thumbnail_url,
+                duration_minutes,
+                created_at
+            `)
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        throw error;
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        const html = `
+            <div
+                class="empty"
+                style="grid-column:1/-1">
+
+                📚
+
+                <br><br>
+
+                Pa gen okenn cours
+                pibliye pou kounye a.
+
+            </div>
+        `;
+
+
+        grids.forEach(grid => {
+
+            grid.innerHTML = html;
+
+        });
+
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "courseGrid"
+    ).innerHTML =
+        data
+            .map(createCourseCard)
+            .join("");
+
+
+    document.getElementById(
+        "dashboardCourses"
+    ).innerHTML =
+        data
+            .slice(0,3)
+            .map(createCourseCard)
+            .join("");
+
+}
+
+
+/* =========================================
+   OPEN COURSE
+========================================= */
+
+async function openCourse(courseId) {
+
+    currentCourseId =
+        courseId;
+
+
+    showPage(
+        "course-detail"
+    );
+
+
+    const header =
+        document.getElementById(
+            "courseDetailHeader"
+        );
+
+
+    const container =
+        document.getElementById(
+            "moduleContainer"
+        );
+
+
+    header.innerHTML = `
+        <div class="loading">
+            Chajman cours...
+        </div>
+    `;
+
+
+    container.innerHTML = "";
+
+
+    const {
+        data: course,
+        error
+    } =
+        await supabaseClient
+            .from("courses")
+            .select(`
+                id,
+                title,
+                description,
+                level,
+                language,
+                duration_minutes
+            `)
+            .eq(
+                "id",
+                courseId
+            )
+            .eq(
+                "is_published",
+                true
+            )
+            .single();
+
+
+    if (error) {
+
+        header.innerHTML = `
+            <h2>❌ Erè</h2>
+            <p>
+                ${escapeHTML(
+                    error.message
+                )}
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    header.innerHTML = `
+
+        <h1>
+            ${escapeHTML(
+                course.title
+            )}
+        </h1>
+
+        <p>
+            ${escapeHTML(
+                course.description ||
+                ""
+            )}
+        </p>
+
+        <div>
+
+            🎓
+            ${escapeHTML(
+                formatLevel(
+                    course.level
+                )
+            )}
+
+            &nbsp;&nbsp;
+
+            🌐
+            ${escapeHTML(
+                course.language ||
+                "-"
+            )}
+
+            &nbsp;&nbsp;
+
+            ⏱️
+            ${course.duration_minutes ?? "-"}
+            min
+
+        </div>
+
+    `;
+
+
+    await loadModules(courseId);
+
+}
+
+
+/* =========================================
+   LOAD MODULES
+========================================= */
+
+async function loadModules(courseId) {
+
+    const container =
+        document.getElementById(
+            "moduleContainer"
+        );
+
+
+    const {
+        data: modules,
+        error
+    } =
+        await supabaseClient
+            .from("modules")
+            .select("*")
+            .eq(
+                "course_id",
+                courseId
+            )
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "module_number",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        container.innerHTML = `
+            <div class="empty">
+                ❌ ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        !modules ||
+        modules.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="empty">
+                📦
+                <br><br>
+                Pa gen module pibliye.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    for (
+        const module
+        of modules
+    ) {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "module-card";
+
+
+        card.innerHTML = `
+
+            <div class="module-header">
+
+                <div>
+
+                    <div class="module-number">
+
+                        Module
+                        ${
+                            module.module_number ??
+                            ""
+                        }
+
+                    </div>
+
+
+                    <h3 class="module-title">
+
+                        ${escapeHTML(
+                            module.title
+                        )}
+
+                    </h3>
+
+
+                    <p
+                        class="module-description">
+
+                        ${escapeHTML(
+                            module.description ||
+                            ""
+                        )}
+
+                    </p>
+
+                </div>
+
+
+                <div class="module-arrow">
+                    ▼
+                </div>
+
+            </div>
+
+
+            <div class="lesson-list">
+
+                <div class="loading">
+
+                    Chajman lessons...
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+
+        const lessonList =
+            card.querySelector(
+                ".lesson-list"
+            );
+
+
+        card
+            .querySelector(
+                ".module-header"
+            )
+            .addEventListener(
+                "click",
+                async () => {
+
+                    card.classList.toggle(
+                        "open"
+                    );
+
+
+                    if (
+                        card.dataset.loaded
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    await loadLessons(
+                        module.id,
+                        lessonList
+                    );
+
+
+                    card.dataset.loaded =
+                        "true";
+
+                }
+            );
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD LESSONS
+========================================= */
+
+async function loadLessons(
+    moduleId,
+    container
+) {
+
+    const {
+        data: lessons,
+        error
+    } =
+        await supabaseClient
+            .from("lessons")
+            .select("*")
+            .eq(
+                "module_id",
+                moduleId
+            )
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "lesson_number",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        container.innerHTML = `
+            <div class="empty">
+                ❌ ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        !lessons ||
+        lessons.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Pa gen lessons pibliye.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /*
+       Chèche lessons itilizatè a deja fini.
+    */
+
+    const completed =
+        await getCompletedLessons();
+
+
+    const completedIds =
+        new Set(
+            completed.map(
+                item =>
+                    item.lesson_id
+            )
+        );
+
+
+    container.innerHTML = "";
+
+
+    lessons.forEach(lesson => {
+
+        const isCompleted =
+            completedIds.has(
+                lesson.id
+            );
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "lesson-item";
+
+
+        item.innerHTML = `
+
+            <div
+                class="lesson-icon
+                ${
+                    isCompleted
+                    ? "completed"
+                    : ""
+                }">
+
+                ${
+                    isCompleted
+                    ? "✓"
+                    : "▶"
+                }
+
+            </div>
+
+
+            <div class="lesson-info">
+
+                <div class="lesson-title">
+
+                    Lesson
+                    ${lesson.lesson_number ?? ""}
+                    —
+                    ${escapeHTML(
+                        lesson.title
+                    )}
+
+                </div>
+
+
+                <div class="lesson-duration">
+
+                    ⏱️
+                    ${lesson.estimated_duration ?? "-"}
+                    minutes
+
+                </div>
+
+            </div>
+
+
+            ${
+                isCompleted
+
+                ? `
+                    <span
+                        class="completed-badge">
+
+                        ✓ Terminée
+
+                    </span>
+                  `
+
+                : "→"
+            }
+
+        `;
+
+
+        item.addEventListener(
+            "click",
+            () => {
+
+                openLesson(
+                    lesson
+                );
+
+            }
+        );
+
+
+        container.appendChild(
+            item
+        );
+
+    });
+
+}
+
+
+/* =========================================
+   CHECK SINGLE LESSON
+========================================= */
+
+async function isLessonCompleted(
+    lessonId
+) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "user_lesson_progress"
+            )
+            .select(
+                "id, completed"
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .eq(
+                "lesson_id",
+                lessonId
+            )
+            .eq(
+                "completed",
+                true
+            )
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "CHECK PROGRESS ERROR:",
+            error
+        );
+
+        return false;
+
+    }
+
+
+    return !!data;
+
+}
+
+
+/* =========================================
+   COMPLETE LESSON
+========================================= */
+
+async function completeLesson() {
+
+    if (!currentLesson) {
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "completeLessonButton"
+        );
+
+
+    const message =
+        document.getElementById(
+            "xpMessage"
+        );
+
+
+    /*
+       Evite double-click.
+    */
+
+    if (
+        button.disabled
+    ) {
+
+        return;
+
+    }
+
+
+    button.disabled = true;
+
+
+    /*
+       Verifye si lesson lan
+       deja fini.
+    */
+
+    const alreadyCompleted =
+        await isLessonCompleted(
+            currentLesson.id
+        );
+
+
+    if (
+        alreadyCompleted
+    ) {
+
+        button.classList.add(
+            "completed"
+        );
+
+        button.textContent =
+            "✓ Lesson terminée";
+
+        message.textContent =
+            "Lesson sa a te deja fini.";
+
+        return;
+
+    }
+
+
+    /*
+       Kreye progression lan.
+    */
+
+    const {
+        error: insertError
+    } =
+        await supabaseClient
+            .from(
+                "user_lesson_progress"
+            )
+            .insert({
+
+                user_id:
+                    currentUser.id,
+
+                lesson_id:
+                    currentLesson.id,
+
+                completed:
+                    true,
+
+                completed_at:
+                    new Date().toISOString()
+
+            });
+
+
+    if (insertError) {
+
+        /*
+           Si yon double insert rive
+           akoz unique constraint,
+           nou verifye ankò.
+        */
+
+        console.error(
+            "INSERT PROGRESS ERROR:",
+            insertError
+        );
+
+
+        const check =
+            await isLessonCompleted(
+                currentLesson.id
+            );
+
+
+        if (check) {
+
+            button.disabled = false;
+
+            button.classList.add(
+                "completed"
+            );
+
+            button.textContent =
+                "✓ Lesson terminée";
+
+            return;
+
+        }
+
+
+        button.disabled = false;
+
+
+        alert(
+            "Nou pa kapab anrejistre progression lan: " +
+            insertError.message
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+       +10 XP
+    */
+
+    const oldXP =
+        Number(
+            currentProfile.xp || 0
+        );
+
+
+    const newXP =
+        oldXP + 10;
+
+
+    const {
+        data: updatedProfile,
+        error: xpError
+    } =
+        await supabaseClient
+            .from("profils")
+            .update({
+
+                xp:
+                    newXP
+
+            })
+            .eq(
+                "id",
+                currentUser.id
+            )
+            .select()
+            .single();
+
+
+    if (xpError) {
+
+        console.error(
+            "XP UPDATE ERROR:",
+            xpError
+        );
+
+
+        /*
+           Progression lesson lan
+           deja anrejistre.
+           Nou pa fè insert ankò.
+        */
+
+        alert(
+            "Lesson lan make kòm fini, men XP a pa t kapab mete ajou."
+        );
+
+    } else {
+
+        currentProfile =
+            updatedProfile;
+
+    }
+
+
+    /*
+       Recalculate progression.
+    */
+
+    const progress =
+        await recalculateProgress();
+
+
+    /*
+       UI.
+    */
+
+    button.disabled = false;
+
+    button.classList.add(
+        "completed"
+    );
+
+    button.textContent =
+        "✓ Lesson terminée";
+
+
+    message.textContent =
+        "🎉 Bravo! +10 XP · " +
+        progress.completedCount +
+        "/" +
+        progress.total +
+        " lessons terminées.";
+
+}
+
+
+/* =========================================
+   OPEN LESSON
+========================================= */
+
+async function openLesson(lesson) {
+
+    currentLesson =
+        lesson;
+
+
+    showPage(
+        "lesson"
+    );
+
+
+    const viewer =
+        document.getElementById(
+            "lessonViewer"
+        );
+
+
+    viewer.innerHTML = `
+
+        <div class="loading">
+
+            Chajman lesson...
+
+        </div>
+
+    `;
+
+
+    const completed =
+        await isLessonCompleted(
+            lesson.id
+        );
+
+
+    viewer.innerHTML = `
+
+        <div
+            style="
+                color:#2563eb;
+                font-size:13px;
+                font-weight:bold;
+                margin-bottom:8px;
+            ">
+
+            Lesson
+            ${lesson.lesson_number ?? ""}
+
+        </div>
+
+
+        <h1>
+
+            ${escapeHTML(
+                lesson.title
+            )}
+
+        </h1>
+
+
+        <div class="lesson-description">
+
+            ${escapeHTML(
+                lesson.description ||
+                "Aucune description disponible."
+            )}
+
+        </div>
+
+
+        ${
+            lesson.video_url
+
+            ? `
+
+                <div class="media-box">
+
+                    <iframe
+                        src="${escapeHTML(
+                            convertVideoURL(
+                                lesson.video_url
+                            )
+                        )}"
+                        title="${escapeHTML(
+                            lesson.title
+                        )}"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+              `
+
+            : ""
+        }
+
+
+        ${
+            lesson.audio_url
+
+            ? `
+
+                <div class="audio-box">
+
+                    <strong>
+                        🎧 Audio de la lesson
+                    </strong>
+
+                    <br><br>
+
+                    <audio controls>
+
+                        <source
+                            src="${escapeHTML(
+                                lesson.audio_url
+                            )}">
+
+                        Navigatè ou a pa sipòte
+                        audio HTML5.
+
+                    </audio>
+
+                </div>
+
+              `
+
+            : ""
+        }
+
+
+        ${
+            !lesson.video_url &&
+            !lesson.audio_url
+
+            ? `
+
+                <div class="empty">
+
+                    📖
+
+                    <br><br>
+
+                    Lesson sa a pa gen
+                    vidéo oswa audio.
+
+                </div>
+
+              `
+
+            : ""
+        }
+
+
+        <div class="complete-box">
+
+
+            ${
+                completed
+
+                ? `
+
+                    <button
+                        id="completeLessonButton"
+                        class="
+                            complete-button
+                            completed
+                        "
+                        disabled>
+
+                        ✓ Lesson terminée
+
+                    </button>
+
+                    <div
+                        id="xpMessage"
+                        class="xp-message">
+
+                        Cette lesson est déjà
+                        enregistrée comme terminée.
+
+                    </div>
+
+                  `
+
+                : `
+
+                    <button
+                        id="completeLessonButton"
+                        class="complete-button">
+
+                        ✓ Marquer comme terminée
+                        · +10 XP
+
+                    </button>
+
+                    <div
+                        id="xpMessage"
+                        class="xp-message">
+                    </div>
+
+                  `
+
+            }
+
+        </div>
+
+    `;
+
+
+    const completeButton =
+        document.getElementById(
+            "completeLessonButton"
+        );
+
+
+    if (
+        completeButton &&
+        !completed
+    ) {
+
+        completeButton.addEventListener(
+            "click",
+            completeLesson
+        );
+
+    }
+
+
+    document.getElementById(
+        "backToCourse"
+    ).onclick =
+        function() {
+
+            showPage(
+                "course-detail"
+            );
+
+        };
+
+}
+
+
+/* =========================================
+   VIDEO URL
+========================================= */
+
+function convertVideoURL(url) {
+
+    if (!url) {
+
+        return "";
+
+    }
+
+
+    if (
+        url.includes(
+            "youtube.com/watch?v="
+        )
+    ) {
+
+        const id =
+            url
+                .split("v=")[1]
+                .split("&")[0];
+
+
+        return (
+            "https://www.youtube.com/embed/" +
+            id
+        );
+
+    }
+
+
+    if (
+        url.includes(
+            "youtu.be/"
+        )
+    ) {
+
+        const id =
+            url
+                .split("youtu.be/")[1]
+                .split("?")[0];
+
+
+        return (
+            "https://www.youtube.com/embed/" +
+            id
+        );
+
+    }
+
+
+    return url;
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logout() {
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+document
+    .getElementById(
+        "sidebarLogout"
+    )
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+/* =========================================
+   INITIALIZATION
+========================================= */
+
+async function loadDashboard() {
+
+    try {
+
+        /*
+           1 — VERIFY SESSION
+        */
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (
+            error ||
+            !data.user
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+        /*
+           2 — PROFILE
+        */
+
+        await loadProfile();
+
+
+        /*
+           3 — RECALCULATE
+           PROGRESS
+        */
+
+        await recalculateProgress();
+
+
+        /*
+           4 — COURSES
+        */
+
+        await loadCourses();
+
+
+        /*
+           5 — HIDE LOADING
+        */
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+    }
+    catch(error) {
+
+        console.error(
+            "DASHBOARD ERROR:",
+            error
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).innerHTML = `
+
+            ❌
+
+            <br><br>
+
+            Nou pa kapab chaje
+            dashboard la.
+
+            <br><br>
+
+            ${escapeHTML(
+                error.message
+            )}
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadDashboard();
+
+</script>
+
+</body>
+
+</html>

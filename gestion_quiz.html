@@ -1,0 +1,2522 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Gestion Quiz | Trading Academy AI</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #172033;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: #0f172a;
+            color: white;
+            z-index: 1000;
+            transition: transform .3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .close-btn {
+            border: 0;
+            background: rgba(255,255,255,.08);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .sidebar-menu {
+            padding: 18px 12px;
+            flex: 1;
+        }
+
+        .menu-title {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 12px;
+        }
+
+        .menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border: 0;
+            background: transparent;
+            color: #cbd5e1;
+            border-radius: 9px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(37,99,235,.18);
+            color: white;
+        }
+
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            min-height: 100vh;
+            margin-left: 260px;
+            transition: margin-left .3s ease;
+        }
+
+        .main.expanded {
+            margin-left: 0;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+
+        .toggle-btn {
+            width: 42px;
+            height: 42px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .topbar-title {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px 22px;
+        }
+
+        .page-header {
+            margin-bottom: 22px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 7px;
+            font-size: 27px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 19px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            background: white;
+            border-radius: 8px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 11px 17px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           QUIZ LIST
+        ========================= */
+
+        .quiz-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .quiz-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 11px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quiz-title {
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .quiz-meta {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-published {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* =========================
+           QUESTIONS
+        ========================= */
+
+        .question-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 13px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .question-number {
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .question-text {
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .options {
+            margin-top: 13px;
+            display: grid;
+            gap: 7px;
+        }
+
+        .option {
+            padding: 9px 11px;
+            border-radius: 7px;
+            background: #f8fafc;
+            font-size: 13px;
+        }
+
+        .option.correct {
+            background: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .message.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:700px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .main.expanded {
+                margin-left: 0;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content {
+                padding: 20px 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside
+    id="sidebar"
+    class="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="logo">
+
+            Trading Academy
+            <span>AI</span>
+
+        </div>
+
+        <button
+            id="closeSidebar"
+            class="close-btn">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <nav class="sidebar-menu">
+
+        <div class="menu-title">
+            Administration
+        </div>
+
+
+        <button
+            class="menu-item"
+            onclick="goTo('admin.html')">
+
+            🏠
+            Dashboard
+
+        </button>
+
+
+        <button
+            class="menu-item"
+            onclick="goTo('gestion_cours.html')">
+
+            📚
+            Cours
+
+        </button>
+
+
+        <button
+            class="menu-item active">
+
+            📝
+            Quiz
+
+        </button>
+
+
+        <button
+            class="menu-item"
+            onclick="goTo('admin.html')">
+
+            👤
+            Dashboard étudiant
+
+        </button>
+
+
+        <div class="menu-title">
+            Compte
+        </div>
+
+
+        <button
+            id="logoutButton"
+            class="menu-item">
+
+            🚪
+            Déconnexion
+
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main
+    id="main"
+    class="main">
+
+
+    <header class="topbar">
+
+        <button
+            id="toggleSidebar"
+            class="toggle-btn">
+
+            ☰
+
+        </button>
+
+
+        <div class="topbar-title">
+
+            Gestion des Quiz
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+
+        <div class="page-header">
+
+            <h1>
+                📝 Gestion des Quiz
+            </h1>
+
+            <p>
+                Créez et gérez les évaluations
+                de Trading Academy AI.
+            </p>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <!-- =========================
+             STEP 1
+        ========================== -->
+
+        <section class="card">
+
+            <h2>
+                1. Choisir une lesson
+            </h2>
+
+
+            <div class="form-group">
+
+                <label>
+                    Lesson
+                </label>
+
+
+                <select
+                    id="lessonSelect">
+
+                    <option value="">
+
+                        -- Choisir une lesson --
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                id="loadQuizButton"
+                class="btn btn-primary">
+
+                Charger les quiz
+
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             EXISTING QUIZZES
+        ========================== -->
+
+        <section class="card">
+
+            <h2>
+                Quiz de la lesson
+            </h2>
+
+
+            <div
+                id="quizList"
+                class="quiz-list">
+
+                <div class="empty">
+
+                    Chwazi yon lesson
+                    an premye.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CREATE QUIZ
+        ========================== -->
+
+        <section
+            id="createQuizCard"
+            class="card"
+            style="display:none;">
+
+            <h2>
+                2. Créer un Quiz
+            </h2>
+
+
+            <div class="form-grid">
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Titre du quiz
+                    </label>
+
+                    <input
+                        id="quizTitle"
+                        type="text"
+                        placeholder="Ex: Quiz — Les chandeliers japonais">
+
+                </div>
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Score minimum pour réussir (%)
+                    </label>
+
+                    <input
+                        id="passingScore"
+                        type="number"
+                        value="70"
+                        min="0"
+                        max="100">
+
+                </div>
+
+
+                <div
+                    class="form-group full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="quizDescription"
+                        placeholder="Description du quiz...">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="createQuizButton"
+                class="btn btn-primary">
+
+                ➕ Créer le Quiz
+
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             QUESTION BUILDER
+        ========================== -->
+
+        <section
+            id="questionCard"
+            class="card"
+            style="display:none;">
+
+            <h2>
+                3. Ajouter une question
+            </h2>
+
+
+            <div class="form-group">
+
+                <label>
+                    Question
+                </label>
+
+                <textarea
+                    id="questionText"
+                    placeholder="Écrivez la question ici...">
+                </textarea>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Réponse A
+                    </label>
+
+                    <input
+                        id="optionA"
+                        type="text"
+                        placeholder="Réponse A">
+
+                </div>
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Réponse B
+                    </label>
+
+                    <input
+                        id="optionB"
+                        type="text"
+                        placeholder="Réponse B">
+
+                </div>
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Réponse C
+                    </label>
+
+                    <input
+                        id="optionC"
+                        type="text"
+                        placeholder="Réponse C">
+
+                </div>
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Réponse D
+                    </label>
+
+                    <input
+                        id="optionD"
+                        type="text"
+                        placeholder="Réponse D">
+
+                </div>
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Bonne réponse
+                    </label>
+
+                    <select
+                        id="correctOption">
+
+                        <option value="">
+                            -- Choisir --
+                        </option>
+
+                        <option value="0">
+                            A
+                        </option>
+
+                        <option value="1">
+                            B
+                        </option>
+
+                        <option value="2">
+                            C
+                        </option>
+
+                        <option value="3">
+                            D
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    class="form-group">
+
+                    <label>
+                        Points
+                    </label>
+
+                    <input
+                        id="questionPoints"
+                        type="number"
+                        value="1"
+                        min="1">
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="addQuestionButton"
+                class="btn btn-primary">
+
+                ➕ Ajouter la question
+
+            </button>
+
+
+            <button
+                id="publishQuizButton"
+                class="btn btn-success"
+                style="margin-left:8px;">
+
+                📤 Publier le Quiz
+
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             QUESTIONS LIST
+        ========================== -->
+
+        <section
+            id="questionsCard"
+            class="card"
+            style="display:none;">
+
+            <h2>
+                Questions du Quiz
+            </h2>
+
+
+            <div
+                id="questionsList">
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     SUPABASE
+========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let currentUser = null;
+
+let selectedLessonId = null;
+
+let currentQuizId = null;
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+const main =
+    document.getElementById(
+        "main"
+    );
+
+
+document
+    .getElementById(
+        "toggleSidebar"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (
+                window.innerWidth <= 700
+            ) {
+
+                sidebar.classList.toggle(
+                    "open"
+                );
+
+            } else {
+
+                sidebar.classList.toggle(
+                    "closed"
+                );
+
+                main.classList.toggle(
+                    "expanded"
+                );
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "closeSidebar"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.remove(
+                "open"
+            );
+
+            sidebar.classList.add(
+                "closed"
+            );
+
+            main.classList.add(
+                "expanded"
+            );
+
+        }
+    );
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goTo(page) {
+
+    window.location.href =
+        page;
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    text,
+    type = "success"
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        "message " + type;
+
+
+    setTimeout(
+        () => {
+
+            message.className =
+                "message";
+
+        },
+        5000
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   AUTH
+========================================= */
+
+async function checkAuth() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        error ||
+        !data.user
+    ) {
+
+        window.location.href =
+            "login.html";
+
+        return false;
+
+    }
+
+
+    currentUser =
+        data.user;
+
+
+    return true;
+
+}
+
+
+/* =========================================
+   LOAD LESSONS
+========================================= */
+
+async function loadLessons() {
+
+    const select =
+        document.getElementById(
+            "lessonSelect"
+        );
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("lessons")
+            .select(`
+                id,
+                title,
+                lesson_number,
+                module_id
+            `)
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "lesson_number",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Erè lè lesson yo t ap chaje: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    select.innerHTML = `
+
+        <option value="">
+
+            -- Choisir une lesson --
+
+        </option>
+
+    `;
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    data.forEach(
+        lesson => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                lesson.id;
+
+
+            option.textContent =
+                "Lesson " +
+                (
+                    lesson.lesson_number ??
+                    ""
+                ) +
+                " — " +
+                lesson.title;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   LOAD QUIZZES
+========================================= */
+
+async function loadQuizzes() {
+
+    selectedLessonId =
+        document.getElementById(
+            "lessonSelect"
+        ).value;
+
+
+    if (
+        !selectedLessonId
+    ) {
+
+        showMessage(
+            "Chwazi yon lesson an premye.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const list =
+        document.getElementById(
+            "quizList"
+        );
+
+
+    list.innerHTML = `
+
+        <div class="empty">
+
+            Chajman quiz yo...
+
+        </div>
+
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("quizzes")
+            .select("*")
+            .eq(
+                "lesson_id",
+                selectedLessonId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        list.innerHTML = `
+            <div class="empty">
+                ❌ ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                Pa gen quiz pou
+                lesson sa a ankò.
+
+                <br><br>
+
+                Kreye premye quiz la anba a.
+
+            </div>
+
+        `;
+
+    } else {
+
+        list.innerHTML =
+            data
+                .map(
+                    quiz => `
+
+                    <div
+                        class="quiz-item">
+
+                        <div>
+
+                            <div
+                                class="quiz-title">
+
+                                ${escapeHTML(
+                                    quiz.title
+                                )}
+
+                            </div>
+
+                            <div
+                                class="quiz-meta">
+
+                                Score minimum:
+                                ${quiz.passing_score}%
+
+                                &nbsp; · &nbsp;
+
+                                ${
+                                    quiz.is_published
+
+                                    ? `
+                                        <span
+                                            class="badge badge-published">
+
+                                            Publié
+
+                                        </span>
+                                      `
+
+                                    : `
+                                        <span
+                                            class="badge badge-draft">
+
+                                            Brouillon
+
+                                        </span>
+                                      `
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="selectExistingQuiz('${quiz.id}')">
+
+                            Gérer
+
+                        </button>
+
+                    </div>
+
+                `
+                )
+                .join("");
+
+    }
+
+
+    document.getElementById(
+        "createQuizCard"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "questionCard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "questionsCard"
+    ).style.display =
+        "none";
+
+
+    currentQuizId =
+        null;
+
+}
+
+
+/* =========================================
+   CREATE QUIZ
+========================================= */
+
+async function createQuiz() {
+
+    if (
+        !selectedLessonId
+    ) {
+
+        showMessage(
+            "Chwazi yon lesson.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const title =
+        document.getElementById(
+            "quizTitle"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "quizDescription"
+        ).value.trim();
+
+
+    const passingScore =
+        Number(
+            document.getElementById(
+                "passingScore"
+            ).value
+        );
+
+
+    if (!title) {
+
+        showMessage(
+            "Mete yon titre pou quiz la.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        passingScore < 0 ||
+        passingScore > 100
+    ) {
+
+        showMessage(
+            "Score minimum lan dwe ant 0 ak 100.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "createQuizButton"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("quizzes")
+            .insert({
+
+                lesson_id:
+                    selectedLessonId,
+
+                title:
+                    title,
+
+                description:
+                    description,
+
+                passing_score:
+                    passingScore,
+
+                is_published:
+                    false
+
+            })
+            .select()
+            .single();
+
+
+    button.disabled =
+        false;
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "❌ " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    currentQuizId =
+        data.id;
+
+
+    showMessage(
+        "✅ Quiz la kreye avèk siksè."
+    );
+
+
+    document.getElementById(
+        "questionCard"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "questionsCard"
+    ).style.display =
+        "block";
+
+
+    await loadQuestions();
+
+}
+
+
+/* =========================================
+   SELECT EXISTING QUIZ
+========================================= */
+
+async function selectExistingQuiz(
+    quizId
+) {
+
+    currentQuizId =
+        quizId;
+
+
+    document.getElementById(
+        "createQuizCard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "questionCard"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "questionsCard"
+    ).style.display =
+        "block";
+
+
+    await loadQuestions();
+
+}
+
+
+/* =========================================
+   ADD QUESTION
+========================================= */
+
+async function addQuestion() {
+
+    if (
+        !currentQuizId
+    ) {
+
+        showMessage(
+            "Chwazi oswa kreye yon quiz an premye.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const questionText =
+        document.getElementById(
+            "questionText"
+        ).value.trim();
+
+
+    const options = [
+
+        document.getElementById(
+            "optionA"
+        ).value.trim(),
+
+        document.getElementById(
+            "optionB"
+        ).value.trim(),
+
+        document.getElementById(
+            "optionC"
+        ).value.trim(),
+
+        document.getElementById(
+            "optionD"
+        ).value.trim()
+
+    ];
+
+
+    const correct =
+        document.getElementById(
+            "correctOption"
+        ).value;
+
+
+    const points =
+        Number(
+            document.getElementById(
+                "questionPoints"
+            ).value
+        );
+
+
+    if (!questionText) {
+
+        showMessage(
+            "Ekri kesyon an.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        options.some(
+            option => !option
+        )
+    ) {
+
+        showMessage(
+            "Ranpli 4 repons yo.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        correct === ""
+    ) {
+
+        showMessage(
+            "Chwazi bon repons lan.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "addQuestionButton"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    /*
+       1 — CREY QUESTION
+    */
+
+    const {
+        data: question,
+        error: questionError
+    } =
+        await supabaseClient
+            .from(
+                "quiz_questions"
+            )
+            .insert({
+
+                quiz_id:
+                    currentQuizId,
+
+                question:
+                    questionText,
+
+                points:
+                    points,
+
+                question_order:
+                    await getNextQuestionOrder()
+
+            })
+            .select()
+            .single();
+
+
+    if (questionError) {
+
+        button.disabled =
+            false;
+
+        console.error(
+            questionError
+        );
+
+        showMessage(
+            "Erè kesyon: " +
+            questionError.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /*
+       2 — CREY OPTIONS
+    */
+
+    const optionRows =
+        options.map(
+            (
+                text,
+                index
+            ) => ({
+
+                question_id:
+                    question.id,
+
+                option_text:
+                    text,
+
+                is_correct:
+                    String(index) ===
+                    correct,
+
+                option_order:
+                    index + 1
+
+            })
+        );
+
+
+    const {
+        error: optionError
+    } =
+        await supabaseClient
+            .from(
+                "quiz_options"
+            )
+            .insert(
+                optionRows
+            );
+
+
+    if (optionError) {
+
+        console.error(
+            optionError
+        );
+
+
+        /*
+           Si options yo echwe,
+           retire question lan.
+        */
+
+        await supabaseClient
+            .from(
+                "quiz_questions"
+            )
+            .delete()
+            .eq(
+                "id",
+                question.id
+            );
+
+
+        button.disabled =
+            false;
+
+
+        showMessage(
+            "Erè repons: " +
+            optionError.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    button.disabled =
+        false;
+
+
+    showMessage(
+        "✅ Kesyon an ak 4 repons yo ajoute."
+    );
+
+
+    clearQuestionForm();
+
+
+    await loadQuestions();
+
+}
+
+
+/* =========================================
+   NEXT QUESTION ORDER
+========================================= */
+
+async function getNextQuestionOrder() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "quiz_questions"
+            )
+            .select(
+                "question_order"
+            )
+            .eq(
+                "quiz_id",
+                currentQuizId
+            )
+            .order(
+                "question_order",
+                {
+                    ascending: false
+                }
+            )
+            .limit(1);
+
+
+    if (error) {
+
+        console.error(error);
+
+        return 1;
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        return 1;
+
+    }
+
+
+    return (
+        Number(
+            data[0].question_order ||
+            0
+        ) + 1
+    );
+
+}
+
+
+/* =========================================
+   CLEAR QUESTION FORM
+========================================= */
+
+function clearQuestionForm() {
+
+    document.getElementById(
+        "questionText"
+    ).value = "";
+
+
+    document.getElementById(
+        "optionA"
+    ).value = "";
+
+
+    document.getElementById(
+        "optionB"
+    ).value = "";
+
+
+    document.getElementById(
+        "optionC"
+    ).value = "";
+
+
+    document.getElementById(
+        "optionD"
+    ).value = "";
+
+
+    document.getElementById(
+        "correctOption"
+    ).value = "";
+
+
+    document.getElementById(
+        "questionPoints"
+    ).value = "1";
+
+}
+
+
+/* =========================================
+   LOAD QUESTIONS
+========================================= */
+
+async function loadQuestions() {
+
+    if (
+        !currentQuizId
+    ) {
+
+        return;
+
+    }
+
+
+    const list =
+        document.getElementById(
+            "questionsList"
+        );
+
+
+    list.innerHTML = `
+
+        <div class="empty">
+
+            Chajman kesyon yo...
+
+        </div>
+
+    `;
+
+
+    const {
+        data: questions,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "quiz_questions"
+            )
+            .select(`
+                id,
+                question,
+                points,
+                question_order
+            `)
+            .eq(
+                "quiz_id",
+                currentQuizId
+            )
+            .order(
+                "question_order",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        list.innerHTML = `
+            <div class="empty">
+                ❌ ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        !questions ||
+        questions.length === 0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                Pa gen kesyon nan quiz sa a.
+
+                <br><br>
+
+                Sèvi ak formulaire anlè a
+                pou ajoute premye kesyon an.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML = "";
+
+
+    for (
+        const question
+        of questions
+    ) {
+
+        const {
+            data: options,
+            error: optionError
+        } =
+            await supabaseClient
+                .from(
+                    "quiz_options"
+                )
+                .select(`
+                    id,
+                    option_text,
+                    is_correct,
+                    option_order
+                `)
+                .eq(
+                    "question_id",
+                    question.id
+                )
+                .order(
+                    "option_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (optionError) {
+
+            console.error(
+                optionError
+            );
+
+        }
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "question-item";
+
+
+        item.innerHTML = `
+
+            <div
+                class="question-header">
+
+                <div>
+
+                    <div
+                        class="question-number">
+
+                        QUESTION
+                        ${question.question_order}
+
+                        ·
+                        ${question.points}
+                        point(s)
+
+                    </div>
+
+
+                    <div
+                        class="question-text">
+
+                        ${escapeHTML(
+                            question.question
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="btn btn-danger"
+                    onclick="deleteQuestion('${question.id}')">
+
+                    Supprimer
+
+                </button>
+
+            </div>
+
+
+            <div class="options">
+
+                ${
+                    (options || [])
+                        .map(
+                            (
+                                option,
+                                index
+                            ) => `
+
+                                <div
+                                    class="
+                                        option
+                                        ${
+                                            option.is_correct
+                                            ? "correct"
+                                            : ""
+                                        }">
+
+                                    ${
+                                        String.fromCharCode(
+                                            65 + index
+                                        )
+                                    }.
+
+                                    ${escapeHTML(
+                                        option.option_text
+                                    )}
+
+                                    ${
+                                        option.is_correct
+                                        ? " ✓ Bonne réponse"
+                                        : ""
+                                    }
+
+                                </div>
+
+                            `
+                        )
+                        .join("")
+                }
+
+            </div>
+
+        `;
+
+
+        list.appendChild(
+            item
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DELETE QUESTION
+========================================= */
+
+async function deleteQuestion(
+    questionId
+) {
+
+    const confirmDelete =
+        confirm(
+            "Èske ou sèten ou vle efase kesyon sa a?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from(
+                "quiz_questions"
+            )
+            .delete()
+            .eq(
+                "id",
+                questionId
+            );
+
+
+    if (error) {
+
+        showMessage(
+            "Erè: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Kesyon an efase."
+    );
+
+
+    await loadQuestions();
+
+}
+
+
+/* =========================================
+   PUBLISH QUIZ
+========================================= */
+
+async function publishQuiz() {
+
+    if (
+        !currentQuizId
+    ) {
+
+        showMessage(
+            "Chwazi yon quiz an premye.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const {
+        data: questions,
+        error: questionError
+    } =
+        await supabaseClient
+            .from(
+                "quiz_questions"
+            )
+            .select(
+                "id"
+            )
+            .eq(
+                "quiz_id",
+                currentQuizId
+            );
+
+
+    if (questionError) {
+
+        showMessage(
+            questionError.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !questions ||
+        questions.length === 0
+    ) {
+
+        showMessage(
+            "Quiz la dwe genyen omwen yon kesyon.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("quizzes")
+            .update({
+
+                is_published:
+                    true
+
+            })
+            .eq(
+                "id",
+                currentQuizId
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Quiz la pa kapab pibliye: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "🎉 Quiz la pibliye avèk siksè!"
+    );
+
+
+    await loadQuizzes();
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+/* =========================================
+   EVENTS
+========================================= */
+
+document
+    .getElementById(
+        "loadQuizButton"
+    )
+    .addEventListener(
+        "click",
+        loadQuizzes
+    );
+
+
+document
+    .getElementById(
+        "createQuizButton"
+    )
+    .addEventListener(
+        "click",
+        createQuiz
+    );
+
+
+document
+    .getElementById(
+        "addQuestionButton"
+    )
+    .addEventListener(
+        "click",
+        addQuestion
+    );
+
+
+document
+    .getElementById(
+        "publishQuizButton"
+    )
+    .addEventListener(
+        "click",
+        publishQuiz
+    );
+
+
+/* =========================================
+   START
+========================================= */
+
+async function init() {
+
+    const authenticated =
+        await checkAuth();
+
+
+    if (!authenticated) {
+
+        return;
+
+    }
+
+
+    await loadLessons();
+
+}
+
+
+init();
+
+</script>
+
+</body>
+
+</html>

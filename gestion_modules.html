@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestion des modules | Trading Academy AI</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.header{
+    background:#0f172a;
+    color:white;
+    padding:18px 25px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.back{
+    color:white;
+    text-decoration:none;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:25px 18px;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.top h1{
+    margin:0;
+}
+
+.top p{
+    color:#64748b;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:22px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+    background:white;
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.checkbox input{
+    width:auto;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.btn{
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.btn-secondary{
+    background:#e2e8f0;
+    color:#172033;
+}
+
+.message{
+    margin-top:15px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.success{
+    color:#15803d;
+}
+
+.error{
+    color:#b91c1c;
+}
+
+.hidden{
+    display:none;
+}
+
+.module-list{
+    display:grid;
+    gap:15px;
+}
+
+.module{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:18px;
+}
+
+.module-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.module-number{
+    display:inline-block;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:5px 9px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.module h3{
+    margin:0 0 8px;
+}
+
+.module p{
+    color:#64748b;
+    line-height:1.5;
+}
+
+.meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.meta span{
+    background:#f1f5f9;
+    padding:5px 9px;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.badge{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.published{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.draft{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+.course-info{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+    color:#1e40af;
+    font-size:13px;
+}
+
+@media(max-width:700px){
+
+    .top{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .module-header{
+        flex-direction:column;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+
+        Trading Academy
+        <span>AI</span>
+
+    </div>
+
+    <a
+        href="admin.html"
+        class="back">
+
+        ← Dashboard
+
+    </a>
+
+</header>
+
+
+
+<main class="container">
+
+
+    <div class="top">
+
+        <div>
+
+            <h1>
+                Gestion des modules
+            </h1>
+
+            <p>
+                Organisez les modules de vos cours.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="showForm()">
+
+            + Ajouter un module
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================
+         FORMULAIRE
+    ====================================== -->
+
+    <section
+        id="formCard"
+        class="card hidden">
+
+
+        <h2>
+            Créer un nouveau module
+        </h2>
+
+
+        <form id="moduleForm">
+
+
+            <div class="form-grid">
+
+
+                <!-- COURSE -->
+
+                <div class="full">
+
+                    <label for="course_id">
+
+                        Cours *
+
+                    </label>
+
+
+                    <select
+                        id="course_id"
+                        required>
+
+                        <option value="">
+
+                            Chargement des cours...
+
+                        </option>
+
+                    </select>
+
+
+                    <div
+                        id="courseInfo"
+                        class="course-info hidden">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MODULE NUMBER -->
+
+                <div>
+
+                    <label for="module_number">
+
+                        Numéro du module *
+
+                    </label>
+
+
+                    <input
+                        id="module_number"
+                        type="number"
+                        min="1"
+                        required
+                        placeholder="Ex: 1">
+
+                </div>
+
+
+
+                <!-- DURATION -->
+
+                <div>
+
+                    <label for="estimated_duration">
+
+                        Durée estimée (minutes)
+
+                    </label>
+
+
+                    <input
+                        id="estimated_duration"
+                        type="number"
+                        min="0"
+                        placeholder="Ex: 60">
+
+                </div>
+
+
+
+                <!-- TITLE -->
+
+                <div class="full">
+
+                    <label for="title">
+
+                        Titre du module *
+
+                    </label>
+
+
+                    <input
+                        id="title"
+                        type="text"
+                        required
+                        placeholder="Ex: Fondamentaux du Trading">
+
+                </div>
+
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="full">
+
+                    <label for="description">
+
+                        Description
+
+                    </label>
+
+
+                    <textarea
+                        id="description"
+                        placeholder="Description du module..."></textarea>
+
+                </div>
+
+
+
+                <!-- PUBLISHED -->
+
+                <div>
+
+                    <label>
+                        Publication
+                    </label>
+
+
+                    <div class="checkbox">
+
+                        <input
+                            id="is_published"
+                            type="checkbox">
+
+
+                        <label
+                            for="is_published"
+                            style="margin:0">
+
+                            Publier immédiatement
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                id="message"
+                class="message">
+
+            </div>
+
+
+
+            <div class="actions">
+
+
+                <button
+                    id="saveButton"
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Enregistrer le module
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="hideForm()">
+
+                    Annuler
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         MODULES
+    ====================================== -->
+
+    <section class="card">
+
+
+        <div class="top">
+
+            <div>
+
+                <h2>
+                    Modules existants
+                </h2>
+
+                <p>
+                    Sélectionnez un cours pour afficher ses modules.
+                </p>
+
+            </div>
+
+
+            <select
+                id="filterCourse"
+                style="max-width:300px;">
+
+                <option value="">
+
+                    Tous les cours
+
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="moduleList"
+            class="module-list">
+
+            <div class="loading">
+
+                Chargement des modules...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const formCard =
+document.getElementById(
+    "formCard"
+);
+
+const form =
+document.getElementById(
+    "moduleForm"
+);
+
+const courseSelect =
+document.getElementById(
+    "course_id"
+);
+
+const filterCourse =
+document.getElementById(
+    "filterCourse"
+);
+
+const moduleList =
+document.getElementById(
+    "moduleList"
+);
+
+const message =
+document.getElementById(
+    "message"
+);
+
+const saveButton =
+document.getElementById(
+    "saveButton"
+);
+
+const courseInfo =
+document.getElementById(
+    "courseInfo"
+);
+
+
+
+/* =========================================
+   FORM
+========================================= */
+
+function showForm(){
+
+    formCard.classList.remove(
+        "hidden"
+    );
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function hideForm(){
+
+    formCard.classList.add(
+        "hidden"
+    );
+
+    form.reset();
+
+    message.textContent = "";
+
+    courseInfo.classList.add(
+        "hidden"
+    );
+
+}
+
+
+
+/* =========================================
+   LOAD COURSES
+========================================= */
+
+async function loadCourses(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+        .from("courses")
+
+        .select(`
+            id,
+            title,
+            level,
+            language
+        `)
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        courseSelect.innerHTML = `
+
+            <option value="">
+
+                Sélectionner un cours
+
+            </option>
+
+        `;
+
+
+        filterCourse.innerHTML = `
+
+            <option value="">
+
+                Tous les cours
+
+            </option>
+
+        `;
+
+
+        if(
+            !data ||
+            data.length === 0
+        ){
+
+            courseSelect.innerHTML = `
+
+                <option value="">
+
+                    Aucun cours disponible
+
+                </option>
+
+            `;
+
+            return;
+
+        }
+
+
+        data.forEach(
+            course => {
+
+
+                const option =
+                document.createElement(
+                    "option"
+                );
+
+
+                option.value =
+                    course.id;
+
+
+                option.textContent =
+                    course.title;
+
+
+                option.dataset.level =
+                    course.level || "";
+
+
+                option.dataset.language =
+                    course.language || "";
+
+
+                courseSelect.appendChild(
+                    option
+                );
+
+
+
+                const filterOption =
+                document.createElement(
+                    "option"
+                );
+
+
+                filterOption.value =
+                    course.id;
+
+
+                filterOption.textContent =
+                    course.title;
+
+
+                filterCourse.appendChild(
+                    filterOption
+                );
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "COURSES ERROR:",
+            error
+        );
+
+
+        courseSelect.innerHTML = `
+
+            <option value="">
+
+                Erreur de chargement
+
+            </option>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================================
+   COURSE INFO
+========================================= */
+
+courseSelect.addEventListener(
+    "change",
+    function(){
+
+        const option =
+            this.options[
+                this.selectedIndex
+            ];
+
+
+        if(
+            !this.value
+        ){
+
+            courseInfo.classList.add(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        const level =
+            option.dataset.level || "-";
+
+
+        const language =
+            option.dataset.language || "-";
+
+
+        courseInfo.innerHTML = `
+
+            <strong>
+                Cours sélectionné
+            </strong>
+
+            <br>
+
+            Niveau: ${escapeHTML(level)}
+
+            ·
+
+            Langue: ${escapeHTML(language)}
+
+        `;
+
+
+        courseInfo.classList.remove(
+            "hidden"
+        );
+
+    }
+);
+
+
+
+/* =========================================
+   CREATE MODULE
+========================================= */
+
+form.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+
+        saveButton.disabled = true;
+
+
+        message.className =
+            "message";
+
+
+        message.textContent =
+            "Enregistrement...";
+
+
+        try{
+
+
+            /* USER */
+
+            const {
+                data: userData,
+                error: userError
+            } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+            if(
+                userError ||
+                !userData.user
+            ){
+
+                throw new Error(
+                    "Session administrateur expirée."
+                );
+
+            }
+
+
+
+            /* FORM VALUES */
+
+            const course_id =
+                courseSelect.value;
+
+
+            const module_number =
+                Number(
+                    document
+                    .getElementById(
+                        "module_number"
+                    )
+                    .value
+                );
+
+
+            const title =
+                document
+                .getElementById(
+                    "title"
+                )
+                .value
+                .trim();
+
+
+            const description =
+                document
+                .getElementById(
+                    "description"
+                )
+                .value
+                .trim();
+
+
+            const durationValue =
+                document
+                .getElementById(
+                    "estimated_duration"
+                )
+                .value;
+
+
+            const estimated_duration =
+                durationValue === ""
+                ? null
+                : Number(durationValue);
+
+
+            const is_published =
+                document
+                .getElementById(
+                    "is_published"
+                )
+                .checked;
+
+
+
+            /* VALIDATION */
+
+            if(!course_id){
+
+                throw new Error(
+                    "Veuillez sélectionner un cours."
+                );
+
+            }
+
+
+            if(!module_number){
+
+                throw new Error(
+                    "Veuillez entrer le numéro du module."
+                );
+
+            }
+
+
+            if(!title){
+
+                throw new Error(
+                    "Veuillez entrer le titre du module."
+                );
+
+            }
+
+
+
+            /* INSERT */
+
+            const {
+                error
+            } =
+            await supabaseClient
+
+            .from("modules")
+
+            .insert({
+
+                course_id,
+
+                module_number,
+
+                title,
+
+                description,
+
+                estimated_duration,
+
+                is_published
+
+            });
+
+
+            if(error){
+
+                console.error(
+                    "MODULE INSERT ERROR:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+
+            /* SUCCESS */
+
+            message.className =
+                "message success";
+
+
+            message.textContent =
+                "✅ Module créé avec succès.";
+
+
+            form.reset();
+
+
+            courseInfo.classList.add(
+                "hidden"
+            );
+
+
+            await loadModules();
+
+
+        }
+        catch(error){
+
+            console.error(error);
+
+
+            message.className =
+                "message error";
+
+
+            message.textContent =
+                "❌ " +
+                (
+                    error.message ||
+                    "Erreur lors de la création."
+                );
+
+        }
+
+
+        saveButton.disabled = false;
+
+    }
+);
+
+
+
+/* =========================================
+   LOAD MODULES
+========================================= */
+
+async function loadModules(){
+
+    moduleList.innerHTML = `
+
+        <div class="loading">
+
+            Chargement des modules...
+
+        </div>
+
+    `;
+
+
+    try{
+
+
+        let query =
+            supabaseClient
+
+            .from("modules")
+
+            .select(`
+                id,
+                course_id,
+                module_number,
+                title,
+                description,
+                estimated_duration,
+                is_published,
+                created_at,
+                courses (
+                    id,
+                    title
+                )
+            `)
+
+            .order(
+                "module_number",
+                {
+                    ascending:true
+                }
+            );
+
+
+
+        const selectedCourse =
+            filterCourse.value;
+
+
+        if(selectedCourse){
+
+            query =
+                query.eq(
+                    "course_id",
+                    selectedCourse
+                );
+
+        }
+
+
+
+        const {
+            data,
+            error
+        } =
+        await query;
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            data.length === 0
+        ){
+
+            moduleList.innerHTML = `
+
+                <div class="empty">
+
+                    <div style="font-size:35px;">
+                        📦
+                    </div>
+
+                    Aucun module trouvé.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        moduleList.innerHTML = "";
+
+
+        data.forEach(
+            module => {
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "module";
+
+
+                const status =
+                    module.is_published
+
+                    ? `
+                        <span class="badge published">
+                            Publié
+                        </span>
+                    `
+
+                    : `
+                        <span class="badge draft">
+                            Brouillon
+                        </span>
+                    `;
+
+
+                const courseTitle =
+                    module.courses
+                    ? module.courses.title
+                    : "Cours inconnu";
+
+
+                div.innerHTML = `
+
+                    <div class="module-header">
+
+                        <div>
+
+                            <div class="module-number">
+
+                                Module
+                                ${module.module_number}
+
+                            </div>
+
+
+                            <h3>
+
+                                ${escapeHTML(
+                                    module.title ||
+                                    ""
+                                )}
+
+                            </h3>
+
+
+                            <div
+                                style="
+                                    color:#2563eb;
+                                    font-size:13px;
+                                    font-weight:bold;
+                                ">
+
+                                📚
+                                ${escapeHTML(
+                                    courseTitle
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        ${status}
+
+                    </div>
+
+
+                    <p>
+
+                        ${escapeHTML(
+                            module.description ||
+                            "Aucune description."
+                        )}
+
+                    </p>
+
+
+                    <div class="meta">
+
+                        <span>
+
+                            ⏱️
+
+                            ${
+                                module.estimated_duration
+                                ??
+                                "-"
+                            }
+
+                            min
+
+                        </span>
+
+
+                        <span>
+
+                            🆔
+
+                            ${escapeHTML(
+                                module.id
+                            )}
+
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                moduleList.appendChild(
+                    div
+                );
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "MODULE LOAD ERROR:",
+            error
+        );
+
+
+        moduleList.innerHTML = `
+
+            <div class="empty error">
+
+                ❌ Impossible de charger
+                les modules.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message || ""
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================================
+   FILTER
+========================================= */
+
+filterCourse.addEventListener(
+    "change",
+    loadModules
+);
+
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+async function init(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .auth
+        .getUser();
+
+
+    if(
+        error ||
+        !data.user
+    ){
+
+        window.location.href =
+            "admin-login.html";
+
+        return;
+
+    }
+
+
+    await loadCourses();
+
+    await loadModules();
+
+}
+
+
+init();
+
+</script>
+
+</body>
+
+</html>

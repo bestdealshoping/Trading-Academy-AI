@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Trading Academy AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .login-box {
+            width: 90%;
+            max-width: 420px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: 0;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .6;
+        }
+
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-box">
+
+    <h1>
+        Trading Academy AI
+    </h1>
+
+    <div class="subtitle">
+        Konekte sou kont ou
+    </div>
+
+
+    <form id="loginForm">
+
+
+        <label for="email">
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            required
+            autocomplete="email"
+        >
+
+
+        <label for="password">
+            Modpas
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            required
+            autocomplete="current-password"
+        >
+
+
+        <button
+            type="submit"
+            id="loginButton">
+
+            Konekte
+
+        </button>
+
+
+    </form>
+
+
+    <div id="message"></div>
+
+
+    <div class="register">
+
+        Ou poko gen kont?
+
+        <a href="register.html">
+            Kreye kont
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL =
+        "https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+</script>
+
+
+
+<script>
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const message =
+    document.getElementById("message");
+
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+        message.textContent =
+            "Connexion en cours...";
+
+
+        loginButton.disabled = true;
+
+
+
+        try {
+
+
+            /* =============================
+               1. SUPABASE AUTH
+            ============================= */
+
+            const {
+                data,
+                error
+            } =
+            await supabaseClient.auth
+                .signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+            const user =
+                data.user;
+
+
+            if (!user) {
+
+                throw new Error(
+                    "Utilisateur introuvable."
+                );
+
+            }
+
+
+
+            /* =============================
+               2. GET USER ROLES
+            ============================= */
+
+            const {
+                data: userRoles,
+                error: rolesError
+            } =
+            await supabaseClient
+                .from("user_roles")
+                .select("role_id")
+                .eq(
+                    "user_id",
+                    user.id
+                );
+
+
+            if (rolesError) {
+
+                throw rolesError;
+
+            }
+
+
+
+            /* =============================
+               3. NO ROLE
+            ============================= */
+
+            if (
+                !userRoles ||
+                userRoles.length === 0
+            ) {
+
+                message.textContent =
+                    "Connexion réussie.";
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    },
+                    500
+                );
+
+                return;
+
+            }
+
+
+
+            /* =============================
+               4. ROLE IDs
+            ============================= */
+
+            const roleIds =
+                userRoles.map(
+                    item => item.role_id
+                );
+
+
+
+            /* =============================
+               5. GET ROLE NAMES
+            ============================= */
+
+            const {
+                data: roles,
+                error: roleError
+            } =
+            await supabaseClient
+                .from("roles")
+                .select("id, name")
+                .in(
+                    "id",
+                    roleIds
+                );
+
+
+            if (roleError) {
+
+                throw roleError;
+
+            }
+
+
+
+            /* =============================
+               6. CHECK ADMIN
+            ============================= */
+
+            const isSuperAdmin =
+                roles.some(
+                    role => {
+
+                        return (
+                            role.name
+                                .trim()
+                                .toLowerCase()
+                            === "super admin"
+                        );
+
+                    }
+                );
+
+
+            const isAdmin =
+                roles.some(
+                    role => {
+
+                        return (
+                            role.name
+                                .trim()
+                                .toLowerCase()
+                            === "admin"
+                        );
+
+                    }
+                );
+
+
+
+            /* =============================
+               7. REDIRECT
+            ============================= */
+
+            if (
+                isSuperAdmin ||
+                isAdmin
+            ) {
+
+                message.textContent =
+                    "Bienvenue Administratè.";
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "admin.html";
+
+                    },
+                    500
+                );
+
+                return;
+
+            }
+
+
+
+            /* =============================
+               8. STUDENT / OTHER USERS
+            ============================= */
+
+            message.textContent =
+                "Connexion réussie.";
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                },
+                500
+            );
+
+
+        } catch (error) {
+
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            message.textContent =
+                error.message ||
+                "Erreur de connexion.";
+
+
+            loginButton.disabled = false;
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

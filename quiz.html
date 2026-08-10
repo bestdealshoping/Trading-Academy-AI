@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz — Trading Academy AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            background: #f5f7fb;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .quiz-header {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        }
+
+        .quiz-header h1 {
+            margin-top: 0;
+        }
+
+        .progress {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .question-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .question-number {
+            font-size: 14px;
+            font-weight: bold;
+            opacity: .65;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0 20px;
+        }
+
+        .option {
+            display: block;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .option:hover {
+            border-color: #555;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .submit-btn,
+        .retry-btn {
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            background: #111;
+            color: white;
+        }
+
+        .retry-btn {
+            background: #e9ecef;
+            color: #111;
+            margin-top: 15px;
+        }
+
+        .submit-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .loading,
+        .error {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .error {
+            color: #b00020;
+        }
+
+        .result {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .success {
+            color: #16803c;
+        }
+
+        .failed {
+            color: #c62828;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <div id="loading" class="loading">
+        <h2>Chargement du quiz...</h2>
+        <p>Préparation de votre évaluation.</p>
+    </div>
+
+    <div id="error" class="error hidden">
+        <h2>Accès refusé</h2>
+        <p id="errorMessage"></p>
+    </div>
+
+    <div id="quizArea" class="hidden">
+
+        <div class="quiz-header">
+            <h1 id="quizTitle">Quiz</h1>
+
+            <p>
+                Répondez aux 10 questions.
+                Une note minimale de <strong>70%</strong>
+                est nécessaire pour réussir.
+            </p>
+
+            <div class="progress">
+                Question <span id="currentQuestion">1</span> / 10
+            </div>
+        </div>
+
+        <form id="quizForm">
+
+            <div id="questionsContainer"></div>
+
+            <button
+                type="submit"
+                id="submitBtn"
+                class="submit-btn"
+            >
+                Soumettre le quiz
+            </button>
+
+        </form>
+
+    </div>
+
+    <div id="resultArea" class="hidden">
+
+        <div class="result">
+
+            <h1 id="resultTitle"></h1>
+
+            <div
+                id="resultScore"
+                class="result-score"
+            ></div>
+
+            <p id="resultMessage"></p>
+
+            <p>
+                XP gagné :
+                <strong id="xpEarned">0</strong>
+            </p>
+
+            <button
+                id="retryBtn"
+                class="retry-btn"
+            >
+                Refaire le quiz
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+<script>
+
+let quizId = null;
+let quizData = [];
+let submitting = false;
+
+
+/* ==========================================
+   GET QUIZ ID
+========================================== */
+
+function getQuizId() {
+
+    const params = new URLSearchParams(
+        window.location.search
+    );
+
+    return params.get("quiz_id");
+}
+
+
+/* ==========================================
+   INIT
+========================================== */
+
+async function initQuiz() {
+
+    try {
+
+        quizId = getQuizId();
+
+        if (!quizId) {
+            throw new Error(
+                "Aucun quiz sélectionné."
+            );
+        }
+
+        /* Vérifier session */
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+        if (!sessionData.session) {
+
+            throw new Error(
+                "Vous devez être connecté pour passer ce quiz."
+            );
+
+        }
+
+
+        /* Charger informations quiz */
+
+        const {
+            data: quiz,
+            error: quizError
+        } = await supabase
+            .from("quizzes")
+            .select(`
+                id,
+                title,
+                description
+            `)
+            .eq("id", quizId)
+            .maybeSingle();
+
+        if (quizError) {
+            throw quizError;
+        }
+
+        if (!quiz) {
+            throw new Error(
+                "Quiz introuvable ou inaccessible."
+            );
+        }
+
+        document.getElementById(
+            "quizTitle"
+        ).textContent = quiz.title;
+
+
+        /* Démarrer quiz */
+
+        const {
+            data,
+            error
+        } = await supabase.rpc(
+            "start_quiz",
+            {
+                p_quiz_id: quizId
+            }
+        );
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data || data.length !== 10) {
+
+            throw new Error(
+                "Le quiz n'a pas pu charger 10 questions."
+            );
+
+        }
+
+        quizData = data;
+
+        renderQuestions();
+
+        hide("loading");
+        show("quizArea");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur Quiz:",
+            error
+        );
+
+        showError(
+            error.message ||
+            "Impossible de charger le quiz."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   RENDER QUESTIONS
+========================================== */
+
+function renderQuestions() {
+
+    const container =
+        document.getElementById(
+            "questionsContainer"
+        );
+
+    container.innerHTML = "";
+
+    quizData.forEach(
+        (question, index) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "question-card";
+
+            let optionsHTML = "";
+
+            question.options.forEach(
+                option => {
+
+                    optionsHTML += `
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="question_${question.id}"
+                                value="${option.id}"
+                                required
+                            >
+
+                            ${escapeHTML(
+                                option.option_text
+                            )}
+
+                        </label>
+                    `;
+
+                }
+            );
+
+
+            card.innerHTML = `
+
+                <div class="question-number">
+                    QUESTION ${index + 1} / 10
+                </div>
+
+                <div class="question-text">
+                    ${escapeHTML(
+                        question.question
+                    )}
+                </div>
+
+                <div>
+                    ${optionsHTML}
+                </div>
+
+            `;
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+   SUBMIT
+========================================== */
+
+document.getElementById(
+    "quizForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        if (submitting) {
+            return;
+        }
+
+        submitting = true;
+
+        const submitBtn =
+            document.getElementById(
+                "submitBtn"
+            );
+
+        submitBtn.disabled = true;
+        submitBtn.textContent =
+            "Correction en cours...";
+
+
+        try {
+
+            const answers = [];
+
+
+            quizData.forEach(
+                question => {
+
+                    const selected =
+                        document.querySelector(
+                            `input[name="question_${question.id}"]:checked`
+                        );
+
+                    if (!selected) {
+
+                        throw new Error(
+                            "Veuillez répondre à toutes les questions."
+                        );
+
+                    }
+
+                    answers.push({
+
+                        question_id:
+                            question.id,
+
+                        option_id:
+                            selected.value
+
+                    });
+
+                }
+            );
+
+
+            /* Correction SERVER-SIDE */
+
+            const {
+                data,
+                error
+            } = await supabase.rpc(
+                "submit_quiz",
+                {
+                    p_quiz_id: quizId,
+                    p_answers: answers
+                }
+            );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            showResult(data);
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur soumission:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Une erreur est survenue."
+            );
+
+            submitBtn.disabled = false;
+            submitBtn.textContent =
+                "Soumettre le quiz";
+
+            submitting = false;
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   RESULT
+========================================== */
+
+function showResult(result) {
+
+    hide("quizArea");
+
+    show("resultArea");
+
+
+    const title =
+        document.getElementById(
+            "resultTitle"
+        );
+
+    const score =
+        document.getElementById(
+            "resultScore"
+        );
+
+    const message =
+        document.getElementById(
+            "resultMessage"
+        );
+
+    const xp =
+        document.getElementById(
+            "xpEarned"
+        );
+
+
+    score.textContent =
+        `${result.score}/${result.total_points} — ${result.percentage}%`;
+
+    xp.textContent =
+        result.xp_earned;
+
+
+    if (result.passed) {
+
+        title.textContent =
+            "🎉 Félicitations !";
+
+        title.className =
+            "success";
+
+        score.className =
+            "result-score success";
+
+        message.textContent =
+            "Vous avez réussi le quiz avec une note suffisante.";
+
+    } else {
+
+        title.textContent =
+            "❌ Quiz non réussi";
+
+        title.className =
+            "failed";
+
+        score.className =
+            "result-score failed";
+
+        message.textContent =
+            "Vous devez obtenir au minimum 70%. Vous pouvez retenter le quiz.";
+
+    }
+
+}
+
+
+/* ==========================================
+   RETRY
+========================================== */
+
+document.getElementById(
+    "retryBtn"
+).addEventListener(
+    "click",
+    function() {
+
+        window.location.reload();
+
+    }
+);
+
+
+/* ==========================================
+   HELPERS
+========================================== */
+
+function show(id) {
+
+    document
+        .getElementById(id)
+        .classList
+        .remove("hidden");
+
+}
+
+
+function hide(id) {
+
+    document
+        .getElementById(id)
+        .classList
+        .add("hidden");
+
+}
+
+
+function showError(message) {
+
+    hide("loading");
+
+    hide("quizArea");
+
+    show("error");
+
+    document.getElementById(
+        "errorMessage"
+    ).textContent = message;
+
+}
+
+
+/* Protection XSS */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+initQuiz();
+
+</script>
+
+</body>
+</html>

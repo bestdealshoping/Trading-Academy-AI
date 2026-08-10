@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enskri | Trading Academy AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 35%
+                ),
+                #f8fafc;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .auth-brand a {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .auth-brand strong {
+            color: #2563eb;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 32px;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, 0.08);
+        }
+
+        .auth-card h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: #fff;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .password-help {
+            margin-top: 6px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+        .terms {
+            display: flex;
+            gap: 9px;
+            align-items: flex-start;
+
+            margin: 20px 0;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+        .terms input {
+            margin-top: 3px;
+        }
+
+        .terms a {
+            color: #2563eb;
+        }
+
+        .auth-submit {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .auth-message {
+            display: none;
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+        }
+
+        .auth-message.error {
+            display: block;
+
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .auth-message.success {
+            display: block;
+
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 25px 0;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+
+            height: 1px;
+
+            background: #e2e8f0;
+
+            flex: 1;
+        }
+
+        .login-link {
+            text-align: center;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+        .login-link a {
+            color: #2563eb;
+
+            font-weight: 700;
+        }
+
+        .back-home {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+        .back-home:hover {
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <main class="auth-page">
+
+        <div class="auth-container">
+
+            <!-- BRAND -->
+
+            <div class="auth-brand">
+
+                <a href="index.html">
+                    📈 Trading Academy <strong>AI</strong>
+                </a>
+
+            </div>
+
+
+            <!-- REGISTER CARD -->
+
+            <section class="auth-card">
+
+                <h1>Kreye kont ou 🚀</h1>
+
+                <p class="auth-subtitle">
+                    Kòmanse vwayaj ou nan Trading Academy AI.
+                </p>
+
+
+                <!-- MESSAGE -->
+
+                <div
+                    id="authMessage"
+                    class="auth-message">
+                </div>
+
+
+                <!-- FORM -->
+
+                <form id="registerForm">
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label for="fullName">
+                            Non konplè
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            placeholder="Non ak siyati"
+                            autocomplete="name"
+                            required>
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Non itilizatè
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="@username"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="30"
+                            required>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Adrès imèl
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="egzanp@email.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Modpas
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Kreye yon modpas"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required>
+
+                        <p class="password-help">
+                            Omwen 8 karaktè.
+                        </p>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Konfime modpas
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Retape modpas la"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+
+                    <label class="terms">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required>
+
+                        <span>
+                            Mwen dakò ak
+                            <a href="#">
+                                Kondisyon Itilizasyon
+                            </a>
+                            ak
+                            <a href="#">
+                                Règleman sou vi prive
+                            </a>.
+                        </span>
+
+                    </label>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary auth-submit">
+
+                        Kreye kont
+
+                    </button>
+
+                </form>
+
+
+                <div class="auth-divider">
+                    oswa
+                </div>
+
+
+                <!-- LOGIN -->
+
+                <p class="login-link">
+
+                    Ou deja gen yon kont?
+
+                    <a href="login.html">
+                        Konekte
+                    </a>
+
+                </p>
+
+            </section>
+
+
+            <a
+                href="index.html"
+                class="back-home">
+
+                ← Retounen sou paj prensipal la
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

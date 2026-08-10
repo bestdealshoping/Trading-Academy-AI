@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestion des cours | Trading Academy AI</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.header{
+    background:#0f172a;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.back{
+    color:white;
+    text-decoration:none;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:25px 18px;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.top h1{
+    margin:0;
+}
+
+.top p{
+    color:#64748b;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:22px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.checkbox input{
+    width:auto;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.btn{
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-secondary{
+    background:#e2e8f0;
+    color:#172033;
+}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.message{
+    margin-top:15px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.hidden{
+    display:none;
+}
+
+.course-list{
+    display:grid;
+    gap:15px;
+}
+
+.course{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:17px;
+}
+
+.course-header{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.course h3{
+    margin:0 0 8px;
+}
+
+.course p{
+    color:#64748b;
+    line-height:1.5;
+}
+
+.badge{
+    height:max-content;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.published{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.draft{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.meta span{
+    background:#f1f5f9;
+    padding:5px 9px;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.course-actions{
+    margin-top:15px;
+    display:flex;
+    gap:8px;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+.error{
+    color:#b91c1c;
+}
+
+.success{
+    color:#15803d;
+}
+
+.thumbnail{
+    width:100%;
+    max-height:180px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+@media(max-width:700px){
+
+    .top{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .course-header{
+        flex-direction:column;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Trading Academy <span>AI</span>
+    </div>
+
+    <a href="admin.html" class="back">
+        ← Dashboard
+    </a>
+
+</header>
+
+
+<main class="container">
+
+    <div class="top">
+
+        <div>
+            <h1>Gestion des cours</h1>
+
+            <p>
+                Créez et gérez les cours de Trading Academy AI.
+            </p>
+        </div>
+
+        <button
+            class="btn btn-primary"
+            onclick="showForm()">
+
+            + Ajouter un cours
+
+        </button>
+
+    </div>
+
+
+    <!-- FORMULAIRE -->
+
+    <section
+        id="formCard"
+        class="card hidden">
+
+        <h2>Créer un nouveau cours</h2>
+
+        <form id="courseForm">
+
+            <div class="form-grid">
+
+                <div class="full">
+
+                    <label for="title">
+                        Titre du cours *
+                    </label>
+
+                    <input
+                        id="title"
+                        type="text"
+                        required
+                        placeholder="Ex: Introduction au Trading">
+
+                </div>
+
+
+                <div class="full">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Description du cours..."></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label for="slug">
+                        Slug *
+                    </label>
+
+                    <input
+                        id="slug"
+                        type="text"
+                        required
+                        placeholder="introduction-au-trading">
+
+                </div>
+
+
+                <div>
+
+                    <label for="level">
+                        Niveau *
+                    </label>
+
+                    <select id="level">
+
+                        <option value="Débutant">
+                            Débutant
+                        </option>
+
+                        <option value="Intermédiaire">
+                            Intermédiaire
+                        </option>
+
+                        <option value="Professionnel">
+                            Professionnel
+                        </option>
+
+                        <option value="Expert">
+                            Expert
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label for="language">
+                        Langue *
+                    </label>
+
+                    <select id="language">
+
+                        <option value="Kreyòl">
+                            Kreyòl
+                        </option>
+
+                        <option value="Français">
+                            Français
+                        </option>
+
+                        <option value="English">
+                            English
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label for="duration_minutes">
+                        Durée (minutes)
+                    </label>
+
+                    <input
+                        id="duration_minutes"
+                        type="number"
+                        min="0"
+                        placeholder="Ex: 120">
+
+                </div>
+
+
+                <div>
+
+                    <label for="thumbnail_url">
+                        URL de l'image
+                    </label>
+
+                    <input
+                        id="thumbnail_url"
+                        type="url"
+                        placeholder="https://...">
+
+                </div>
+
+
+                <div>
+
+                    <label for="price">
+                        Prix
+                    </label>
+
+                    <input
+                        id="price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="0">
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Options
+                    </label>
+
+                    <div class="checkbox">
+
+                        <input
+                            id="is_free"
+                            type="checkbox"
+                            checked>
+
+                        <label
+                            for="is_free"
+                            style="margin:0">
+
+                            Cours gratuit
+
+                        </label>
+
+                    </div>
+
+                    <br>
+
+                    <div class="checkbox">
+
+                        <input
+                            id="is_published"
+                            type="checkbox">
+
+                        <label
+                            for="is_published"
+                            style="margin:0">
+
+                            Publier immédiatement
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    id="saveButton"
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Enregistrer le cours
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="hideForm()">
+
+                    Annuler
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- LISTE -->
+
+    <section class="card">
+
+        <h2>Cours existants</h2>
+
+        <div
+            id="courseList"
+            class="course-list">
+
+            <div class="loading">
+                Chargement...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const form =
+document.getElementById("courseForm");
+
+const formCard =
+document.getElementById("formCard");
+
+const message =
+document.getElementById("message");
+
+const saveButton =
+document.getElementById("saveButton");
+
+const courseList =
+document.getElementById("courseList");
+
+
+/* =========================================
+   FORM
+========================================= */
+
+function showForm(){
+
+    formCard.classList.remove("hidden");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function hideForm(){
+
+    formCard.classList.add("hidden");
+
+    form.reset();
+
+    document.getElementById(
+        "is_free"
+    ).checked = true;
+
+    message.textContent = "";
+
+}
+
+
+/* =========================================
+   AUTO SLUG
+========================================= */
+
+document
+.getElementById("title")
+.addEventListener(
+    "input",
+    function(){
+
+        const slug =
+        this.value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .replace(
+            /[^a-z0-9]+/g,
+            "-"
+        )
+        .replace(
+            /^-|-$/g,
+            ""
+        );
+
+        document.getElementById(
+            "slug"
+        ).value = slug;
+
+    }
+);
+
+
+/* =========================================
+   CREATE COURSE
+========================================= */
+
+form.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+        saveButton.disabled = true;
+
+        message.className =
+            "message";
+
+        message.textContent =
+            "Enregistrement...";
+
+
+        try{
+
+            /* USER CONNECTÉ */
+
+            const {
+                data: userData,
+                error: userError
+            } =
+            await supabaseClient
+            .auth
+            .getUser();
+
+
+            if(
+                userError ||
+                !userData.user
+            ){
+
+                throw new Error(
+                    "Session administrateur expirée."
+                );
+
+            }
+
+
+            const user =
+            userData.user;
+
+
+            /* FORM DATA */
+
+            const title =
+            document
+            .getElementById("title")
+            .value
+            .trim();
+
+
+            const description =
+            document
+            .getElementById("description")
+            .value
+            .trim();
+
+
+            const slug =
+            document
+            .getElementById("slug")
+            .value
+            .trim();
+
+
+            const level =
+            document
+            .getElementById("level")
+            .value;
+
+
+            const language =
+            document
+            .getElementById("language")
+            .value;
+
+
+            const thumbnail_url =
+            document
+            .getElementById("thumbnail_url")
+            .value
+            .trim() || null;
+
+
+            const durationValue =
+            document
+            .getElementById(
+                "duration_minutes"
+            )
+            .value;
+
+
+            const duration_minutes =
+            durationValue === ""
+            ? null
+            : Number(durationValue);
+
+
+            const price =
+            Number(
+                document
+                .getElementById("price")
+                .value
+            ) || 0;
+
+
+            const is_free =
+            document
+            .getElementById("is_free")
+            .checked;
+
+
+            const is_published =
+            document
+            .getElementById(
+                "is_published"
+            )
+            .checked;
+
+
+            /* INSERT */
+
+            const {
+                error
+            } =
+            await supabaseClient
+            .from("courses")
+            .insert({
+
+                title,
+
+                slug,
+
+                description,
+
+                level,
+
+                language,
+
+                thumbnail_url,
+
+                duration_minutes,
+
+                price,
+
+                is_free,
+
+                is_published,
+
+                created_by:user.id
+
+            });
+
+
+            if(error){
+
+                console.error(
+                    "COURSE ERROR:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            message.className =
+                "message success";
+
+            message.textContent =
+                "✅ Cours créé avec succès.";
+
+
+            form.reset();
+
+            document.getElementById(
+                "is_free"
+            ).checked = true;
+
+
+            await loadCourses();
+
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            message.className =
+                "message error";
+
+            message.textContent =
+                "❌ " +
+                (
+                    error.message ||
+                    "Erreur lors de la création."
+                );
+
+        }
+
+
+        saveButton.disabled = false;
+
+    }
+);
+
+
+/* =========================================
+   LOAD COURSES
+========================================= */
+
+async function loadCourses(){
+
+    courseList.innerHTML =
+    `<div class="loading">
+        Chargement des cours...
+    </div>`;
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("courses")
+        .select(`
+            id,
+            title,
+            slug,
+            description,
+            level,
+            language,
+            thumbnail_url,
+            duration_minutes,
+            price,
+            is_free,
+            is_published,
+            created_at
+        `)
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            data.length === 0
+        ){
+
+            courseList.innerHTML =
+            `<div class="loading">
+                Aucun cours pour le moment.
+            </div>`;
+
+            return;
+
+        }
+
+
+        courseList.innerHTML = "";
+
+
+        data.forEach(
+            course => {
+
+                const div =
+                document.createElement(
+                    "div"
+                );
+
+                div.className =
+                    "course";
+
+
+                const status =
+                course.is_published
+
+                ? `<span class="badge published">
+                    Publié
+                   </span>`
+
+                : `<span class="badge draft">
+                    Brouillon
+                   </span>`;
+
+
+                const thumbnail =
+                course.thumbnail_url
+
+                ? `<img
+                    class="thumbnail"
+                    src="${escapeHTML(
+                        course.thumbnail_url
+                    )}"
+                    alt="Thumbnail">`
+
+                : "";
+
+
+                div.innerHTML = `
+
+                    ${thumbnail}
+
+                    <div class="course-header">
+
+                        <div>
+
+                            <h3>
+                                ${escapeHTML(
+                                    course.title || ""
+                                )}
+                            </h3>
+
+                        </div>
+
+                        ${status}
+
+                    </div>
+
+
+                    <p>
+                        ${escapeHTML(
+                            course.description ||
+                            "Aucune description."
+                        )}
+                    </p>
+
+
+                    <div class="meta">
+
+                        <span>
+                            🎓 ${escapeHTML(
+                                course.level || "-"
+                            )}
+                        </span>
+
+                        <span>
+                            🌐 ${escapeHTML(
+                                course.language || "-"
+                            )}
+                        </span>
+
+                        <span>
+                            ⏱️ ${
+                                course.duration_minutes ??
+                                "-"
+                            } min
+                        </span>
+
+                        <span>
+                            ${
+                                course.is_free
+                                ? "🆓 Gratuit"
+                                : "💰 " +
+                                  course.price
+                            }
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                courseList.appendChild(div);
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        courseList.innerHTML =
+        `<div class="loading error">
+
+            ❌ Impossible de charger les cours.
+
+            <br><br>
+
+            ${escapeHTML(
+                error.message || ""
+            )}
+
+        </div>`;
+
+    }
+
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadCourses();
+
+</script>
+
+</body>
+</html>
