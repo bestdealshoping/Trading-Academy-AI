@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Quiz — Trading Academy AI</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css">
 
     <style>
+
         body {
             background: #f5f7fb;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #172033;
         }
 
         .quiz-container {
@@ -31,11 +40,20 @@
 
         .quiz-header h1 {
             margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .quiz-description {
+            color: #64748b;
+            line-height: 1.6;
         }
 
         .progress {
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 9px;
         }
 
         .question-card {
@@ -47,29 +65,33 @@
         }
 
         .question-number {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-            opacity: .65;
+            color: #2563eb;
+            text-transform: uppercase;
         }
 
         .question-text {
             font-size: 20px;
             font-weight: bold;
             margin: 15px 0 20px;
+            line-height: 1.5;
         }
 
         .option {
             display: block;
             padding: 14px;
             margin: 10px 0;
-            border: 2px solid #ddd;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             cursor: pointer;
             transition: .2s;
+            line-height: 1.5;
         }
 
         .option:hover {
-            border-color: #555;
+            border-color: #2563eb;
+            background: #eff6ff;
         }
 
         .option input {
@@ -77,7 +99,8 @@
         }
 
         .submit-btn,
-        .retry-btn {
+        .retry-btn,
+        .dashboard-btn {
             border: none;
             padding: 14px 25px;
             border-radius: 10px;
@@ -87,8 +110,18 @@
         }
 
         .submit-btn {
-            background: #111;
+            background: #2563eb;
             color: white;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .submit-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
         }
 
         .retry-btn {
@@ -97,9 +130,11 @@
             margin-top: 15px;
         }
 
-        .submit-btn:disabled {
-            opacity: .5;
-            cursor: not-allowed;
+        .dashboard-btn {
+            background: #111827;
+            color: white;
+            margin-top: 15px;
+            margin-left: 8px;
         }
 
         .loading,
@@ -108,6 +143,7 @@
             padding: 30px;
             border-radius: 16px;
             text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
         }
 
         .error {
@@ -136,99 +172,296 @@
             color: #c62828;
         }
 
-        .hidden {
-            display: none;
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8fafc;
         }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media(max-width:600px) {
+
+            .quiz-container {
+                margin: 15px auto;
+                padding: 12px;
+            }
+
+            .quiz-header,
+            .question-card,
+            .result {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 17px;
+            }
+
+            .result-score {
+                font-size: 36px;
+            }
+
+            .dashboard-btn {
+                margin-left: 0;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="quiz-container">
 
-    <div id="loading" class="loading">
-        <h2>Chargement du quiz...</h2>
-        <p>Préparation de votre évaluation.</p>
+
+    <!-- =================================
+         LOADING
+    ================================== -->
+
+    <div
+        id="loading"
+        class="loading">
+
+        <h2>
+            Chargement du quiz...
+        </h2>
+
+        <p>
+            Préparation de votre évaluation.
+        </p>
+
     </div>
 
-    <div id="error" class="error hidden">
-        <h2>Accès refusé</h2>
+
+    <!-- =================================
+         ERROR
+    ================================== -->
+
+    <div
+        id="error"
+        class="error hidden">
+
+        <h2>
+            Accès refusé
+        </h2>
+
         <p id="errorMessage"></p>
+
     </div>
 
-    <div id="quizArea" class="hidden">
+
+    <!-- =================================
+         QUIZ
+    ================================== -->
+
+    <div
+        id="quizArea"
+        class="hidden">
+
 
         <div class="quiz-header">
-            <h1 id="quizTitle">Quiz</h1>
 
-            <p>
-                Répondez aux 10 questions.
-                Une note minimale de <strong>70%</strong>
-                est nécessaire pour réussir.
+            <h1 id="quizTitle">
+                Quiz
+            </h1>
+
+            <p
+                id="quizDescription"
+                class="quiz-description">
+
+                Évaluation des connaissances.
+
             </p>
 
+            <p>
+
+                Répondez aux
+                <strong>10 questions</strong>.
+
+                <br>
+
+                Une note minimale de
+                <strong>70%</strong>
+                est nécessaire pour réussir.
+
+            </p>
+
+
             <div class="progress">
-                Question <span id="currentQuestion">1</span> / 10
+
+                Question
+                <span id="currentQuestion">
+                    1
+                </span>
+
+                /
+                <span id="totalQuestions">
+                    10
+                </span>
+
             </div>
+
         </div>
+
 
         <form id="quizForm">
 
-            <div id="questionsContainer"></div>
+            <div
+                id="questionsContainer">
+            </div>
+
 
             <button
                 type="submit"
                 id="submitBtn"
-                class="submit-btn"
-            >
+                class="submit-btn">
+
                 Soumettre le quiz
+
             </button>
 
         </form>
 
     </div>
 
-    <div id="resultArea" class="hidden">
+
+    <!-- =================================
+         RESULT
+    ================================== -->
+
+    <div
+        id="resultArea"
+        class="hidden">
+
 
         <div class="result">
 
             <h1 id="resultTitle"></h1>
 
+
             <div
                 id="resultScore"
-                class="result-score"
-            ></div>
+                class="result-score">
+
+            </div>
+
 
             <p id="resultMessage"></p>
 
-            <p>
-                XP gagné :
-                <strong id="xpEarned">0</strong>
-            </p>
+
+            <div class="result-box">
+
+                <div class="result-row">
+
+                    <span>
+                        Bonnes réponses
+                    </span>
+
+                    <strong id="correctAnswers">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Mauvaises réponses
+                    </span>
+
+                    <strong id="wrongAnswers">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Note
+                    </span>
+
+                    <strong id="resultPercentage">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        XP gagné
+                    </span>
+
+                    <strong id="xpEarned">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
 
             <button
                 id="retryBtn"
-                class="retry-btn"
-            >
-                Refaire le quiz
+                class="retry-btn">
+
+                🔄 Refaire le quiz
+
+            </button>
+
+
+            <button
+                id="dashboardBtn"
+                class="dashboard-btn">
+
+                🏠 Retour au dashboard
+
             </button>
 
         </div>
 
     </div>
 
+
 </div>
 
 
-<!-- Supabase -->
+<!-- =================================
+     SUPABASE
+================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
 
+
 <script>
 
+/* ==========================================
+   VARIABLES
+========================================== */
+
 let quizId = null;
+
 let quizData = [];
+
 let submitting = false;
 
 
@@ -238,42 +471,65 @@ let submitting = false;
 
 function getQuizId() {
 
-    const params = new URLSearchParams(
-        window.location.search
-    );
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
     return params.get("quiz_id");
+
 }
 
 
 /* ==========================================
-   INIT
+   INIT QUIZ
 ========================================== */
 
 async function initQuiz() {
 
     try {
 
-        quizId = getQuizId();
+        /*
+         * 1 — Récupérer ID quiz
+         */
+
+        quizId =
+            getQuizId();
+
 
         if (!quizId) {
+
             throw new Error(
                 "Aucun quiz sélectionné."
             );
+
         }
 
-        /* Vérifier session */
+
+        /*
+         * 2 — Vérifier utilisateur connecté
+         */
 
         const {
             data: sessionData,
             error: sessionError
-        } = await supabase.auth.getSession();
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
 
         if (sessionError) {
+
             throw sessionError;
+
         }
 
-        if (!sessionData.session) {
+
+        if (
+            !sessionData ||
+            !sessionData.session
+        ) {
 
             throw new Error(
                 "Vous devez être connecté pour passer ce quiz."
@@ -282,73 +538,144 @@ async function initQuiz() {
         }
 
 
-        /* Charger informations quiz */
+        /*
+         * 3 — Charger quiz
+         */
 
         const {
             data: quiz,
             error: quizError
-        } = await supabase
-            .from("quizzes")
-            .select(`
-                id,
-                title,
-                description
-            `)
-            .eq("id", quizId)
-            .maybeSingle();
+        } =
+            await supabaseClient
+                .from("quizzes")
+                .select(`
+                    id,
+                    title,
+                    description,
+                    is_published
+                `)
+                .eq(
+                    "id",
+                    quizId
+                )
+                .eq(
+                    "is_published",
+                    true
+                )
+                .maybeSingle();
+
 
         if (quizError) {
+
             throw quizError;
+
         }
 
+
         if (!quiz) {
+
             throw new Error(
-                "Quiz introuvable ou inaccessible."
+                "Quiz introuvable ou non publié."
             );
+
         }
+
+
+        /*
+         * 4 — Afficher informations quiz
+         */
 
         document.getElementById(
             "quizTitle"
-        ).textContent = quiz.title;
+        ).textContent =
+            quiz.title;
 
 
-        /* Démarrer quiz */
+        document.getElementById(
+            "quizDescription"
+        ).textContent =
+            quiz.description ||
+            "Évaluation des connaissances.";
+
+
+        /*
+         * 5 — Start quiz côté serveur
+         */
 
         const {
             data,
             error
-        } = await supabase.rpc(
-            "start_quiz",
-            {
-                p_quiz_id: quizId
-            }
-        );
+        } =
+            await supabaseClient.rpc(
+                "start_quiz",
+                {
+                    p_quiz_id:
+                        quizId
+                }
+            );
+
 
         if (error) {
+
             throw error;
+
         }
 
-        if (!data || data.length !== 10) {
+
+        /*
+         * Vérification
+         */
+
+        if (
+            !data ||
+            !Array.isArray(data)
+        ) {
 
             throw new Error(
-                "Le quiz n'a pas pu charger 10 questions."
+                "Le serveur n'a pas retourné les questions du quiz."
             );
 
         }
 
-        quizData = data;
+
+        if (
+            data.length !== 10
+        ) {
+
+            throw new Error(
+                "Le quiz doit contenir exactement 10 questions. Questions trouvées : " +
+                data.length
+            );
+
+        }
+
+
+        quizData =
+            data;
+
+
+        document.getElementById(
+            "totalQuestions"
+        ).textContent =
+            quizData.length;
+
 
         renderQuestions();
 
+
         hide("loading");
+
         show("quizArea");
 
-    } catch (error) {
+
+    }
+    catch(error) {
 
         console.error(
-            "Erreur Quiz:",
+            "ERREUR INIT QUIZ:",
             error
         );
+
 
         showError(
             error.message ||
@@ -371,73 +698,169 @@ function renderQuestions() {
             "questionsContainer"
         );
 
+
     container.innerHTML = "";
+
 
     quizData.forEach(
         (question, index) => {
+
 
             const card =
                 document.createElement(
                     "div"
                 );
 
+
             card.className =
                 "question-card";
 
+
             let optionsHTML = "";
 
-            question.options.forEach(
-                option => {
 
-                    optionsHTML += `
-                        <label class="option">
+            if (
+                !question.options ||
+                !Array.isArray(
+                    question.options
+                )
+            ) {
 
-                            <input
-                                type="radio"
-                                name="question_${question.id}"
-                                value="${option.id}"
-                                required
-                            >
+                optionsHTML = `
+                    <div class="error">
+                        Aucune réponse disponible
+                        pour cette question.
+                    </div>
+                `;
 
-                            ${escapeHTML(
-                                option.option_text
-                            )}
+            }
+            else {
 
-                        </label>
-                    `;
+                question.options.forEach(
+                    option => {
 
-                }
-            );
+                        optionsHTML += `
+
+                            <label
+                                class="option">
+
+                                <input
+                                    type="radio"
+                                    name="question_${escapeHTML(question.id)}"
+                                    value="${escapeHTML(option.id)}"
+                                    required
+                                >
+
+                                ${escapeHTML(
+                                    option.option_text
+                                )}
+
+                            </label>
+
+                        `;
+
+                    }
+                );
+
+            }
 
 
             card.innerHTML = `
 
                 <div class="question-number">
-                    QUESTION ${index + 1} / 10
+
+                    QUESTION
+                    ${index + 1}
+                    /
+                    ${quizData.length}
+
                 </div>
 
+
                 <div class="question-text">
+
                     ${escapeHTML(
                         question.question
                     )}
+
                 </div>
 
+
                 <div>
+
                     ${optionsHTML}
+
                 </div>
 
             `;
 
-            container.appendChild(card);
+
+            container.appendChild(
+                card
+            );
 
         }
     );
+
+
+    updateQuestionProgress();
 
 }
 
 
 /* ==========================================
-   SUBMIT
+   UPDATE QUESTION PROGRESS
+========================================== */
+
+function updateQuestionProgress() {
+
+    const answered =
+        quizData.filter(
+            question => {
+
+                return document.querySelector(
+                    `input[name="question_${question.id}"]:checked`
+                );
+
+            }
+        ).length;
+
+
+    document.getElementById(
+        "currentQuestion"
+    ).textContent =
+        Math.min(
+            answered + 1,
+            quizData.length
+        );
+
+}
+
+
+/* ==========================================
+   RADIO CHANGE
+========================================== */
+
+document.addEventListener(
+    "change",
+    function(event) {
+
+        if (
+            event.target.matches(
+                '#questionsContainer input[type="radio"]'
+            )
+        ) {
+
+            updateQuestionProgress();
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   SUBMIT QUIZ
 ========================================== */
 
 document.getElementById(
@@ -448,23 +871,37 @@ document.getElementById(
 
         event.preventDefault();
 
+
         if (submitting) {
+
             return;
+
         }
 
+
         submitting = true;
+
 
         const submitBtn =
             document.getElementById(
                 "submitBtn"
             );
 
-        submitBtn.disabled = true;
+
+        submitBtn.disabled =
+            true;
+
+
         submitBtn.textContent =
             "Correction en cours...";
 
 
         try {
+
+
+            /*
+             * Vérifier toutes les réponses
+             */
 
             const answers = [];
 
@@ -472,10 +909,12 @@ document.getElementById(
             quizData.forEach(
                 question => {
 
+
                     const selected =
                         document.querySelector(
                             `input[name="question_${question.id}"]:checked`
                         );
+
 
                     if (!selected) {
 
@@ -484,6 +923,7 @@ document.getElementById(
                         );
 
                     }
+
 
                     answers.push({
 
@@ -499,45 +939,78 @@ document.getElementById(
             );
 
 
-            /* Correction SERVER-SIDE */
+            /*
+             * Correction SERVER-SIDE
+             */
 
             const {
                 data,
                 error
-            } = await supabase.rpc(
-                "submit_quiz",
-                {
-                    p_quiz_id: quizId,
-                    p_answers: answers
-                }
-            );
+            } =
+                await supabaseClient.rpc(
+                    "submit_quiz",
+                    {
+
+                        p_quiz_id:
+                            quizId,
+
+                        p_answers:
+                            answers
+
+                    }
+                );
 
 
             if (error) {
+
                 throw error;
+
             }
 
 
-            showResult(data);
+            /*
+             * Vérifier réponse serveur
+             */
+
+            if (!data) {
+
+                throw new Error(
+                    "Le serveur n'a retourné aucun résultat."
+                );
+
+            }
 
 
-        } catch (error) {
+            showResult(
+                data
+            );
+
+
+        }
+        catch(error) {
 
             console.error(
-                "Erreur soumission:",
+                "ERREUR SUBMIT QUIZ:",
                 error
             );
 
+
             alert(
                 error.message ||
-                "Une erreur est survenue."
+                "Une erreur est survenue pendant la correction."
             );
 
-            submitBtn.disabled = false;
+
+            submitBtn.disabled =
+                false;
+
+
             submitBtn.textContent =
                 "Soumettre le quiz";
 
-            submitting = false;
+
+            submitting =
+                false;
 
         }
 
@@ -546,7 +1019,7 @@ document.getElementById(
 
 
 /* ==========================================
-   RESULT
+   SHOW RESULT
 ========================================== */
 
 function showResult(result) {
@@ -556,58 +1029,160 @@ function showResult(result) {
     show("resultArea");
 
 
+    /*
+     * Valeurs serveur
+     */
+
+    const total =
+        Number(
+            result.total_points ??
+            result.total ??
+            10
+        );
+
+
+    const score =
+        Number(
+            result.score ??
+            result.correct_answers ??
+            0
+        );
+
+
+    const percentage =
+        Number(
+            result.percentage ??
+            (
+                total > 0
+                    ? Math.round(
+                        (
+                            score /
+                            total
+                        ) * 100
+                    )
+                    : 0
+            )
+        );
+
+
+    const passed =
+        Boolean(
+            result.passed ??
+            percentage >= 70
+        );
+
+
+    const xp =
+        Number(
+            result.xp_earned ??
+            0
+        );
+
+
+    const correct =
+        Number(
+            result.correct_answers ??
+            score
+        );
+
+
+    const wrong =
+        Number(
+            result.wrong_answers ??
+            (
+                total -
+                correct
+            )
+        );
+
+
+    /*
+     * Score
+     */
+
+    document.getElementById(
+        "resultScore"
+    ).textContent =
+        `${score}/${total} — ${percentage}%`;
+
+
+    document.getElementById(
+        "correctAnswers"
+    ).textContent =
+        correct;
+
+
+    document.getElementById(
+        "wrongAnswers"
+    ).textContent =
+        wrong;
+
+
+    document.getElementById(
+        "resultPercentage"
+    ).textContent =
+        percentage + "%";
+
+
+    document.getElementById(
+        "xpEarned"
+    ).textContent =
+        xp;
+
+
+    /*
+     * Réussite
+     */
+
     const title =
         document.getElementById(
             "resultTitle"
         );
 
-    const score =
+
+    const scoreElement =
         document.getElementById(
             "resultScore"
         );
+
 
     const message =
         document.getElementById(
             "resultMessage"
         );
 
-    const xp =
-        document.getElementById(
-            "xpEarned"
-        );
 
-
-    score.textContent =
-        `${result.score}/${result.total_points} — ${result.percentage}%`;
-
-    xp.textContent =
-        result.xp_earned;
-
-
-    if (result.passed) {
+    if (passed) {
 
         title.textContent =
             "🎉 Félicitations !";
 
+
         title.className =
             "success";
 
-        score.className =
+
+        scoreElement.className =
             "result-score success";
 
-        message.textContent =
-            "Vous avez réussi le quiz avec une note suffisante.";
 
-    } else {
+        message.textContent =
+            "Vous avez réussi le quiz. Note minimale : 70%.";
+
+    }
+    else {
 
         title.textContent =
             "❌ Quiz non réussi";
 
+
         title.className =
             "failed";
 
-        score.className =
+
+        scoreElement.className =
             "result-score failed";
+
 
         message.textContent =
             "Vous devez obtenir au minimum 70%. Vous pouvez retenter le quiz.";
@@ -634,28 +1209,67 @@ document.getElementById(
 
 
 /* ==========================================
-   HELPERS
+   DASHBOARD
+========================================== */
+
+document.getElementById(
+    "dashboardBtn"
+).addEventListener(
+    "click",
+    function() {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+);
+
+
+/* ==========================================
+   SHOW
 ========================================== */
 
 function show(id) {
 
-    document
-        .getElementById(id)
-        .classList
-        .remove("hidden");
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.classList.remove(
+            "hidden"
+        );
+
+    }
 
 }
 
+
+/* ==========================================
+   HIDE
+========================================== */
 
 function hide(id) {
 
-    document
-        .getElementById(id)
-        .classList
-        .add("hidden");
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.classList.add(
+            "hidden"
+        );
+
+    }
 
 }
 
+
+/* ==========================================
+   ERROR
+========================================== */
 
 function showError(message) {
 
@@ -665,23 +1279,44 @@ function showError(message) {
 
     show("error");
 
+
     document.getElementById(
         "errorMessage"
-    ).textContent = message;
+    ).textContent =
+        message;
 
 }
 
 
-/* Protection XSS */
+/* ==========================================
+   ESCAPE HTML
+========================================== */
 
 function escapeHTML(value) {
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
@@ -695,4 +1330,5 @@ initQuiz();
 </script>
 
 </body>
+
 </html>
