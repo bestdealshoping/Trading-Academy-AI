@@ -3099,6 +3099,153 @@ async function completeLesson() {
 
 
 /* =========================================
+   LOAD COURSE QUIZ
+========================================= */
+
+async function loadCourseQuiz(courseId) {
+
+    const container =
+        document.getElementById("quizContainer");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="quiz-card">
+            <div class="loading">
+                Chajman quiz...
+            </div>
+        </div>
+    `;
+
+    const {
+        data: quizzes,
+        error
+    } = await supabaseClient
+        .from("quizzes")
+        .select(`
+            id,
+            course_id,
+            lesson_id,
+            title,
+            description,
+            passing_score,
+            is_published
+        `)
+        .eq("course_id", courseId)
+        .eq("is_published", true)
+        .order("created_at", {
+            ascending: true
+        });
+
+    if (error) {
+
+        console.error(
+            "QUIZ LOAD ERROR:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="quiz-card">
+
+                <h2>❌ Erè Quiz</h2>
+
+                <p>
+                    ${escapeHTML(error.message)}
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    if (!quizzes || quizzes.length === 0) {
+
+        container.innerHTML = `
+            <div class="quiz-card">
+
+                <h2>📝 Quiz</h2>
+
+                <p>
+                    Pa gen quiz pibliye pou kou sa a
+                    pou kounye a.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = quizzes
+        .map(createQuizCard)
+        .join("");
+
+}
+
+
+/* =========================================
+   CREATE QUIZ CARD
+========================================= */
+
+function createQuizCard(quiz) {
+
+    const passingScore =
+        Number(quiz.passing_score || 0);
+
+    return `
+
+        <div class="quiz-card">
+
+            <h2>
+                📝 ${escapeHTML(
+                    quiz.title ||
+                    "Quiz"
+                )}
+            </h2>
+
+            <p>
+                ${escapeHTML(
+                    quiz.description ||
+                    "Teste konesans ou sou kou sa a."
+                )}
+            </p>
+
+            <div
+                class="quiz-status available">
+
+                ✓ Quiz disponib
+
+            </div>
+
+            <br>
+
+            <small>
+
+                Score pou pase:
+                <strong>
+                    ${passingScore}%
+                </strong>
+
+            </small>
+
+            <br><br>
+
+            <button
+                class="quiz-button"
+                onclick="startQuiz('${quiz.id}')">
+
+                🚀 Commencer le quiz
+
+            </button>
+
+        </div>
+
+    `;
+}
+/* =========================================
    OPEN LESSON
 ========================================= */
 
