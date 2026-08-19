@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>
+    Gestion des administrateurs | Trading Academy AI
+</title>
+
+<style>
+
+/* ================================
+   GLOBAL
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.header {
+
+    background: #0f172a;
+
+    color: white;
+
+    padding: 18px 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.header-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.header h1 {
+
+    margin: 0;
+
+    font-size: 21px;
+}
+
+.header p {
+
+    margin: 4px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+/* ================================
+   BACK BUTTON
+================================ */
+
+.back-btn {
+
+    border: 1px solid #334155;
+
+    background: transparent;
+
+    color: white;
+
+    padding: 9px 13px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+.back-btn:hover {
+
+    background: #1e293b;
+}
+
+
+/* ================================
+   CONTAINER
+================================ */
+
+.container {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding: 25px 18px;
+}
+
+
+/* ================================
+   TOP ACTION
+================================ */
+
+.top-action {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.top-action h2 {
+
+    margin: 0;
+
+    font-size: 20px;
+}
+
+.top-action p {
+
+    margin: 5px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   BUTTON
+================================ */
+
+.btn {
+
+    border: 0;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    font-size: 13px;
+}
+
+.btn-primary {
+
+    background: #2563eb;
+
+    color: white;
+}
+
+.btn-primary:hover {
+
+    background: #1d4ed8;
+}
+
+.btn-secondary {
+
+    background: #e2e8f0;
+
+    color: #172033;
+}
+
+.btn-danger {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+.btn-danger:hover {
+
+    background: #dc2626;
+
+    color: white;
+}
+
+.btn-edit {
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+}
+
+
+/* ================================
+   TABLE CARD
+================================ */
+
+.card {
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.table-wrapper {
+
+    overflow-x: auto;
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 650px;
+}
+
+thead {
+
+    background: #f8fafc;
+}
+
+th {
+
+    text-align: left;
+
+    padding: 14px;
+
+    font-size: 12px;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+
+    padding: 14px;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+tr:last-child td {
+
+    border-bottom: 0;
+}
+
+
+/* ================================
+   ROLE BADGE
+================================ */
+
+.role {
+
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* ================================
+   ACTIONS
+================================ */
+
+.actions {
+
+    display: flex;
+
+    gap: 7px;
+}
+
+.actions button {
+
+    border: 0;
+
+    padding: 7px 10px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* ================================
+   EMPTY
+================================ */
+
+.empty {
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #64748b;
+}
+
+.empty-icon {
+
+    font-size: 35px;
+
+    margin-bottom: 10px;
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(15,23,42,.65);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 2000;
+}
+
+.modal.show {
+
+    display: flex;
+}
+
+.modal-box {
+
+    width: 100%;
+
+    max-width: 450px;
+
+    background: white;
+
+    border-radius: 13px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.2);
+}
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.close {
+
+    border: 0;
+
+    background: #f1f5f9;
+
+    width: 32px;
+
+    height: 32px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+/* ================================
+   FORM
+================================ */
+
+.form-group {
+
+    margin-bottom: 16px;
+}
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    color: #475569;
+}
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    padding: 11px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.1);
+}
+
+.form-group input[readonly] {
+
+    background: #f8fafc;
+
+    color: #64748b;
+}
+
+.modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+/* ================================
+   LOADING
+================================ */
+
+.loading {
+
+    text-align: center;
+
+    padding: 45px;
+
+    color: #64748b;
+}
+
+
+/* ================================
+   ALERT
+================================ */
+
+.alert {
+
+    display: none;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    margin-bottom: 15px;
+
+    font-size: 13px;
+}
+
+.alert.show {
+
+    display: block;
+}
+
+.alert-error {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+
+    background: #dcfce7;
+
+    color: #166534;
+
+    border: 1px solid #bbf7d0;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width:700px) {
+
+    .header {
+
+        padding: 15px;
+    }
+
+    .header h1 {
+
+        font-size: 17px;
+    }
+
+    .header p {
+
+        display: none;
+    }
+
+    .back-btn {
+
+        font-size: 11px;
+
+        padding: 8px 10px;
+    }
+
+    .top-action {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .top-action .btn {
+
+        width: 100%;
+    }
+
+    .container {
+
+        padding: 18px 12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================
+     HEADER
+================================ -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <div>
+
+            <h1>
+                👑 Gestion des administrateurs
+            </h1>
+
+            <p>
+                Trading Academy AI
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="back-btn"
+        onclick="window.location.href='admin.html'">
+
+        ← Retour au Dashboard
+
+    </button>
+
+</header>
+
+
+
+<!-- ================================
+     MAIN
+================================ -->
+
+<main class="container">
+
+
+    <div class="top-action">
+
+        <div>
+
+            <h2>
+                Administrateurs
+            </h2>
+
+            <p>
+                Gérer les accès et les rôles de l'équipe.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="openAddModal()">
+
+            + Ajouter un administrateur
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ALERT -->
+
+    <div
+        id="alert"
+        class="alert">
+    </div>
+
+
+
+    <!-- TABLE -->
+
+    <div class="card">
+
+        <div
+            id="loading"
+            class="loading">
+
+            Chargement des administrateurs...
+
+        </div>
+
+
+        <div
+            id="tableContainer"
+            class="table-wrapper"
+            style="display:none;">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Rôle
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="adminTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div
+            id="empty"
+            class="empty"
+            style="display:none;">
+
+            <div class="empty-icon">
+                👑
+            </div>
+
+            Aucun administrateur trouvé.
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- ================================
+     MODAL
+================================ -->
+
+<div
+    id="modal"
+    class="modal">
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Ajouter un administrateur
+            </h3>
+
+
+            <button
+                class="close"
+                onclick="closeModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Utilisateur
+            </label>
+
+
+            <select
+                id="userSelect">
+
+                <option value="">
+                    Sélectionner un utilisateur
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div
+            id="selectedEmailBox"
+            class="form-group"
+            style="display:none;">
+
+            <label>
+                Utilisateur sélectionné
+            </label>
+
+            <input
+                id="selectedEmail"
+                type="text"
+                readonly>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Rôle administrateur
+            </label>
+
+
+            <select
+                id="roleSelect">
+
+                <option value="">
+                    Sélectionner un rôle
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="modal-actions">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeModal()">
+
+                Annuler
+
+            </button>
+
+
+            <button
+                id="saveBtn"
+                class="btn btn-primary"
+                onclick="saveAdministrator()">
+
+                Enregistrer
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================
+     SUPABASE
+================================ -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =================================
+   SUPABASE CONFIG
+================================= */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =================================
+   VARIABLES
+================================= */
+
+let currentUser = null;
+
+let administrators = [];
+
+let allUsers = [];
+
+let allRoles = [];
+
+let editingUserId = null;
+
+
+/* =================================
+   DASHBOARD
+================================= */
+
+function goDashboard() {
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+/* =================================
+   ALERT
+================================= */
+
+function showAlert(message, type = "error") {
+
+    const alert =
+        document.getElementById("alert");
+
+    alert.textContent = message;
+
+    alert.className =
+        "alert show " +
+        (
+            type === "success"
+            ? "alert-success"
+            : "alert-error"
+        );
+
+    setTimeout(() => {
+
+        alert.classList.remove("show");
+
+    }, 5000);
+
+}
+
+
+/* =================================
+   ESCAPE HTML
+================================= */
+
+function escapeHTML(value) {
+
+    return String(value || "")
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =================================
+   VERIFY CURRENT ADMIN
+================================= */
+
+async function verifyAdmin() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+            error ||
+            !data ||
+            !data.user
+        ) {
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+        const {
+            data: userRoles,
+            error: roleError
+        } =
+        await supabaseClient
+
+            .from("user_roles")
+
+            .select(`
+                user_id,
+                role_id,
+                roles (
+                    id,
+                    name,
+                    description
+                )
+            `)
+
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+        if (roleError) {
+
+            console.error(roleError);
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        const isAdmin =
+            (userRoles || []).some(row => {
+
+                if (!row.roles) {
+
+                    return false;
+
+                }
+
+                const roleName =
+                    String(row.roles.name)
+                        .trim()
+                        .toLowerCase();
+
+                return (
+                    roleName === "admin" ||
+                    roleName === "super admin"
+                );
+
+            });
+
+
+        if (!isAdmin) {
+
+            window.location.href =
+                "dashboard.html";
+
+            return false;
+
+        }
+
+
+        return true;
+
+    }
+    catch (error) {
+
+        console.error(
+            "VERIFY ADMIN ERROR:",
+            error
+        );
+
+        window.location.href =
+            "admin-login.html";
+
+        return false;
+
+    }
+
+}
+
+
+/* =================================
+   LOAD ROLES
+================================= */
+
+async function loadRoles() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from("roles")
+
+            .select(`
+                id,
+                name,
+                description
+            `)
+
+            .order(
+                "name",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        allRoles =
+            data || [];
+
+
+        const select =
+            document.getElementById(
+                "roleSelect"
+            );
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Sélectionner un rôle
+            </option>
+
+        `;
+
+
+        allRoles.forEach(role => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                role.id;
+
+            option.textContent =
+                role.name;
+
+            option.dataset.description =
+                role.description || "";
+
+            select.appendChild(option);
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(
+            "ROLES ERROR:",
+            error
+        );
+
+        showAlert(
+            "Impossible de charger les rôles : " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =================================
+   LOAD USERS
+================================= */
+
+async function loadUsers() {
+
+    try {
+
+        /*
+         * IMPORTANT:
+         * Nou itilize sèlman id + email.
+         * Pa gen user_name.
+         * Pa gen name.
+         */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from("users")
+
+            .select(`
+                id,
+                email
+            `)
+
+            .order(
+                "email",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        allUsers =
+            data || [];
+
+
+        populateUserSelect();
+
+    }
+    catch (error) {
+
+        console.error(
+            "USERS ERROR:",
+            error
+        );
+
+        showAlert(
+            "Impossible de charger les utilisateurs : " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =================================
+   LOAD ADMINISTRATORS
+================================= */
+
+async function loadAdministrators() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const tableContainer =
+        document.getElementById(
+            "tableContainer"
+        );
+
+    const empty =
+        document.getElementById(
+            "empty"
+        );
+
+
+    loading.style.display =
+        "block";
+
+    tableContainer.style.display =
+        "none";
+
+    empty.style.display =
+        "none";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from("user_roles")
+
+            .select(`
+                user_id,
+                role_id,
+                roles (
+                    id,
+                    name,
+                    description
+                )
+            `);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        administrators =
+            data || [];
+
+
+        /*
+         * Se sèlman rôles administratif yo
+         * nou vle montre.
+         */
+
+        const allowedRoles = [
+
+            "admin",
+            "moderator",
+            "analyst",
+            "mentor",
+            "instructor"
+
+        ];
+
+
+        administrators =
+            administrators.filter(row => {
+
+                if (!row.roles) {
+
+                    return false;
+
+                }
+
+
+                const name =
+                    String(row.roles.name)
+                        .trim()
+                        .toLowerCase();
+
+
+                return allowedRoles.includes(name);
+
+            });
+
+
+        renderAdministrators();
+
+    }
+    catch (error) {
+
+        console.error(
+            "ADMINISTRATORS ERROR:",
+            error
+        );
+
+
+        loading.style.display =
+            "none";
+
+        empty.style.display =
+            "block";
+
+        showAlert(
+            "Impossible de charger les administrateurs : " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =================================
+   RENDER ADMINISTRATORS
+================================= */
+
+function renderAdministrators() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const tableContainer =
+        document.getElementById(
+            "tableContainer"
+        );
+
+    const empty =
+        document.getElementById(
+            "empty"
+        );
+
+    const tbody =
+        document.getElementById(
+            "adminTable"
+        );
+
+
+    loading.style.display =
+        "none";
+
+
+    tbody.innerHTML = "";
+
+
+    if (
+        administrators.length === 0
+    ) {
+
+        tableContainer.style.display =
+            "none";
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    tableContainer.style.display =
+        "block";
+
+    empty.style.display =
+        "none";
+
+
+    administrators.forEach(row => {
+
+        const user =
+            allUsers.find(
+                u => u.id === row.user_id
+            );
+
+
+        const email =
+            user
+            ? user.email
+            : "Utilisateur";
+
+
+        const role =
+            row.roles;
+
+
+        const tr =
+            document.createElement(
+                "tr"
+            );
+
+
+        tr.innerHTML = `
+
+            <td>
+                ${escapeHTML(email)}
+            </td>
+
+            <td>
+
+                <span class="role">
+
+                    ${escapeHTML(
+                        role.name
+                    )}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                ${escapeHTML(
+                    role.description ||
+                    "-"
+                )}
+
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        class="btn-edit"
+                        onclick="openEditModal(
+                            '${row.user_id}',
+                            '${role.id}'
+                        )">
+
+                        Modifier
+
+                    </button>
+
+
+                    <button
+                        class="btn-danger"
+                        onclick="deleteAdministrator(
+                            '${row.user_id}',
+                            '${escapeHTML(email)}'
+                        )">
+
+                        Supprimer
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =================================
+   POPULATE USERS
+================================= */
+
+function populateUserSelect() {
+
+    const select =
+        document.getElementById(
+            "userSelect"
+        );
+
+
+    select.innerHTML = `
+
+        <option value="">
+            Sélectionner un utilisateur
+        </option>
+
+    `;
+
+
+    /*
+     * Nou pa mete yon itilizatè
+     * ki deja gen yon rôle admin.
+     */
+
+    const adminUserIds =
+        new Set(
+            administrators.map(
+                row => row.user_id
+            )
+        );
+
+
+    allUsers
+
+        .filter(
+            user =>
+                !adminUserIds.has(
+                    user.id
+                )
+        )
+
+        .forEach(user => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                user.id;
+
+            option.textContent =
+                user.email;
+
+            select.appendChild(option);
+
+        });
+
+}
+
+
+/* =================================
+   OPEN ADD MODAL
+================================= */
+
+function openAddModal() {
+
+    editingUserId = null;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Ajouter un administrateur";
+
+
+    document.getElementById(
+        "saveBtn"
+    ).textContent =
+        "Enregistrer";
+
+
+    document.getElementById(
+        "userSelect"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "selectedEmailBox"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "userSelect"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "roleSelect"
+    ).value =
+        "";
+
+
+    populateUserSelect();
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add("show");
+
+}
+
+
+/* =================================
+   OPEN EDIT MODAL
+================================= */
+
+function openEditModal(
+    userId,
+    roleId
+) {
+
+    editingUserId =
+        userId;
+
+
+    const user =
+        allUsers.find(
+            u => u.id === userId
+        );
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Modifier le rôle";
+
+
+    document.getElementById(
+        "saveBtn"
+    ).textContent =
+        "Modifier";
+
+
+    document.getElementById(
+        "userSelect"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "selectedEmailBox"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "selectedEmail"
+    ).value =
+        user
+        ? user.email
+        : "Utilisateur";
+
+
+    document.getElementById(
+        "roleSelect"
+    ).value =
+        roleId;
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add("show");
+
+}
+
+
+/* =================================
+   CLOSE MODAL
+================================= */
+
+function closeModal() {
+
+    document.getElementById(
+        "modal"
+    ).classList.remove("show");
+
+}
+
+
+/* =================================
+   SAVE ADMINISTRATOR
+================================= */
+
+async function saveAdministrator() {
+
+    const roleId =
+        document.getElementById(
+            "roleSelect"
+        ).value;
+
+
+    if (!roleId) {
+
+        showAlert(
+            "Veuillez sélectionner un rôle."
+        );
+
+        return;
+
+    }
+
+
+    const saveBtn =
+        document.getElementById(
+            "saveBtn"
+        );
+
+
+    saveBtn.disabled = true;
+
+    saveBtn.textContent =
+        "Enregistrement...";
+
+
+    try {
+
+
+        /* ============================
+           EDIT
+        ============================ */
+
+        if (editingUserId) {
+
+
+            /*
+             * Chercher l'ancien rôle
+             */
+
+            const {
+                data: existing,
+                error: findError
+            } =
+            await supabaseClient
+
+                .from("user_roles")
+
+                .select(
+                    "role_id"
+                )
+
+                .eq(
+                    "user_id",
+                    editingUserId
+                );
+
+
+            if (findError) {
+
+                throw findError;
+
+            }
+
+
+            if (
+                !existing ||
+                existing.length === 0
+            ) {
+
+                throw new Error(
+                    "Aucun rôle trouvé pour cet utilisateur."
+                );
+
+            }
+
+
+            /*
+             * Supprimer l'ancien rôle.
+             */
+
+            const {
+                error: deleteError
+            } =
+            await supabaseClient
+
+                .from("user_roles")
+
+                .delete()
+
+                .eq(
+                    "user_id",
+                    editingUserId
+                );
+
+
+            if (deleteError) {
+
+                throw deleteError;
+
+            }
+
+
+            /*
+             * Ajouter le nouveau rôle.
+             */
+
+            const {
+                error: insertError
+            } =
+            await supabaseClient
+
+                .from("user_roles")
+
+                .insert({
+
+                    user_id:
+                        editingUserId,
+
+                    role_id:
+                        roleId
+
+                });
+
+
+            if (insertError) {
+
+                throw insertError;
+
+            }
+
+
+            showAlert(
+                "Le rôle a été modifié avec succès.",
+                "success"
+            );
+
+        }
+
+
+        /* ============================
+           ADD
+        ============================ */
+
+        else {
+
+
+            const userId =
+                document.getElementById(
+                    "userSelect"
+                ).value;
+
+
+            if (!userId) {
+
+                throw new Error(
+                    "Veuillez sélectionner un utilisateur."
+                );
+
+            }
+
+
+            /*
+             * Verify si user deja gen role
+             */
+
+            const {
+                data: existing,
+                error: checkError
+            } =
+            await supabaseClient
+
+                .from("user_roles")
+
+                .select(
+                    "user_id, role_id"
+                )
+
+                .eq(
+                    "user_id",
+                    userId
+                );
+
+
+            if (checkError) {
+
+                throw checkError;
+
+            }
+
+
+            if (
+                existing &&
+                existing.length > 0
+            ) {
+
+                throw new Error(
+                    "Cet utilisateur possède déjà un rôle."
+                );
+
+            }
+
+
+            /*
+             * Insert rôle
+             */
+
+            const {
+                error: insertError
+            } =
+            await supabaseClient
+
+                .from("user_roles")
+
+                .insert({
+
+                    user_id:
+                        userId,
+
+                    role_id:
+                        roleId
+
+                });
+
+
+            if (insertError) {
+
+                throw insertError;
+
+            }
+
+
+            showAlert(
+                "Administrateur ajouté avec succès.",
+                "success"
+            );
+
+        }
+
+
+        closeModal();
+
+        await loadAdministrators();
+
+        populateUserSelect();
+
+    }
+    catch (error) {
+
+        console.error(
+            "SAVE ADMIN ERROR:",
+            error
+        );
+
+
+        showAlert(
+            "Impossible d'enregistrer : " +
+            error.message
+        );
+
+    }
+    finally {
+
+        saveBtn.disabled =
+            false;
+
+        saveBtn.textContent =
+            editingUserId
+            ? "Modifier"
+            : "Enregistrer";
+
+    }
+
+}
+
+
+/* =================================
+   DELETE ADMINISTRATOR
+================================= */
+
+async function deleteAdministrator(
+    userId,
+    email
+) {
+
+    /*
+     * Protection:
+     * Super Admin pa ka retire tèt li.
+     */
+
+    if (
+        userId === currentUser.id
+    ) {
+
+        showAlert(
+            "Vous ne pouvez pas supprimer votre propre accès administrateur."
+        );
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+            "Voulez-vous vraiment retirer le rôle administrateur de :\n\n" +
+            email +
+            " ?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            error
+        } =
+        await supabaseClient
+
+            .from("user_roles")
+
+            .delete()
+
+            .eq(
+                "user_id",
+                userId
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        showAlert(
+            "L'accès administrateur a été supprimé.",
+            "success"
+        );
+
+
+        await loadAdministrators();
+
+        populateUserSelect();
+
+    }
+    catch (error) {
+
+        console.error(
+            "DELETE ADMIN ERROR:",
+            error
+        );
+
+
+        showAlert(
+            "Impossible de supprimer l'administrateur : " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =================================
+   USER SELECT CHANGE
+================================= */
+
+document
+    .getElementById(
+        "userSelect"
+    )
+    .addEventListener(
+        "change",
+        function() {
+
+            const userId =
+                this.value;
+
+
+            if (!userId) {
+
+                return;
+
+            }
+
+
+            const user =
+                allUsers.find(
+                    u => u.id === userId
+                );
+
+
+            if (user) {
+
+                document.getElementById(
+                    "selectedEmail"
+                ).value =
+                    user.email;
+
+            }
+
+        }
+    );
+
+
+/* =================================
+   CLOSE MODAL OUTSIDE
+================================= */
+
+document
+    .getElementById(
+        "modal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =================================
+   START
+================================= */
+
+async function startPage() {
+
+    const isAdmin =
+        await verifyAdmin();
+
+
+    if (!isAdmin) {
+
+        return;
+
+    }
+
+
+    await loadRoles();
+
+    await loadUsers();
+
+    await loadAdministrators();
+
+}
+
+
+startPage();
+
+</script>
+
+</body>
+
+</html>

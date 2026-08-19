@@ -277,3 +277,21 @@ if (loginForm) {
     });
 
 }
+
+async function checkCourseAccess(courseId) {
+
+  const { data, error } = await supabase.rpc(
+    'has_course_access',
+    {
+      p_user_id: currentUser.id,
+      p_course_id: courseId
+    }
+  );
+
+  if (error) {
+    console.log(error);
+    return false;
+  }
+
+  return data;
+}

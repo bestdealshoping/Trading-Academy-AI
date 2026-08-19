@@ -1,0 +1,2650 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>
+    Gestion des utilisateurs | Trading Academy AI
+</title>
+
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #172033;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+.app {
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+
+    min-height: 100vh;
+
+    padding: 25px 30px;
+
+    max-width: 1500px;
+
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    gap: 15px;
+}
+
+
+.title-area h1 {
+
+    margin: 0;
+
+    font-size: 27px;
+}
+
+
+.title-area p {
+
+    margin:
+        6px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn {
+
+    border: 0;
+
+    padding:
+        10px 15px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    font-size: 13px;
+}
+
+
+.btn-primary {
+
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.btn-primary:hover {
+
+    background: #1d4ed8;
+}
+
+
+.btn-secondary {
+
+    background: #e2e8f0;
+
+    color: #334155;
+}
+
+
+.btn-secondary:hover {
+
+    background: #cbd5e1;
+}
+
+
+.btn-danger {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+
+.btn-danger:hover {
+
+    background: #fecaca;
+}
+
+
+.btn-success {
+
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+
+.btn-success:hover {
+
+    background: #bbf7d0;
+}
+
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+.stat-card {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.stat-card p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+.stat-card h2 {
+
+    margin:
+        6px 0 0;
+
+    font-size: 25px;
+}
+
+
+.stat-icon {
+
+    width: 43px;
+
+    height: 43px;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 20px;
+}
+
+
+/* =====================================================
+   PANEL
+===================================================== */
+
+.panel {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+.filters {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 180px 150px auto;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+
+.search {
+
+    position: relative;
+}
+
+
+.search input {
+
+    width: 100%;
+
+    padding:
+        12px 14px;
+
+    border:
+        1px solid #dbe1ea;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+
+.search input:focus {
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.1);
+}
+
+
+.filters select {
+
+    width: 100%;
+
+    padding:
+        11px 12px;
+
+    border:
+        1px solid #dbe1ea;
+
+    border-radius: 9px;
+
+    background: white;
+
+    outline: none;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 850px;
+}
+
+
+thead {
+
+    background: #f8fafc;
+}
+
+
+th {
+
+    text-align: left;
+
+    padding:
+        13px 12px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .4px;
+
+    border-bottom:
+        1px solid #e5e7eb;
+}
+
+
+td {
+
+    padding:
+        14px 12px;
+
+    border-bottom:
+        1px solid #f1f5f9;
+
+    font-size: 13px;
+
+    vertical-align: middle;
+}
+
+
+tbody tr:hover {
+
+    background: #f8fafc;
+}
+
+
+/* =====================================================
+   USER
+===================================================== */
+
+.user-cell {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.avatar {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-weight: bold;
+
+    flex-shrink: 0;
+}
+
+
+.user-name {
+
+    font-weight: 700;
+
+    color: #172033;
+}
+
+
+.user-sub {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge {
+
+    display: inline-block;
+
+    padding:
+        5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.badge-active {
+
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+
+.badge-banned {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+}
+
+
+.badge-unknown {
+
+    background: #f1f5f9;
+
+    color: #475569;
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.actions {
+
+    display: flex;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+}
+
+
+.action-btn {
+
+    border: 0;
+
+    padding:
+        7px 9px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+.action-view {
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+}
+
+
+.action-access {
+
+    background: #f3e8ff;
+
+    color: #7e22ce;
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty {
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #64748b;
+}
+
+
+.empty-icon {
+
+    font-size: 40px;
+
+    margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: #f4f7fb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 5000;
+
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(15,23,42,.55);
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    z-index: 3000;
+}
+
+
+.modal.show {
+
+    display: flex;
+}
+
+
+.modal-box {
+
+    width: 100%;
+
+    max-width: 650px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.25);
+}
+
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+.modal-header h2 {
+
+    margin: 0;
+
+    font-size: 19px;
+}
+
+
+.close {
+
+    border: 0;
+
+    background: #f1f5f9;
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    font-size: 18px;
+}
+
+
+.detail-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+.detail {
+
+    background: #f8fafc;
+
+    border-radius: 9px;
+
+    padding: 12px;
+}
+
+
+.detail-label {
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+
+.detail-value {
+
+    font-weight: 600;
+
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+
+.modal-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid #e5e7eb;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 20px;
+
+    background: #0f172a;
+
+    color: white;
+
+    padding:
+        13px 17px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    display: none;
+
+    z-index: 6000;
+
+    max-width: 350px;
+}
+
+
+.toast.show {
+
+    display: block;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:1000px) {
+
+    .stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .filters {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+}
+
+
+@media(max-width:700px) {
+
+    .main {
+
+        padding: 18px;
+    }
+
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .topbar .btn {
+
+        width: 100%;
+    }
+
+
+    .stats {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .filters {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .detail-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+    id="loading"
+    class="loading">
+
+    Vérification des privilèges...
+
+</div>
+
+
+
+<div
+    id="app"
+    class="app"
+    style="display:none;">
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
+
+    <header class="topbar">
+
+
+        <div class="title-area">
+
+            <div>
+
+                <h1>
+                    Gestion des utilisateurs
+                </h1>
+
+                <p>
+                    Gérer les comptes et les accès de Trading Academy AI
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            style="
+                display:flex;
+                gap:8px;
+                flex-wrap:wrap;
+            ">
+
+
+            <!-- RETOUR DASHBOARD -->
+
+            <button
+                class="btn btn-secondary"
+                onclick="window.location.href='admin.html'">
+
+                ← Retour au Dashboard Admin
+
+            </button>
+
+
+            <!-- ACTUALISER -->
+
+            <button
+                class="btn btn-primary"
+                onclick="loadUsers()">
+
+                🔄 Actualiser
+
+            </button>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         STATISTICS
+    ================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Total utilisateurs
+                </p>
+
+                <h2 id="totalUsers">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Actifs
+                </p>
+
+                <h2 id="activeUsers">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Bannis
+                </p>
+
+                <h2 id="bannedUsers">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                🚫
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <p>
+                    Résultats
+                </p>
+
+                <h2 id="resultCount">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="stat-icon">
+                🔎
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         USERS PANEL
+    ================================================== -->
+
+    <section class="panel">
+
+
+        <div class="filters">
+
+
+            <div class="search">
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Rechercher un utilisateur...">
+
+            </div>
+
+
+            <select id="statusFilter">
+
+                <option value="all">
+                    Tous les statuts
+                </option>
+
+                <option value="active">
+                    Actifs
+                </option>
+
+                <option value="banned">
+                    Bannis
+                </option>
+
+            </select>
+
+
+            <select id="sortFilter">
+
+                <option value="newest">
+                    Plus récents
+                </option>
+
+                <option value="oldest">
+                    Plus anciens
+                </option>
+
+                <option value="name">
+                    Nom A-Z
+                </option>
+
+            </select>
+
+
+            <button
+                class="btn btn-secondary"
+                onclick="resetFilters()">
+
+                Réinitialiser
+
+            </button>
+
+
+        </div>
+
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Utilisateur
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Statut
+                        </th>
+
+                        <th>
+                            Rôle
+                        </th>
+
+                        <th>
+                            Inscription
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="usersTable">
+
+                    <tr>
+
+                        <td
+                            colspan="6">
+
+                            <div class="empty">
+
+                                Chargement des utilisateurs...
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     USER MODAL
+===================================================== -->
+
+<div
+    id="userModal"
+    class="modal">
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Profil utilisateur
+            </h2>
+
+
+            <button
+                class="close"
+                onclick="closeModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="userDetails">
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast">
+
+</div>
+
+
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE CONFIG
+===================================================== */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =====================================================
+   GLOBAL DATA
+===================================================== */
+
+let allUsers = [];
+
+let filteredUsers = [];
+
+let selectedUser = null;
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   GET FIRST EXISTING VALUE
+===================================================== */
+
+function getValue(
+    object,
+    keys,
+    fallback = ""
+){
+
+    for(
+        const key of keys
+    ){
+
+        if(
+            object &&
+            Object.prototype.hasOwnProperty.call(
+                object,
+                key
+            ) &&
+            object[key] !== null &&
+            object[key] !== undefined &&
+            object[key] !== ""
+        ){
+
+            return object[key];
+
+        }
+
+    }
+
+    return fallback;
+
+}
+
+
+/* =====================================================
+   USER NAME
+===================================================== */
+
+function getUserName(user){
+
+    return getValue(
+        user,
+        [
+            "name",
+            "full_name",
+            "username",
+            "display_name",
+            "nom",
+            "first_name"
+        ],
+        "Utilisateur"
+    );
+
+}
+
+
+/* =====================================================
+   USER EMAIL
+===================================================== */
+
+function getUserEmail(user){
+
+    return getValue(
+        user,
+        [
+            "email",
+            "mail"
+        ],
+        "Email non disponible"
+    );
+
+}
+
+
+/* =====================================================
+   USER STATUS
+===================================================== */
+
+function getUserStatus(user){
+
+    const status =
+        String(
+            getValue(
+                user,
+                [
+                    "status",
+                    "statut",
+                    "account_status"
+                ],
+                ""
+            )
+        )
+        .toLowerCase();
+
+
+    if(
+        status.includes("ban") ||
+        status.includes("block") ||
+        status.includes("suspend")
+    ){
+
+        return "banned";
+
+    }
+
+
+    return "active";
+
+}
+
+
+/* =====================================================
+   USER ROLE
+===================================================== */
+
+function getUserRole(user){
+
+    return getValue(
+        user,
+        [
+            "role",
+            "user_role"
+        ],
+        "Utilisateur"
+    );
+
+}
+
+
+/* =====================================================
+   CREATED DATE
+===================================================== */
+
+function getCreatedDate(user){
+
+    return getValue(
+        user,
+        [
+            "created_at",
+            "createdAt",
+            "date_created"
+        ],
+        ""
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value){
+
+    if(!value){
+
+        return "—";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return escapeHTML(value);
+
+    }
+
+
+    return date.toLocaleDateString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   INITIALS
+===================================================== */
+
+function getInitials(name){
+
+    const parts =
+        String(name)
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
+
+
+    if(!parts.length){
+
+        return "U";
+
+    }
+
+
+    if(parts.length === 1){
+
+        return parts[0]
+            .substring(0,2)
+            .toUpperCase();
+
+    }
+
+
+    return (
+        parts[0][0] +
+        parts[1][0]
+    ).toUpperCase();
+
+}
+
+
+/* =====================================================
+   VERIFY ADMIN
+===================================================== */
+
+async function verifyAdmin(){
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+        if(
+            error ||
+            !data.user
+        ){
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        const user =
+            data.user;
+
+
+        const {
+            data: userRoles,
+            error: roleError
+        } =
+        await supabaseClient
+
+            .from("user_roles")
+
+            .select(`
+                role_id,
+                roles (
+                    id,
+                    name
+                )
+            `)
+
+            .eq(
+                "user_id",
+                user.id
+            );
+
+
+        if(roleError){
+
+            console.error(
+                "ROLE ERROR:",
+                roleError
+            );
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        const isAdmin =
+        (userRoles || []).some(
+            row => {
+
+                if(!row.roles){
+
+                    return false;
+
+                }
+
+
+                const role =
+                String(
+                    row.roles.name || ""
+                )
+                .trim()
+                .toLowerCase();
+
+
+                return (
+                    role === "admin" ||
+                    role === "super admin"
+                );
+
+            }
+        );
+
+
+        if(!isAdmin){
+
+            window.location.href =
+                "dashboard.html";
+
+            return false;
+
+        }
+
+
+        document
+            .getElementById("loading")
+            .style.display = "none";
+
+
+        document
+            .getElementById("app")
+            .style.display = "block";
+
+
+        await loadUsers();
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "VERIFY ADMIN ERROR:",
+            error
+        );
+
+
+        window.location.href =
+            "admin-login.html";
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD USERS
+===================================================== */
+
+async function loadUsers(){
+
+    const table =
+        document.getElementById(
+            "usersTable"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <td colspan="6">
+
+                <div class="empty">
+
+                    Chargement des utilisateurs...
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from("users")
+
+            .select("*");
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        allUsers =
+            Array.isArray(data)
+            ? data
+            : [];
+
+
+        filteredUsers =
+            [...allUsers];
+
+
+        updateStatistics();
+
+        applyFilters();
+
+    }
+    catch(error){
+
+        console.error(
+            "LOAD USERS ERROR:",
+            error
+        );
+
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            ⚠️
+                        </div>
+
+                        Impossible de charger
+                        les utilisateurs.
+
+                        <br><br>
+
+                        <small>
+                            ${escapeHTML(
+                                error.message ||
+                                "Erreur inconnue"
+                            )}
+                        </small>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        showToast(
+            "Impossible de charger les utilisateurs."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+function updateStatistics(){
+
+    const total =
+        allUsers.length;
+
+
+    const banned =
+        allUsers.filter(
+            user =>
+                getUserStatus(user)
+                === "banned"
+        ).length;
+
+
+    const active =
+        total - banned;
+
+
+    document
+        .getElementById(
+            "totalUsers"
+        )
+        .textContent =
+            total;
+
+
+    document
+        .getElementById(
+            "activeUsers"
+        )
+        .textContent =
+            active;
+
+
+    document
+        .getElementById(
+            "bannedUsers"
+        )
+        .textContent =
+            banned;
+
+
+    document
+        .getElementById(
+            "resultCount"
+        )
+        .textContent =
+            filteredUsers.length;
+
+}
+
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+function applyFilters(){
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const status =
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .value;
+
+
+    const sort =
+        document
+            .getElementById(
+                "sortFilter"
+            )
+            .value;
+
+
+    filteredUsers =
+        allUsers.filter(
+            user => {
+
+                const name =
+                    getUserName(user)
+                        .toLowerCase();
+
+
+                const email =
+                    getUserEmail(user)
+                        .toLowerCase();
+
+
+                const userStatus =
+                    getUserStatus(user);
+
+
+                const matchesSearch =
+                    !search ||
+                    name.includes(search) ||
+                    email.includes(search);
+
+
+                const matchesStatus =
+                    status === "all" ||
+                    userStatus === status;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    filteredUsers.sort(
+        (a,b) => {
+
+            if(sort === "name"){
+
+                return getUserName(a)
+                    .localeCompare(
+                        getUserName(b)
+                    );
+
+            }
+
+
+            const dateA =
+                new Date(
+                    getCreatedDate(a) || 0
+                ).getTime();
+
+
+            const dateB =
+                new Date(
+                    getCreatedDate(b) || 0
+                ).getTime();
+
+
+            if(sort === "oldest"){
+
+                return dateA - dateB;
+
+            }
+
+
+            return dateB - dateA;
+
+        }
+    );
+
+
+    updateStatistics();
+
+    renderUsers();
+
+}
+
+
+/* =====================================================
+   RENDER USERS
+===================================================== */
+
+function renderUsers(){
+
+    const table =
+        document.getElementById(
+            "usersTable"
+        );
+
+
+    if(!filteredUsers.length){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            👥
+                        </div>
+
+                        Aucun utilisateur trouvé.
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML = "";
+
+
+    filteredUsers.forEach(
+        user => {
+
+            const id =
+                getValue(
+                    user,
+                    ["id"],
+                    ""
+                );
+
+
+            const name =
+                getUserName(user);
+
+
+            const email =
+                getUserEmail(user);
+
+
+            const status =
+                getUserStatus(user);
+
+
+            const role =
+                getUserRole(user);
+
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div class="user-cell">
+
+                        <div class="avatar">
+
+                            ${escapeHTML(
+                                getInitials(name)
+                            )}
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="user-name">
+
+                                ${escapeHTML(name)}
+
+                            </div>
+
+
+                            <div class="user-sub">
+
+                                ID:
+                                ${escapeHTML(
+                                    id || "—"
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(email)}
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        status === "banned"
+
+                        ? `
+                            <span class="badge badge-banned">
+                                🚫 Banni
+                            </span>
+                          `
+
+                        : `
+                            <span class="badge badge-active">
+                                🟢 Actif
+                            </span>
+                          `
+                    }
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(role)}
+
+                </td>
+
+
+                <td>
+
+                    ${formatDate(
+                        getCreatedDate(user)
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <div class="actions">
+
+                        <button
+                            class="action-btn action-view"
+                            onclick="openUser('${escapeHTML(id)}')">
+
+                            👁 Voir
+
+                        </button>
+
+
+                        <button
+                            class="action-btn action-access"
+                            onclick="manageAccess('${escapeHTML(id)}')">
+
+                            🎓 Accès
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   OPEN USER
+===================================================== */
+
+function openUser(id){
+
+    selectedUser =
+        allUsers.find(
+            user =>
+                String(user.id) ===
+                String(id)
+        );
+
+
+    if(!selectedUser){
+
+        showToast(
+            "Utilisateur introuvable."
+        );
+
+        return;
+
+    }
+
+
+    const name =
+        getUserName(selectedUser);
+
+
+    const email =
+        getUserEmail(selectedUser);
+
+
+    const status =
+        getUserStatus(selectedUser);
+
+
+    const role =
+        getUserRole(selectedUser);
+
+
+    const created =
+        getCreatedDate(selectedUser);
+
+
+    const details =
+        document.getElementById(
+            "userDetails"
+        );
+
+
+    details.innerHTML = `
+
+        <div class="user-cell"
+             style="margin-bottom:20px;">
+
+            <div
+                class="avatar"
+                style="
+                    width:55px;
+                    height:55px;
+                    font-size:18px;
+                ">
+
+                ${escapeHTML(
+                    getInitials(name)
+                )}
+
+            </div>
+
+
+            <div>
+
+                <div
+                    class="user-name"
+                    style="font-size:18px;">
+
+                    ${escapeHTML(name)}
+
+                </div>
+
+
+                <div class="user-sub">
+
+                    ${escapeHTML(email)}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-grid">
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    ID
+                </div>
+
+                <div class="detail-value">
+
+                    ${escapeHTML(
+                        selectedUser.id || "—"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Statut
+                </div>
+
+                <div class="detail-value">
+
+                    ${
+                        status === "banned"
+                        ? "🚫 Banni"
+                        : "🟢 Actif"
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Email
+                </div>
+
+                <div class="detail-value">
+
+                    ${escapeHTML(email)}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Rôle
+                </div>
+
+                <div class="detail-value">
+
+                    ${escapeHTML(role)}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Inscription
+                </div>
+
+                <div class="detail-value">
+
+                    ${formatDate(created)}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Champs disponibles
+                </div>
+
+                <div class="detail-value">
+
+                    ${Object.keys(selectedUser).length}
+                    champs
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="modal-actions">
+
+
+            <button
+                class="btn btn-primary"
+                onclick="manageAccess('${escapeHTML(
+                    selectedUser.id
+                )}')">
+
+                🎓 Gérer les accès
+
+            </button>
+
+
+            ${
+                status === "banned"
+
+                ? `
+                    <button
+                        class="btn btn-success"
+                        onclick="requestUnban()">
+
+                        🔓 Débannir
+
+                    </button>
+                  `
+
+                : `
+                    <button
+                        class="btn btn-danger"
+                        onclick="requestBan()">
+
+                        🚫 Bannir
+
+                    </button>
+                  `
+            }
+
+
+        </div>
+
+
+        <div
+            style="
+                margin-top:15px;
+                padding:12px;
+                background:#fff7ed;
+                border:1px solid #fed7aa;
+                border-radius:9px;
+                color:#9a3412;
+                font-size:12px;
+            ">
+
+            ℹ️ Les actions sensibles
+            comme le bannissement et
+            l'attribution d'accès seront
+            connectées à la structure
+            exacte de votre base de données
+            avant toute modification.
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById("userModal")
+        .classList
+        .add("show");
+
+}
+
+
+/* =====================================================
+   ACCESS MANAGEMENT
+===================================================== */
+
+function manageAccess(id){
+
+    const user =
+        allUsers.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if(!user){
+
+        showToast(
+            "Utilisateur introuvable."
+        );
+
+        return;
+
+    }
+
+
+    selectedUser =
+        user;
+
+
+    alert(
+        "Gestion des accès pour " +
+        getUserName(user) +
+        " sera connectée à la structure exacte des accès aux cours."
+    );
+
+}
+
+
+/* =====================================================
+   BAN
+===================================================== */
+
+function requestBan(){
+
+    if(!selectedUser){
+
+        return;
+
+    }
+
+
+    alert(
+        "Action de bannissement préparée pour " +
+        getUserName(selectedUser) +
+        ".\n\nNous ne modifions encore aucune colonne inconnue dans Supabase."
+    );
+
+}
+
+
+/* =====================================================
+   UNBAN
+===================================================== */
+
+function requestUnban(){
+
+    if(!selectedUser){
+
+        return;
+
+    }
+
+
+    alert(
+        "Action de déblocage préparée pour " +
+        getUserName(selectedUser) +
+        ".\n\nNous ne modifions encore aucune colonne inconnue dans Supabase."
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal(){
+
+    document
+        .getElementById("userModal")
+        .classList
+        .remove("show");
+
+}
+
+
+/* =====================================================
+   RESET FILTERS
+===================================================== */
+
+function resetFilters(){
+
+    document
+        .getElementById("searchInput")
+        .value = "";
+
+
+    document
+        .getElementById("statusFilter")
+        .value = "all";
+
+
+    document
+        .getElementById("sortFilter")
+        .value = "newest";
+
+
+    applyFilters();
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove("show");
+
+        },
+        3000
+    );
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        applyFilters
+    );
+
+
+document
+    .getElementById("statusFilter")
+    .addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+document
+    .getElementById("sortFilter")
+    .addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+/* =====================================================
+   CLOSE MODAL OUTSIDE
+===================================================== */
+
+document
+    .getElementById("userModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+async function logout(){
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+verifyAdmin();
+
+</script>
+
+</body>
+
+</html>
