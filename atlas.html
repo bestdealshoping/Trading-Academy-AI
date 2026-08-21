@@ -7,6 +7,9 @@
 
 <title>Atlas IA | Trading Academy AI</title>
 
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{
     box-sizing:border-box;
@@ -33,14 +36,7 @@ button{
     cursor:pointer;
 }
 
-button:disabled{
-    cursor:not-allowed;
-    opacity:.65;
-}
-
-/* =====================================================
-   APP
-===================================================== */
+/* ================= APP ================= */
 
 .app{
     min-height:100vh;
@@ -48,25 +44,19 @@ button:disabled{
     flex-direction:column;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
+/* ================= HEADER ================= */
 
 .header{
     height:70px;
     background:#0f172a;
     color:white;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     padding:0 25px;
-
     position:sticky;
     top:0;
     z-index:1000;
-
     box-shadow:0 2px 15px rgba(15,23,42,.15);
 }
 
@@ -80,10 +70,8 @@ button:disabled{
     border:0;
     background:rgba(255,255,255,.08);
     color:white;
-
-    padding:10px 14px;
-    border-radius:9px;
-
+    padding:9px 13px;
+    border-radius:8px;
     font-size:14px;
 }
 
@@ -110,7 +98,6 @@ button:disabled{
     display:flex;
     align-items:center;
     gap:7px;
-
     font-size:12px;
     color:#94a3b8;
 }
@@ -119,16 +106,11 @@ button:disabled{
     width:8px;
     height:8px;
     border-radius:50%;
-
     background:#22c55e;
-
-    box-shadow:
-        0 0 8px rgba(34,197,94,.7);
+    box-shadow:0 0 8px rgba(34,197,94,.7);
 }
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* ================= MAIN ================= */
 
 .main{
     width:min(1500px,100%);
@@ -138,42 +120,28 @@ button:disabled{
 
 .layout{
     display:grid;
-
-    grid-template-columns:
-        260px
-        minmax(0,1fr)
-        280px;
-
+    grid-template-columns:260px minmax(0,1fr) 280px;
     gap:20px;
-
     align-items:start;
 }
 
-/* =====================================================
-   PANELS
-===================================================== */
+/* ================= PANELS ================= */
 
 .panel{
     background:white;
-
     border:1px solid #e5e7eb;
     border-radius:14px;
-
     overflow:hidden;
 }
 
 .panel-title{
     padding:16px 17px;
-
     border-bottom:1px solid #eef2f7;
-
     font-weight:700;
     font-size:14px;
 }
 
-/* =====================================================
-   HISTORY
-===================================================== */
+/* ================= HISTORY ================= */
 
 .history{
     min-height:520px;
@@ -181,18 +149,12 @@ button:disabled{
 
 .new-chat{
     width:calc(100% - 24px);
-
     margin:12px;
-
     border:0;
-
     background:#2563eb;
     color:white;
-
     padding:11px;
-
     border-radius:9px;
-
     font-weight:700;
 }
 
@@ -206,20 +168,13 @@ button:disabled{
 
 .history-item{
     width:100%;
-
     border:0;
     background:transparent;
-
     text-align:left;
-
     padding:11px;
-
     border-radius:8px;
-
     color:#475569;
-
     font-size:12px;
-
     margin-bottom:3px;
 }
 
@@ -239,22 +194,17 @@ button:disabled{
     margin-top:4px;
 }
 
-/* =====================================================
-   CHAT
-===================================================== */
+/* ================= CHAT ================= */
 
 .chat-panel{
     display:flex;
     flex-direction:column;
-
     min-height:720px;
 }
 
 .chat-header{
     padding:18px;
-
     border-bottom:1px solid #eef2f7;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -269,22 +219,12 @@ button:disabled{
 .atlas-icon{
     width:42px;
     height:42px;
-
     border-radius:12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #7c3aed
-        );
-
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
     display:flex;
     align-items:center;
     justify-content:center;
-
     color:white;
-
     font-size:20px;
 }
 
@@ -295,91 +235,63 @@ button:disabled{
 
 .atlas-title p{
     margin:4px 0 0;
-
     color:#64748b;
-
     font-size:11px;
 }
 
 .level{
     background:#eff6ff;
     color:#2563eb;
-
     border-radius:20px;
-
     padding:6px 10px;
-
     font-size:10px;
     font-weight:700;
 }
 
-/* =====================================================
-   MESSAGES
-===================================================== */
+/* ================= MESSAGES ================= */
 
 .messages{
     flex:1;
-
     padding:25px;
-
     overflow-y:auto;
-
     min-height:490px;
     max-height:600px;
-
     background:#fbfdff;
 }
 
 .welcome{
     max-width:650px;
-
     margin:25px auto;
-
     text-align:center;
 }
 
 .welcome-icon{
     width:65px;
     height:65px;
-
     border-radius:18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #7c3aed
-        );
-
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
     display:flex;
     align-items:center;
     justify-content:center;
-
     margin:0 auto 15px;
-
     color:white;
     font-size:30px;
 }
 
 .welcome h2{
     margin:0 0 8px;
-
     font-size:23px;
 }
 
 .welcome p{
     color:#64748b;
-
     line-height:1.6;
-
     font-size:13px;
 }
 
 .message{
     display:flex;
-
     margin-bottom:18px;
-
     gap:10px;
 }
 
@@ -390,15 +302,11 @@ button:disabled{
 .avatar{
     width:32px;
     height:32px;
-
     min-width:32px;
-
     border-radius:9px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     font-size:13px;
     font-weight:bold;
 }
@@ -416,22 +324,15 @@ button:disabled{
 
 .bubble{
     max-width:min(720px,80%);
-
     padding:12px 15px;
-
     border-radius:12px;
-
     font-size:13px;
     line-height:1.65;
-
     white-space:pre-wrap;
-
-    overflow-wrap:anywhere;
 }
 
 .message.ai .bubble{
     background:white;
-
     border:1px solid #e5e7eb;
 }
 
@@ -440,36 +341,27 @@ button:disabled{
     color:white;
 }
 
-/* =====================================================
-   ERROR
-===================================================== */
+/* ================= ERROR ================= */
 
-.message.ai.error .bubble{
-    border-color:#fecaca;
-    background:#fff7f7;
-    color:#991b1b;
+.error-bubble{
+    background:#fff1f2 !important;
+    border:1px solid #fecdd3 !important;
+    color:#9f1239;
 }
 
-/* =====================================================
-   TYPING
-===================================================== */
+/* ================= TYPING ================= */
 
 .typing{
     display:inline-flex;
-
     gap:4px;
-
     align-items:center;
 }
 
 .typing span{
     width:6px;
     height:6px;
-
     background:#94a3b8;
-
     border-radius:50%;
-
     animation:typing 1.2s infinite;
 }
 
@@ -482,10 +374,7 @@ button:disabled{
 }
 
 @keyframes typing{
-
-    0%,
-    60%,
-    100%{
+    0%,60%,100%{
         transform:translateY(0);
         opacity:.4;
     }
@@ -496,113 +385,74 @@ button:disabled{
     }
 }
 
-/* =====================================================
-   SUGGESTIONS
-===================================================== */
+/* ================= SUGGESTIONS ================= */
 
 .suggestions{
     padding:12px 18px;
-
     border-top:1px solid #eef2f7;
-
     display:flex;
-
     gap:8px;
-
     overflow-x:auto;
 }
 
 .suggestion{
     white-space:nowrap;
-
     border:1px solid #dbe3ef;
-
     background:white;
-
     color:#475569;
-
     border-radius:20px;
-
     padding:8px 11px;
-
     font-size:11px;
 }
 
 .suggestion:hover{
     border-color:#2563eb;
-
     color:#2563eb;
-
     background:#eff6ff;
 }
 
-/* =====================================================
-   INPUT
-===================================================== */
+/* ================= INPUT ================= */
 
 .chat-input{
     border-top:1px solid #eef2f7;
-
     padding:14px;
-
     background:white;
 }
 
 .input-box{
     display:flex;
-
     align-items:flex-end;
-
     gap:8px;
-
     border:1px solid #dbe3ef;
-
     border-radius:12px;
-
     padding:8px;
-
     background:#f8fafc;
 }
 
 .input-box:focus-within{
     border-color:#2563eb;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(37,99,235,.08);
+    box-shadow:0 0 0 3px rgba(37,99,235,.08);
 }
 
 #prompt{
     flex:1;
-
     border:0;
-
     outline:none;
-
     resize:none;
-
     background:transparent;
-
     min-height:42px;
     max-height:120px;
-
     padding:9px;
-
     font-size:13px;
 }
 
 .send-btn{
     width:42px;
     height:42px;
-
     border:0;
-
     border-radius:9px;
-
     background:#2563eb;
-
     color:white;
-
     font-size:18px;
 }
 
@@ -610,17 +460,18 @@ button:disabled{
     background:#1d4ed8;
 }
 
+.send-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
 .input-help{
     font-size:9px;
-
     color:#94a3b8;
-
     margin:7px 4px 0;
 }
 
-/* =====================================================
-   MARKET
-===================================================== */
+/* ================= MARKET ================= */
 
 .market-panel{
     min-height:520px;
@@ -628,13 +479,9 @@ button:disabled{
 
 .market-header{
     padding:16px;
-
     border-bottom:1px solid #eef2f7;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
 }
 
@@ -644,13 +491,9 @@ button:disabled{
 
 .live{
     font-size:10px;
-
     color:#16a34a;
-
     display:flex;
-
     align-items:center;
-
     gap:5px;
 }
 
@@ -660,7 +503,6 @@ button:disabled{
 
 .market-card{
     padding:12px;
-
     border-bottom:1px solid #f1f5f9;
 }
 
@@ -670,9 +512,7 @@ button:disabled{
 
 .market-top{
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
 }
 
@@ -691,104 +531,45 @@ button:disabled{
     margin-top:4px;
 }
 
-.positive{
-    color:#16a34a;
-}
-
-.negative{
-    color:#dc2626;
-}
-
 .market-note{
     margin:14px;
-
     padding:12px;
-
     background:#f8fafc;
-
     border-radius:9px;
-
     font-size:10px;
-
     color:#64748b;
-
     line-height:1.5;
 }
 
-/* =====================================================
-   QUICK CONTEXT
-===================================================== */
+/* ================= CONTEXT ================= */
 
 .context-buttons{
     padding:12px;
-
     display:grid;
-
     gap:7px;
 }
 
 .context-btn{
     border:1px solid #e2e8f0;
-
     background:white;
-
     padding:9px;
-
     border-radius:8px;
-
     text-align:left;
-
     font-size:11px;
-
     color:#475569;
 }
 
 .context-btn:hover{
     border-color:#2563eb;
-
     background:#eff6ff;
 }
 
-/* =====================================================
-   CONNECTION STATUS
-===================================================== */
-
-.connection-box{
-    margin:12px;
-
-    padding:10px;
-
-    border-radius:8px;
-
-    background:#f8fafc;
-
-    color:#64748b;
-
-    font-size:10px;
-
-    line-height:1.5;
-}
-
-.connection-box.ok{
-    background:#f0fdf4;
-    color:#166534;
-}
-
-.connection-box.error{
-    background:#fef2f2;
-    color:#991b1b;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+/* ================= RESPONSIVE ================= */
 
 @media(max-width:1150px){
 
     .layout{
-        grid-template-columns:
-            220px
-            minmax(0,1fr);
+        grid-template-columns:220px minmax(0,1fr);
     }
 
     .market-panel{
@@ -845,14 +626,12 @@ button:disabled{
 
     .back-btn{
         font-size:0;
-
         width:38px;
         height:38px;
     }
 
     .back-btn::before{
         content:"←";
-
         font-size:18px;
     }
 
@@ -883,10 +662,6 @@ button:disabled{
 
 <div class="app">
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header class="header">
 
     <div class="header-left">
@@ -899,8 +674,7 @@ button:disabled{
         </button>
 
         <div class="brand">
-            Trading Academy
-            <span>AI</span>
+            Trading Academy <span>AI</span>
         </div>
 
     </div>
@@ -915,7 +689,7 @@ button:disabled{
             ></span>
 
             <span id="statusText">
-                Atlas IA
+                Connexion...
             </span>
 
         </div>
@@ -925,18 +699,12 @@ button:disabled{
 </header>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main class="main">
 
 <div class="layout">
 
 
-<!-- =====================================================
-     HISTORY
-===================================================== -->
+<!-- ================= HISTORY ================= -->
 
 <aside class="panel history">
 
@@ -952,23 +720,16 @@ button:disabled{
     </button>
 
     <div
-        id="connectionBox"
-        class="connection-box"
-    >
-        Connexion Atlas...
-    </div>
-
-    <div
         id="historyList"
         class="history-list"
-    ></div>
+    >
+
+    </div>
 
 </aside>
 
 
-<!-- =====================================================
-     CHAT
-===================================================== -->
+<!-- ================= CHAT ================= -->
 
 <section class="panel chat-panel">
 
@@ -1031,9 +792,7 @@ button:disabled{
                 Pose-moi une question sur le trading,
                 le marché, l'analyse technique,
                 la gestion du risque ou ta formation.
-
                 <br><br>
-
                 Je peux adapter mes explications
                 à ton niveau d'apprentissage.
             </p>
@@ -1116,9 +875,7 @@ button:disabled{
 </section>
 
 
-<!-- =====================================================
-     MARKET
-===================================================== -->
+<!-- ================= MARKET ================= -->
 
 <aside class="panel market-panel">
 
@@ -1256,15 +1013,13 @@ button:disabled{
 
     <div class="market-note">
 
-        💡 <strong>Contexte marché</strong>
+        💡
+        <strong>Contexte marché</strong>
 
         <br><br>
 
-        Les données affichées ici servent uniquement
-        de contexte pour Atlas IA.
-
-        <br><br>
-
+        Les données affichées ici servent
+        uniquement de contexte pour Atlas IA.
         Elles ne constituent pas un conseil financier.
 
     </div>
@@ -1309,8 +1064,8 @@ button:disabled{
 
 </aside>
 
-
 </div>
+
 </main>
 
 </div>
@@ -1319,313 +1074,86 @@ button:disabled{
 <script>
 
 /* =========================================================
-   ATLAS IA — CONFIGURATION
-========================================================= */
+   CONFIGURATION SUPABASE
+   ========================================================= */
 
 /*
-   IMPORTANT:
+   IMPORTANT :
 
-   Nou pa import ./supabase.js isit la.
+   SUPABASE_URL = URL piblik pwojè Supabase la.
 
-   Nou itilize session Supabase ki deja anrejistre
-   nan localStorage navigatè a.
+   SUPABASE_ANON_KEY =
+   Publishable/anon key pwojè a.
 
-   Sa evite erè:
+   PA METE OPENAI_API_KEY LA.
 
-   "supabase.js does not provide an export named supabase"
+   OPENAI_API_KEY rete nan:
+   Supabase → Edge Functions → atlas-chat → Settings → Secrets
 */
 
+const SUPABASE_URL =
+    "https://jmkwek gpsogbdpkjqqyx.supabase.co"
+        .replace(/\s/g, "");
 
-const ATLAS_FUNCTION_NAME = "atlas-chat";
+
+/*
+   Mete PUBLISHABLE / ANON KEY Supabase ou la anba a.
+*/
+const SUPABASE_ANON_KEY =
+    "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
 
 
-let ATLAS_API_URL = null;
+/*
+   Non Edge Function lan.
+*/
+const ATLAS_FUNCTION_NAME =
+    "atlas-chat";
 
-let currentAccessToken = null;
 
-let currentProjectRef = null;
+/* =========================================================
+   SUPABASE CLIENT
+   ========================================================= */
+
+let supabaseClient = null;
+
+try {
+
+    if (
+        typeof window.supabase !== "undefined" &&
+        SUPABASE_ANON_KEY &&
+        !SUPABASE_ANON_KEY.startsWith("METE_")
+    ){
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+    }
+
+} catch(error){
+
+    console.error(
+        "ATLAS SUPABASE INIT ERROR:",
+        error
+    );
+
+}
 
 
 /* =========================================================
    STATE
-========================================================= */
+   ========================================================= */
 
 let conversation = [];
-
-let currentConversationId = null;
 
 let isLoading = false;
 
 
 /* =========================================================
-   DOM READY
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function(){
-
-        setupTextarea();
-
-        await initializeAtlas();
-
-        loadHistory();
-
-        fetchMarketData();
-
-    }
-);
-
-
-/* =========================================================
-   INITIALIZE ATLAS
-========================================================= */
-
-async function initializeAtlas(){
-
-    try{
-
-        setConnectionStatus(
-            "Recherche session Supabase...",
-            "loading"
-        );
-
-
-        const session =
-            getSupabaseSessionFromStorage();
-
-
-        if(
-            !session ||
-            !session.access_token
-        ){
-
-            setConnectionStatus(
-                "Session Supabase introuvable.",
-                "error"
-            );
-
-            console.error(
-                "ATLAS: Aucun access_token Supabase trouvé."
-            );
-
-            return false;
-        }
-
-
-        currentAccessToken =
-            session.access_token;
-
-
-        currentProjectRef =
-            session.projectRef;
-
-
-        if(!currentProjectRef){
-
-            setConnectionStatus(
-                "Project Ref Supabase introuvable.",
-                "error"
-            );
-
-            return false;
-        }
-
-
-        ATLAS_API_URL =
-            "https://" +
-            currentProjectRef +
-            ".supabase.co/functions/v1/" +
-            ATLAS_FUNCTION_NAME;
-
-
-        console.log(
-            "ATLAS API:",
-            ATLAS_API_URL
-        );
-
-
-        setConnectionStatus(
-            "Atlas IA connecté.",
-            "ok"
-        );
-
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "ATLAS INITIALIZATION ERROR:",
-            error
-        );
-
-
-        setConnectionStatus(
-            "Erreur de connexion Atlas.",
-            "error"
-        );
-
-
-        return false;
-    }
-}
-
-
-/* =========================================================
-   GET SUPABASE SESSION
-========================================================= */
-
-/*
-   Supabase stocke normalement la session sous une clé
-   ressemblant à:
-
-   sb-PROJECT_REF-auth-token
-
-   Nou pa bezwen konnen PROJECT_REF la davans.
-*/
-
-function getSupabaseSessionFromStorage(){
-
-    try{
-
-        for(
-            let i = 0;
-            i < localStorage.length;
-            i++
-        ){
-
-            const key =
-                localStorage.key(i);
-
-
-            if(
-                !key ||
-                !key.startsWith("sb-") ||
-                !key.endsWith("-auth-token")
-            ){
-
-                continue;
-            }
-
-
-            const projectRef =
-                key.substring(
-                    3,
-                    key.length -
-                    "-auth-token".length
-                );
-
-
-            const raw =
-                localStorage.getItem(key);
-
-
-            if(!raw){
-                continue;
-            }
-
-
-            const parsed =
-                JSON.parse(raw);
-
-
-            /*
-               Supabase session structure:
-
-               {
-                   access_token: "...",
-                   refresh_token: "..."
-               }
-            */
-
-            if(
-                parsed &&
-                parsed.access_token
-            ){
-
-                return {
-
-                    access_token:
-                        parsed.access_token,
-
-                    refresh_token:
-                        parsed.refresh_token || null,
-
-                    projectRef:
-                        projectRef
-
-                };
-
-            }
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "SESSION STORAGE ERROR:",
-            error
-        );
-
-    }
-
-
-    return null;
-}
-
-
-/* =========================================================
-   CONNECTION STATUS
-========================================================= */
-
-function setConnectionStatus(
-    message,
-    type = "loading"
-){
-
-    const box =
-        document.getElementById(
-            "connectionBox"
-        );
-
-
-    const statusText =
-        document.getElementById(
-            "statusText"
-        );
-
-
-    if(box){
-
-        box.textContent =
-            message;
-
-
-        box.className =
-            "connection-box " +
-            (
-                type === "ok"
-                    ? "ok"
-                    : type === "error"
-                        ? "error"
-                        : ""
-            );
-    }
-
-
-    if(statusText){
-
-        statusText.textContent =
-            message;
-    }
-
-}
-
-
-/* =========================================================
    DASHBOARD
-========================================================= */
+   ========================================================= */
 
 function goDashboard(){
 
@@ -1636,56 +1164,80 @@ function goDashboard(){
 
 
 /* =========================================================
-   ESCAPE HTML
-========================================================= */
+   HTML ESCAPE
+   ========================================================= */
 
 function escapeHTML(value){
 
     return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
+}
 
-        .replace(
-            /</g,
-            "&lt;"
-        )
 
-        .replace(
-            />/g,
-            "&gt;"
-        )
+/* =========================================================
+   STATUS
+   ========================================================= */
 
-        .replace(
-            /"/g,
-            "&quot;"
-        )
+function setStatus(
+    connected,
+    text
+){
 
-        .replace(
-            /'/g,
-            "&#039;"
+    const dot =
+        document.getElementById(
+            "statusDot"
         );
+
+    const statusText =
+        document.getElementById(
+            "statusText"
+        );
+
+
+    statusText.textContent =
+        text;
+
+
+    if(connected){
+
+        dot.style.background =
+            "#22c55e";
+
+        dot.style.boxShadow =
+            "0 0 8px rgba(34,197,94,.7)";
+
+    }else{
+
+        dot.style.background =
+            "#ef4444";
+
+        dot.style.boxShadow =
+            "0 0 8px rgba(239,68,68,.7)";
+
+    }
 
 }
 
 
 /* =========================================================
    ADD MESSAGE
-========================================================= */
+   ========================================================= */
 
 function addMessage(
     role,
     text,
-    error = false
+    isError = false
 ){
 
     const messages =
         document.getElementById(
             "messages"
         );
-
 
     const welcome =
         document.getElementById(
@@ -1705,26 +1257,14 @@ function addMessage(
             "div"
         );
 
-
     wrapper.className =
-        "message " +
-        role;
-
-
-    if(error){
-
-        wrapper.classList.add(
-            "error"
-        );
-
-    }
+        "message " + role;
 
 
     const avatar =
         document.createElement(
             "div"
         );
-
 
     avatar.className =
         "avatar";
@@ -1741,10 +1281,24 @@ function addMessage(
             "div"
         );
 
-
     bubble.className =
         "bubble";
 
+
+    if(isError){
+
+        bubble.classList.add(
+            "error-bubble"
+        );
+
+    }
+
+
+    /*
+       textContent enpòtan:
+       li anpeche repons AI a egzekite
+       HTML oswa JavaScript.
+    */
 
     bubble.textContent =
         text;
@@ -1754,11 +1308,9 @@ function addMessage(
         avatar
     );
 
-
     wrapper.appendChild(
         bubble
     );
-
 
     messages.appendChild(
         wrapper
@@ -1773,7 +1325,7 @@ function addMessage(
 
 /* =========================================================
    TYPING
-========================================================= */
+   ========================================================= */
 
 function showTyping(){
 
@@ -1781,9 +1333,6 @@ function showTyping(){
         document.getElementById(
             "messages"
         );
-
-
-    removeTyping();
 
 
     const wrapper =
@@ -1801,10 +1350,7 @@ function showTyping(){
 
 
     wrapper.innerHTML = `
-
-        <div class="avatar">
-            AI
-        </div>
+        <div class="avatar">AI</div>
 
         <div class="bubble">
 
@@ -1817,7 +1363,6 @@ function showTyping(){
             </div>
 
         </div>
-
     `;
 
 
@@ -1834,7 +1379,7 @@ function showTyping(){
 
 /* =========================================================
    REMOVE TYPING
-========================================================= */
+   ========================================================= */
 
 function removeTyping(){
 
@@ -1854,8 +1399,43 @@ function removeTyping(){
 
 
 /* =========================================================
+   GET SUPABASE SESSION
+   ========================================================= */
+
+async function getCurrentSession(){
+
+    if(!supabaseClient){
+
+        throw new Error(
+            "Supabase client pa configure."
+        );
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth
+            .getSession();
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    return data.session;
+
+}
+
+
+/* =========================================================
    SEND MESSAGE
-========================================================= */
+   ========================================================= */
 
 async function sendMessage(){
 
@@ -1883,45 +1463,30 @@ async function sendMessage(){
     }
 
 
-    /* -----------------------------------------------------
-       VERIFY SESSION
-    ----------------------------------------------------- */
+    /*
+       Vérifie configuration
+    */
 
     if(
-        !ATLAS_API_URL ||
-        !currentAccessToken
+        !SUPABASE_ANON_KEY ||
+        SUPABASE_ANON_KEY.startsWith("METE_")
     ){
 
-        const initialized =
-            await initializeAtlas();
+        addMessage(
+            "ai",
+            "⚠️ Atlas IA pa konfigire: mete Supabase Publishable/Anon Key la nan atlas.html.",
+            true
+        );
 
-
-        if(!initialized){
-
-            addMessage(
-                "ai",
-                "⚠️ Atlas IA pa konekte. Verifye si ou konekte sou Trading Academy AI epi rechaje paj la.",
-                true
-            );
-
-            return;
-        }
+        return;
 
     }
 
-
-    /* -----------------------------------------------------
-       CLEAR INPUT
-    ----------------------------------------------------- */
 
     input.value = "";
 
     autoResize(input);
 
-
-    /* -----------------------------------------------------
-       SHOW USER MESSAGE
-    ----------------------------------------------------- */
 
     addMessage(
         "user",
@@ -1931,11 +1496,9 @@ async function sendMessage(){
 
     conversation.push({
 
-        role:
-            "user",
+        role:"user",
 
-        content:
-            prompt
+        content:prompt
 
     });
 
@@ -1946,84 +1509,149 @@ async function sendMessage(){
     isLoading = true;
 
 
-    document
-        .getElementById(
-            "sendBtn"
-        )
-        .disabled = true;
+    document.getElementById(
+        "sendBtn"
+    ).disabled = true;
 
 
     try{
 
-        /* =================================================
-           BUILD REQUEST
-        ================================================= */
 
-        const payload = {
+        /* =========================================
+           1. RECUPERE SESSION
+           ========================================= */
 
-            conversation_id:
-                currentConversationId,
+        const session =
+            await getCurrentSession();
 
-            message:
-                prompt,
 
-            history:
-                conversation.slice(-20),
+        if(!session){
 
-            market_context:
-                getMarketContext(),
+            removeTyping();
 
-            student_level:
-                document
-                    .getElementById(
-                        "studentLevel"
-                    )
-                    .textContent
 
-        };
+            addMessage(
+                "ai",
+                "⚠️ Atlas IA pa konekte. Session Supabase itilizatè a pa jwenn. Tanpri konekte sou Trading Academy AI epi retounen sou Atlas IA.",
+                true
+            );
+
+
+            setStatus(
+                false,
+                "Non connecté"
+            );
+
+
+            return;
+
+        }
+
+
+        const accessToken =
+            session.access_token;
+
+
+        if(!accessToken){
+
+            throw new Error(
+                "Aucun access_token Supabase trouvé."
+            );
+
+        }
+
+
+        /* =========================================
+           2. MARKET CONTEXT
+           ========================================= */
+
+        const market =
+            getMarketContext();
+
+
+        /* =========================================
+           3. STUDENT LEVEL
+           ========================================= */
+
+        const studentLevel =
+            document
+                .getElementById(
+                    "studentLevel"
+                )
+                .textContent
+                .trim();
+
+
+        /* =========================================
+           4. CALL EDGE FUNCTION
+           ========================================= */
+
+        const functionURL =
+            SUPABASE_URL +
+            "/functions/v1/" +
+            ATLAS_FUNCTION_NAME;
 
 
         console.log(
             "ATLAS REQUEST:",
-            payload
+            functionURL
         );
 
 
-        /* =================================================
-           CALL EDGE FUNCTION
-        ================================================= */
-
         const response =
             await fetch(
-                ATLAS_API_URL,
+                functionURL,
                 {
 
-                    method:
-                        "POST",
+                    method:"POST",
 
-                    headers: {
+                    headers:{
 
                         "Content-Type":
                             "application/json",
 
+                        /*
+                           Sa a se pati ki te
+                           manke nan ansyen version an.
+                        */
+
                         "Authorization":
                             "Bearer " +
-                            currentAccessToken
+                            accessToken,
+
+                        /*
+                           Ansyen Edge Function
+                           ka li sa tou.
+                        */
+
+                        "apikey":
+                            SUPABASE_ANON_KEY
 
                     },
 
-                    body:
-                        JSON.stringify(
-                            payload
-                        )
+
+                    body:JSON.stringify({
+
+                        message:prompt,
+
+                        conversation:
+                            conversation,
+
+                        student_level:
+                            studentLevel,
+
+                        market:
+                            market
+
+                    })
 
                 }
             );
 
 
-        /* =================================================
-           READ RESPONSE
-        ================================================= */
+        /* =========================================
+           5. READ RESPONSE
+           ========================================= */
 
         let data = null;
 
@@ -2032,21 +1660,17 @@ async function sendMessage(){
             data =
                 await response.json();
 
-        }catch(_){
+        }catch(jsonError){
 
             data = null;
 
         }
 
 
-        /* =================================================
-           ERROR
-        ================================================= */
-
         if(!response.ok){
 
             console.error(
-                "ATLAS HTTP ERROR:",
+                "ATLAS FUNCTION ERROR:",
                 response.status,
                 data
             );
@@ -2058,12 +1682,21 @@ async function sendMessage(){
 
             if(
                 data &&
-                typeof data.error ===
-                    "string"
+                data.error
             ){
 
                 errorMessage =
                     data.error;
+
+            }
+
+            else if(
+                data &&
+                data.message
+            ){
+
+                errorMessage =
+                    data.message;
 
             }
 
@@ -2075,51 +1708,34 @@ async function sendMessage(){
         }
 
 
-        /* =================================================
-           REMOVE TYPING
-        ================================================= */
-
         removeTyping();
 
 
-        /* =================================================
-           EXTRACT ANSWER
-        ================================================= */
+        /*
+           Atlas ka retounen:
+           { answer: "..." }
+
+           oswa:
+           { message: "..." }
+        */
 
         const answer =
-            data?.message?.content ||
-            data?.answer ||
-            data?.message ||
-            data?.content ||
-            "";
+            data &&
+            (
+                data.answer ||
+                data.message ||
+                data.response
+            );
 
 
         if(!answer){
 
             throw new Error(
-                "Atlas IA retounen yon repons vid."
+                "Atlas IA pa retounen okenn repons."
             );
 
         }
 
-
-        /* =================================================
-           SAVE CONVERSATION ID
-        ================================================= */
-
-        if(
-            data?.conversation_id
-        ){
-
-            currentConversationId =
-                data.conversation_id;
-
-        }
-
-
-        /* =================================================
-           SHOW AI ANSWER
-        ================================================= */
 
         addMessage(
             "ai",
@@ -2129,25 +1745,26 @@ async function sendMessage(){
 
         conversation.push({
 
-            role:
-                "assistant",
+            role:"assistant",
 
-            content:
-                answer
+            content:answer
 
         });
 
-
-        /* =================================================
-           HISTORY
-        ================================================= */
 
         saveHistory(
             prompt
         );
 
 
+        setStatus(
+            true,
+            "Atlas IA actif"
+        );
+
+
     }catch(error){
+
 
         console.error(
             "ATLAS ERROR:",
@@ -2158,32 +1775,56 @@ async function sendMessage(){
         removeTyping();
 
 
-        const message =
-            error?.message ||
-            "Yon erè rive pandan koneksyon ak Atlas IA.";
+        let message =
+            error.message ||
+            "Erreur inconnue.";
+
+
+        /*
+           Message espesyal pou session.
+        */
+
+        if(
+            message
+                .toLowerCase()
+                .includes(
+                    "access_token"
+                )
+        ){
+
+            message =
+                "⚠️ Atlas IA pa jwenn access_token Supabase la. Verifye si itilizatè a konekte sou Trading Academy AI epi si session Supabase la aktif.";
+
+        }
 
 
         addMessage(
             "ai",
-            "⚠️ " +
+            "⚠️ Atlas IA pa kapab konekte.\n\n" +
             message +
-            "\n\nVerifye Console la si pwoblèm nan kontinye.",
+            "\n\n" +
+            "Verifye Edge Function atlas-chat ak Logs nan Supabase.",
             true
+        );
+
+
+        setStatus(
+            false,
+            "Erreur connexion"
         );
 
 
     }finally{
 
+
         isLoading =
             false;
 
 
-        document
-            .getElementById(
-                "sendBtn"
-            )
-            .disabled =
-                false;
+        document.getElementById(
+            "sendBtn"
+        ).disabled =
+            false;
 
 
         input.focus();
@@ -2195,11 +1836,9 @@ async function sendMessage(){
 
 /* =========================================================
    SUGGESTION
-========================================================= */
+   ========================================================= */
 
-function useSuggestion(
-    button
-){
+function useSuggestion(button){
 
     const input =
         document.getElementById(
@@ -2223,15 +1862,12 @@ function useSuggestion(
 
 /* =========================================================
    KEYBOARD
-========================================================= */
+   ========================================================= */
 
-function handleKey(
-    event
-){
+function handleKey(event){
 
     if(
-        event.key ===
-            "Enter" &&
+        event.key === "Enter" &&
         !event.shiftKey
     ){
 
@@ -2246,11 +1882,9 @@ function handleKey(
 
 /* =========================================================
    TEXTAREA
-========================================================= */
+   ========================================================= */
 
-function autoResize(
-    element
-){
+function autoResize(element){
 
     element.style.height =
         "auto";
@@ -2260,50 +1894,14 @@ function autoResize(
         Math.min(
             element.scrollHeight,
             120
-        ) +
-        "px";
-
-}
-
-
-function setupTextarea(){
-
-    const input =
-        document.getElementById(
-            "prompt"
-        );
-
-
-    if(!input){
-
-        return;
-
-    }
-
-
-    input.addEventListener(
-        "input",
-        function(){
-
-            autoResize(
-                this
-            );
-
-        }
-    );
-
-
-    input.addEventListener(
-        "keydown",
-        handleKey
-    );
+        ) + "px";
 
 }
 
 
 /* =========================================================
    MARKET CONTEXT
-========================================================= */
+   ========================================================= */
 
 function getMarketContext(){
 
@@ -2314,32 +1912,28 @@ function getMarketContext(){
                 .getElementById(
                     "eurusd-price"
                 )
-                ?.textContent ||
-            "N/A",
+                .textContent,
 
         GBPUSD:
             document
                 .getElementById(
                     "gbpusd-price"
                 )
-                ?.textContent ||
-            "N/A",
+                .textContent,
 
         USDJPY:
             document
                 .getElementById(
                     "usdjpy-price"
                 )
-                ?.textContent ||
-            "N/A",
+                .textContent,
 
         BTCUSD:
             document
                 .getElementById(
                     "btcusd-price"
                 )
-                ?.textContent ||
-            "N/A"
+                .textContent
 
     };
 
@@ -2348,17 +1942,9 @@ function getMarketContext(){
 
 /* =========================================================
    MARKET DATA
-========================================================= */
+   ========================================================= */
 
 function fetchMarketData(){
-
-    /*
-       Pou kounye a nou pa envante pri.
-
-       Lè market-data backend lan pare,
-       n ap konekte li isit la.
-    */
-
 
     setMarket(
         "eurusd",
@@ -2398,15 +1984,13 @@ function setMarket(
 
     const priceEl =
         document.getElementById(
-            symbol +
-            "-price"
+            symbol + "-price"
         );
 
 
     const changeEl =
         document.getElementById(
-            symbol +
-            "-change"
+            symbol + "-change"
         );
 
 
@@ -2432,11 +2016,9 @@ function setMarket(
 
 /* =========================================================
    MARKET QUESTION
-========================================================= */
+   ========================================================= */
 
-function askMarket(
-    symbol
-){
+function askMarket(symbol){
 
     const input =
         document.getElementById(
@@ -2445,9 +2027,7 @@ function askMarket(
 
 
     input.value =
-        "Analyse " +
-        symbol +
-        " et explique-moi les facteurs importants à surveiller.";
+        `Analyse ${symbol} et explique-moi les facteurs importants à surveiller.`;
 
 
     autoResize(
@@ -2462,14 +2042,11 @@ function askMarket(
 
 /* =========================================================
    NEW CHAT
-========================================================= */
+   ========================================================= */
 
 function newChat(){
 
     conversation = [];
-
-    currentConversationId =
-        null;
 
 
     const messages =
@@ -2495,9 +2072,7 @@ function newChat(){
 
             <p>
                 Pose ta question à Atlas IA.
-
-                <br><br>
-
+                <br>
                 Je suis prêt à t'accompagner
                 dans ton apprentissage du trading.
             </p>
@@ -2510,70 +2085,49 @@ function newChat(){
 
 
 /* =========================================================
-   LOCAL HISTORY
-========================================================= */
+   HISTORY
+   ========================================================= */
 
-function saveHistory(
-    title
-){
+function saveHistory(title){
 
-    try{
-
-        const history =
-            JSON.parse(
-                localStorage.getItem(
-                    "atlas_history"
-                ) ||
-                "[]"
-            );
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "atlas_history"
+            ) || "[]"
+        );
 
 
-        history.unshift({
+    history.unshift({
 
-            title:
-                title.substring(
-                    0,
-                    45
-                ),
+        title:
+            title.substring(
+                0,
+                45
+            ),
 
-            date:
-                new Date()
-                    .toLocaleString()
+        date:
+            new Date()
+                .toLocaleString()
 
-        });
+    });
 
 
-        localStorage.setItem(
-
-            "atlas_history",
-
-            JSON.stringify(
-                history.slice(
-                    0,
-                    20
-                )
+    localStorage.setItem(
+        "atlas_history",
+        JSON.stringify(
+            history.slice(
+                0,
+                20
             )
+        )
+    );
 
-        );
 
-
-        loadHistory();
-
-    }catch(error){
-
-        console.error(
-            "HISTORY SAVE ERROR:",
-            error
-        );
-
-    }
+    loadHistory();
 
 }
 
-
-/* =========================================================
-   LOAD HISTORY
-========================================================= */
 
 function loadHistory(){
 
@@ -2583,112 +2137,221 @@ function loadHistory(){
         );
 
 
-    if(!list){
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "atlas_history"
+            ) || "[]"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if(
+        history.length === 0
+    ){
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.style.padding =
+            "15px";
+
+
+        empty.style.color =
+            "#94a3b8";
+
+
+        empty.style.fontSize =
+            "11px";
+
+
+        empty.textContent =
+            "Aucune conversation";
+
+
+        list.appendChild(
+            empty
+        );
+
 
         return;
 
     }
 
 
-    try{
+    history.forEach(
+        item => {
 
-        const history =
-            JSON.parse(
-                localStorage.getItem(
-                    "atlas_history"
-                ) ||
-                "[]"
-            );
-
-
-        list.innerHTML =
-            "";
-
-
-        if(
-            !history.length
-        ){
-
-            const empty =
+            const button =
                 document.createElement(
-                    "div"
+                    "button"
                 );
 
 
-            empty.style.padding =
-                "12px";
+            button.className =
+                "history-item";
 
 
-            empty.style.color =
-                "#94a3b8";
+            button.innerHTML = `
 
+                💬
+                ${escapeHTML(
+                    item.title
+                )}
 
-            empty.style.fontSize =
-                "11px";
+                <div
+                    class="history-date"
+                >
+                    ${escapeHTML(
+                        item.date
+                    )}
+                </div>
 
-
-            empty.textContent =
-                "Aucune conversation récente.";
+            `;
 
 
             list.appendChild(
-                empty
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+async function initializeAtlas(){
+
+    loadHistory();
+
+    fetchMarketData();
+
+
+    /*
+       Vérifie configuration
+    */
+
+    if(
+        !SUPABASE_ANON_KEY ||
+        SUPABASE_ANON_KEY.startsWith("METE_")
+    ){
+
+        setStatus(
+            false,
+            "Configuration requise"
+        );
+
+
+        console.warn(
+            "ATLAS: SUPABASE_ANON_KEY pa mete."
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+       Vérifie Supabase session.
+    */
+
+    try{
+
+        const session =
+            await getCurrentSession();
+
+
+        if(session){
+
+            setStatus(
+                true,
+                "Atlas IA actif"
             );
 
 
-            return;
+            console.log(
+                "ATLAS: Session Supabase trouvée."
+            );
+
+        }else{
+
+            setStatus(
+                false,
+                "Non connecté"
+            );
+
+
+            console.warn(
+                "ATLAS: Aucun utilisateur connecté."
+            );
 
         }
 
 
-        history.forEach(
-            function(item){
-
-                const button =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                button.className =
-                    "history-item";
-
-
-                button.innerHTML = `
-
-                    💬
-                    ${escapeHTML(
-                        item.title
-                    )}
-
-                    <div
-                        class="history-date"
-                    >
-                        ${escapeHTML(
-                            item.date
-                        )}
-                    </div>
-
-                `;
-
-
-                list.appendChild(
-                    button
-                );
-
-            }
-        );
-
     }catch(error){
 
         console.error(
-            "HISTORY LOAD ERROR:",
+            "ATLAS INIT ERROR:",
             error
+        );
+
+
+        setStatus(
+            false,
+            "Erreur Supabase"
         );
 
     }
 
 }
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const input =
+            document.getElementById(
+                "prompt"
+            );
+
+
+        input.addEventListener(
+            "input",
+            function(){
+
+                autoResize(
+                    this
+                );
+
+            }
+        );
+
+
+        input.addEventListener(
+            "keydown",
+            handleKey
+        );
+
+
+        initializeAtlas();
+
+    }
+);
 
 </script>
 
