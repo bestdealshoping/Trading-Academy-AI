@@ -1,1072 +1,1043 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f172a">
-
-<title>Atlas IA | Trading Academy AI</title>
-
-<!-- Supabase JS -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-*{
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
-    color:#172033;
-}
-
-button,
-textarea,
-input{
-    font-family:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-/* ================= APP ================= */
-
-.app{
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-}
-
-/* ================= HEADER ================= */
-
-.header{
-    height:70px;
-    background:#0f172a;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 25px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-    box-shadow:0 2px 15px rgba(15,23,42,.15);
-}
-
-.header-left{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.back-btn{
-    border:0;
-    background:rgba(255,255,255,.08);
-    color:white;
-    padding:9px 13px;
-    border-radius:8px;
-    font-size:14px;
-}
-
-.back-btn:hover{
-    background:rgba(255,255,255,.16);
-}
-
-.brand{
-    font-size:18px;
-    font-weight:800;
-}
-
-.brand span{
-    color:#3b82f6;
-}
-
-.header-right{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    font-size:12px;
-    color:#94a3b8;
-}
-
-.status-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#22c55e;
-    box-shadow:0 0 8px rgba(34,197,94,.7);
-}
-
-/* ================= MAIN ================= */
-
-.main{
-    width:min(1500px,100%);
-    margin:0 auto;
-    padding:25px;
-}
-
-.layout{
-    display:grid;
-    grid-template-columns:260px minmax(0,1fr) 280px;
-    gap:20px;
-    align-items:start;
-}
-
-/* ================= PANELS ================= */
-
-.panel{
-    background:white;
-    border:1px solid #e5e7eb;
-    border-radius:14px;
-    overflow:hidden;
-}
-
-.panel-title{
-    padding:16px 17px;
-    border-bottom:1px solid #eef2f7;
-    font-weight:700;
-    font-size:14px;
-}
-
-/* ================= HISTORY ================= */
-
-.history{
-    min-height:520px;
-}
-
-.new-chat{
-    width:calc(100% - 24px);
-    margin:12px;
-    border:0;
-    background:#2563eb;
-    color:white;
-    padding:11px;
-    border-radius:9px;
-    font-weight:700;
-}
-
-.new-chat:hover{
-    background:#1d4ed8;
-}
-
-.history-list{
-    padding:6px 10px 15px;
-}
-
-.history-item{
-    width:100%;
-    border:0;
-    background:transparent;
-    text-align:left;
-    padding:11px;
-    border-radius:8px;
-    color:#475569;
-    font-size:12px;
-    margin-bottom:3px;
-}
-
-.history-item:hover{
-    background:#f1f5f9;
-}
-
-.history-item.active{
-    background:#eff6ff;
-    color:#1d4ed8;
-    font-weight:700;
-}
-
-.history-date{
-    color:#94a3b8;
-    font-size:10px;
-    margin-top:4px;
-}
-
-/* ================= CHAT ================= */
-
-.chat-panel{
-    display:flex;
-    flex-direction:column;
-    min-height:720px;
-}
-
-.chat-header{
-    padding:18px;
-    border-bottom:1px solid #eef2f7;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.atlas-title{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.atlas-icon{
-    width:42px;
-    height:42px;
-    border-radius:12px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-size:20px;
-}
-
-.atlas-title h1{
-    margin:0;
-    font-size:19px;
-}
-
-.atlas-title p{
-    margin:4px 0 0;
-    color:#64748b;
-    font-size:11px;
-}
-
-.level{
-    background:#eff6ff;
-    color:#2563eb;
-    border-radius:20px;
-    padding:6px 10px;
-    font-size:10px;
-    font-weight:700;
-}
-
-/* ================= MESSAGES ================= */
-
-.messages{
-    flex:1;
-    padding:25px;
-    overflow-y:auto;
-    min-height:490px;
-    max-height:600px;
-    background:#fbfdff;
-}
-
-.welcome{
-    max-width:650px;
-    margin:25px auto;
-    text-align:center;
-}
-
-.welcome-icon{
-    width:65px;
-    height:65px;
-    border-radius:18px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 auto 15px;
-    color:white;
-    font-size:30px;
-}
-
-.welcome h2{
-    margin:0 0 8px;
-    font-size:23px;
-}
-
-.welcome p{
-    color:#64748b;
-    line-height:1.6;
-    font-size:13px;
-}
-
-.message{
-    display:flex;
-    margin-bottom:18px;
-    gap:10px;
-}
-
-.message.user{
-    justify-content:flex-end;
-}
-
-.avatar{
-    width:32px;
-    height:32px;
-    min-width:32px;
-    border-radius:9px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.message.ai .avatar{
-    background:#dbeafe;
-    color:#2563eb;
-}
-
-.message.user .avatar{
-    background:#0f172a;
-    color:white;
-    order:2;
-}
-
-.bubble{
-    max-width:min(720px,80%);
-    padding:12px 15px;
-    border-radius:12px;
-    font-size:13px;
-    line-height:1.65;
-    white-space:pre-wrap;
-}
-
-.message.ai .bubble{
-    background:white;
-    border:1px solid #e5e7eb;
-}
-
-.message.user .bubble{
-    background:#2563eb;
-    color:white;
-}
-
-/* ================= ERROR ================= */
-
-.error-bubble{
-    background:#fff1f2 !important;
-    border:1px solid #fecdd3 !important;
-    color:#9f1239;
-}
-
-/* ================= TYPING ================= */
-
-.typing{
-    display:inline-flex;
-    gap:4px;
-    align-items:center;
-}
-
-.typing span{
-    width:6px;
-    height:6px;
-    background:#94a3b8;
-    border-radius:50%;
-    animation:typing 1.2s infinite;
-}
-
-.typing span:nth-child(2){
-    animation-delay:.2s;
-}
-
-.typing span:nth-child(3){
-    animation-delay:.4s;
-}
-
-@keyframes typing{
-    0%,60%,100%{
-        transform:translateY(0);
-        opacity:.4;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Atlas IA | Trading Academy AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-    30%{
-        transform:translateY(-4px);
-        opacity:1;
-    }
-}
-
-/* ================= SUGGESTIONS ================= */
-
-.suggestions{
-    padding:12px 18px;
-    border-top:1px solid #eef2f7;
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-}
-
-.suggestion{
-    white-space:nowrap;
-    border:1px solid #dbe3ef;
-    background:white;
-    color:#475569;
-    border-radius:20px;
-    padding:8px 11px;
-    font-size:11px;
-}
-
-.suggestion:hover{
-    border-color:#2563eb;
-    color:#2563eb;
-    background:#eff6ff;
-}
-
-/* ================= INPUT ================= */
-
-.chat-input{
-    border-top:1px solid #eef2f7;
-    padding:14px;
-    background:white;
-}
-
-.input-box{
-    display:flex;
-    align-items:flex-end;
-    gap:8px;
-    border:1px solid #dbe3ef;
-    border-radius:12px;
-    padding:8px;
-    background:#f8fafc;
-}
-
-.input-box:focus-within{
-    border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,.08);
-}
-
-#prompt{
-    flex:1;
-    border:0;
-    outline:none;
-    resize:none;
-    background:transparent;
-    min-height:42px;
-    max-height:120px;
-    padding:9px;
-    font-size:13px;
-}
-
-.send-btn{
-    width:42px;
-    height:42px;
-    border:0;
-    border-radius:9px;
-    background:#2563eb;
-    color:white;
-    font-size:18px;
-}
-
-.send-btn:hover{
-    background:#1d4ed8;
-}
-
-.send-btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.input-help{
-    font-size:9px;
-    color:#94a3b8;
-    margin:7px 4px 0;
-}
-
-/* ================= MARKET ================= */
-
-.market-panel{
-    min-height:520px;
-}
-
-.market-header{
-    padding:16px;
-    border-bottom:1px solid #eef2f7;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.market-header strong{
-    font-size:14px;
-}
-
-.live{
-    font-size:10px;
-    color:#16a34a;
-    display:flex;
-    align-items:center;
-    gap:5px;
-}
-
-.market-list{
-    padding:10px;
-}
-
-.market-card{
-    padding:12px;
-    border-bottom:1px solid #f1f5f9;
-}
-
-.market-card:last-child{
-    border-bottom:0;
-}
-
-.market-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.symbol{
-    font-weight:700;
-    font-size:12px;
-}
-
-.price{
-    font-weight:700;
-    font-size:12px;
-}
-
-.change{
-    font-size:10px;
-    margin-top:4px;
-}
-
-.market-note{
-    margin:14px;
-    padding:12px;
-    background:#f8fafc;
-    border-radius:9px;
-    font-size:10px;
-    color:#64748b;
-    line-height:1.5;
-}
-
-/* ================= CONTEXT ================= */
-
-.context-buttons{
-    padding:12px;
-    display:grid;
-    gap:7px;
-}
-
-.context-btn{
-    border:1px solid #e2e8f0;
-    background:white;
-    padding:9px;
-    border-radius:8px;
-    text-align:left;
-    font-size:11px;
-    color:#475569;
-}
-
-.context-btn:hover{
-    border-color:#2563eb;
-    background:#eff6ff;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:1150px){
-
-    .layout{
-        grid-template-columns:220px minmax(0,1fr);
+    html {
+      scroll-behavior: smooth;
     }
 
-    .market-panel{
-        display:none;
-    }
-}
-
-@media(max-width:800px){
-
-    .header{
-        padding:0 15px;
-        height:62px;
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
     }
 
-    .brand{
-        font-size:15px;
+    button,
+    textarea,
+    input {
+      font-family: inherit;
     }
 
-    .status{
-        display:none;
+    button {
+      cursor: pointer;
     }
 
-    .main{
-        padding:12px;
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .layout{
-        display:block;
+    /* ================= HEADER ================= */
+
+    .header {
+      height: 70px;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 15px rgba(15, 23, 42, .15);
     }
 
-    .history{
-        display:none;
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .chat-panel{
-        min-height:calc(100vh - 86px);
+    .back-btn {
+      border: 0;
+      background: rgba(255,255,255,.08);
+      color: white;
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 14px;
     }
 
-    .messages{
-        min-height:calc(100vh - 300px);
-        max-height:none;
+    .back-btn:hover {
+      background: rgba(255,255,255,.16);
     }
 
-    .bubble{
-        max-width:88%;
+    .brand {
+      font-size: 18px;
+      font-weight: 800;
     }
 
-    .welcome{
-        margin-top:10px;
-    }
-}
-
-@media(max-width:450px){
-
-    .back-btn{
-        font-size:0;
-        width:38px;
-        height:38px;
+    .brand span {
+      color: #3b82f6;
     }
 
-    .back-btn::before{
-        content:"←";
-        font-size:18px;
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .atlas-title h1{
-        font-size:16px;
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: #94a3b8;
     }
 
-    .atlas-title p{
-        font-size:9px;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34,197,94,.7);
     }
 
-    .level{
-        display:none;
+    /* ================= MAIN ================= */
+
+    .main {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: 25px;
     }
 
-    .messages{
-        padding:15px 10px;
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 280px;
+      gap: 20px;
+      align-items: start;
     }
 
-    .suggestions{
-        padding:10px;
+    .panel {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
     }
-}
-</style>
+
+    .panel-title {
+      padding: 16px 17px;
+      border-bottom: 1px solid #eef2f7;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* ================= HISTORY ================= */
+
+    .history {
+      min-height: 520px;
+    }
+
+    .new-chat {
+      width: calc(100% - 24px);
+      margin: 12px;
+      border: 0;
+      background: #2563eb;
+      color: white;
+      padding: 11px;
+      border-radius: 9px;
+      font-weight: 700;
+    }
+
+    .new-chat:hover {
+      background: #1d4ed8;
+    }
+
+    .history-list {
+      padding: 6px 10px 15px;
+    }
+
+    .history-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 11px;
+      border-radius: 8px;
+      color: #475569;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .history-item:hover {
+      background: #f1f5f9;
+    }
+
+    .history-item.active {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .history-date {
+      color: #94a3b8;
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    /* ================= CHAT ================= */
+
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 720px;
+    }
+
+    .chat-header {
+      padding: 18px;
+      border-bottom: 1px solid #eef2f7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .atlas-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .atlas-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+    }
+
+    .atlas-title h1 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .atlas-title p {
+      margin: 4px 0 0;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .level {
+      background: #eff6ff;
+      color: #2563eb;
+      border-radius: 20px;
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ================= MESSAGES ================= */
+
+    .messages {
+      flex: 1;
+      padding: 25px;
+      overflow-y: auto;
+      min-height: 490px;
+      max-height: 600px;
+      background: #fbfdff;
+    }
+
+    .welcome {
+      max-width: 650px;
+      margin: 25px auto;
+      text-align: center;
+    }
+
+    .welcome-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      color: white;
+      font-size: 30px;
+    }
+
+    .welcome h2 {
+      margin: 0 0 8px;
+      font-size: 23px;
+    }
+
+    .welcome p {
+      color: #64748b;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 18px;
+      gap: 10px;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .message.ai .avatar {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .message.user .avatar {
+      background: #0f172a;
+      color: white;
+      order: 2;
+    }
+
+    .bubble {
+      max-width: min(720px, 80%);
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .message.ai .bubble {
+      background: white;
+      border: 1px solid #e5e7eb;
+    }
+
+    .message.user .bubble {
+      background: #2563eb;
+      color: white;
+    }
+
+    /* ================= TYPING ================= */
+
+    .typing {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .typing span {
+      width: 6px;
+      height: 6px;
+      background: #94a3b8;
+      border-radius: 50%;
+      animation: typing 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .2s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: .4s;
+    }
+
+    @keyframes typing {
+      0%,60%,100% {
+        transform: translateY(0);
+        opacity: .4;
+      }
+
+      30% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
+    /* ================= ERROR ================= */
+
+    .connection-error {
+      margin: 10px 0 18px;
+      padding: 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* ================= SUGGESTIONS ================= */
+
+    .suggestions {
+      padding: 12px 18px;
+      border-top: 1px solid #eef2f7;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .suggestion {
+      white-space: nowrap;
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #475569;
+      border-radius: 20px;
+      padding: 8px 11px;
+      font-size: 11px;
+    }
+
+    .suggestion:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: #eff6ff;
+    }
+
+    /* ================= INPUT ================= */
+
+    .chat-input {
+      border-top: 1px solid #eef2f7;
+      padding: 14px;
+      background: white;
+    }
+
+    .input-box {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      padding: 8px;
+      background: #f8fafc;
+    }
+
+    .input-box:focus-within {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+    }
+
+    #prompt {
+      flex: 1;
+      border: 0;
+      outline: none;
+      resize: none;
+      background: transparent;
+      min-height: 42px;
+      max-height: 120px;
+      padding: 9px;
+      font-size: 13px;
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 9px;
+      background: #2563eb;
+      color: white;
+      font-size: 18px;
+    }
+
+    .send-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .send-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .input-help {
+      font-size: 9px;
+      color: #94a3b8;
+      margin: 7px 4px 0;
+    }
+
+    /* ================= MARKET ================= */
+
+    .market-panel {
+      min-height: 520px;
+    }
+
+    .market-header {
+      padding: 16px;
+      border-bottom: 1px solid #eef2f7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .market-header strong {
+      font-size: 14px;
+    }
+
+    .live {
+      font-size: 10px;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .market-list {
+      padding: 10px;
+    }
+
+    .market-card {
+      padding: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .market-card:last-child {
+      border-bottom: 0;
+    }
+
+    .market-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .symbol {
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .change {
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .positive {
+      color: #16a34a;
+    }
+
+    .negative {
+      color: #dc2626;
+    }
+
+    .market-note {
+      margin: 14px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 9px;
+      font-size: 10px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .context-buttons {
+      padding: 12px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .context-btn {
+      border: 1px solid #e2e8f0;
+      background: white;
+      padding: 9px;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 11px;
+      color: #475569;
+    }
+
+    .context-btn:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:1150px) {
+      .layout {
+        grid-template-columns: 220px minmax(0,1fr);
+      }
+
+      .market-panel {
+        display: none;
+      }
+    }
+
+    @media(max-width:800px) {
+      .header {
+        padding: 0 15px;
+        height: 62px;
+      }
+
+      .brand {
+        font-size: 15px;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .main {
+        padding: 12px;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .history {
+        display: none;
+      }
+
+      .chat-panel {
+        min-height: calc(100vh - 86px);
+      }
+
+      .messages {
+        min-height: calc(100vh - 300px);
+        max-height: none;
+      }
+
+      .bubble {
+        max-width: 88%;
+      }
+
+      .welcome {
+        margin-top: 10px;
+      }
+    }
+
+    @media(max-width:450px) {
+      .back-btn {
+        font-size: 0;
+        width: 38px;
+        height: 38px;
+      }
+
+      .back-btn::before {
+        content: "←";
+        font-size: 18px;
+      }
+
+      .atlas-title h1 {
+        font-size: 16px;
+      }
+
+      .atlas-title p {
+        font-size: 9px;
+      }
+
+      .level {
+        display: none;
+      }
+
+      .messages {
+        padding: 15px 10px;
+      }
+
+      .suggestions {
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-<header class="header">
+  <!-- ================= HEADER ================= -->
+
+  <header class="header">
 
     <div class="header-left">
 
-        <button
-            class="back-btn"
-            onclick="goDashboard()"
-        >
-            ← Dashboard
-        </button>
+      <button
+        class="back-btn"
+        onclick="goDashboard()">
+        ← Dashboard
+      </button>
 
-        <div class="brand">
-            Trading Academy <span>AI</span>
-        </div>
+      <div class="brand">
+        Trading Academy <span>AI</span>
+      </div>
 
     </div>
 
     <div class="header-right">
 
-        <div class="status">
+      <div class="status">
+        <span class="status-dot"></span>
+        Atlas IA actif
+      </div>
 
-            <span
-                id="statusDot"
-                class="status-dot"
-            ></span>
+    </div>
 
-            <span id="statusText">
-                Connexion...
-            </span>
+  </header>
 
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="main">
+
+    <div class="layout">
+
+
+      <!-- ================= HISTORY ================= -->
+
+      <aside class="panel history">
+
+        <div class="panel-title">
+          Historique
         </div>
 
-    </div>
+        <button
+          class="new-chat"
+          onclick="newChat()">
+          ＋ Nouvelle conversation
+        </button>
 
-</header>
+        <div
+          id="historyList"
+          class="history-list">
+        </div>
 
-
-<main class="main">
-
-<div class="layout">
-
-
-<!-- ================= HISTORY ================= -->
-
-<aside class="panel history">
-
-    <div class="panel-title">
-        Historique
-    </div>
-
-    <button
-        class="new-chat"
-        onclick="newChat()"
-    >
-        ＋ Nouvelle conversation
-    </button>
-
-    <div
-        id="historyList"
-        class="history-list"
-    >
-
-    </div>
-
-</aside>
+      </aside>
 
 
-<!-- ================= CHAT ================= -->
+      <!-- ================= CHAT ================= -->
 
-<section class="panel chat-panel">
+      <section class="panel chat-panel">
 
-    <div class="chat-header">
+        <div class="chat-header">
 
-        <div class="atlas-title">
+          <div class="atlas-title">
 
             <div class="atlas-icon">
-                🧠
+              🧠
             </div>
 
             <div>
 
-                <h1>
-                    Atlas IA
-                </h1>
+              <h1>
+                Atlas IA
+              </h1>
 
-                <p>
-                    Ton assistant intelligent de trading
-                </p>
+              <p>
+                Ton assistant intelligent de trading
+              </p>
 
             </div>
 
-        </div>
+          </div>
 
-
-        <div class="level">
+          <div class="level">
 
             NIVEAU:
             <span id="studentLevel">
-                Débutant
+              Débutant
             </span>
+
+          </div>
 
         </div>
 
-    </div>
 
-
-    <!-- MESSAGES -->
-
-    <div
-        id="messages"
-        class="messages"
-    >
+        <!-- ================= MESSAGES ================= -->
 
         <div
+          id="messages"
+          class="messages">
+
+          <div
             id="welcome"
-            class="welcome"
-        >
+            class="welcome">
 
             <div class="welcome-icon">
-                🧠
+              🧠
             </div>
 
             <h2>
-                Bienvenue dans Atlas IA
+              Bienvenue dans Atlas IA
             </h2>
 
             <p>
-                Pose-moi une question sur le trading,
-                le marché, l'analyse technique,
-                la gestion du risque ou ta formation.
-                <br><br>
-                Je peux adapter mes explications
-                à ton niveau d'apprentissage.
+              Pose-moi une question sur le trading,
+              le marché, l'analyse technique,
+              la gestion du risque ou ta formation.
+              <br><br>
+              Je peux adapter mes explications
+              à ton niveau d'apprentissage.
             </p>
+
+          </div>
 
         </div>
 
-    </div>
 
+        <!-- ================= SUGGESTIONS ================= -->
 
-    <!-- SUGGESTIONS -->
+        <div class="suggestions">
 
-    <div class="suggestions">
-
-        <button
+          <button
             class="suggestion"
-            onclick="useSuggestion(this)"
-        >
+            onclick="useSuggestion(this)">
             Explique-moi le support et la résistance
-        </button>
+          </button>
 
-        <button
+          <button
             class="suggestion"
-            onclick="useSuggestion(this)"
-        >
+            onclick="useSuggestion(this)">
             Comment analyser EUR/USD ?
-        </button>
+          </button>
 
-        <button
+          <button
             class="suggestion"
-            onclick="useSuggestion(this)"
-        >
+            onclick="useSuggestion(this)">
             Comment calculer mon risque ?
-        </button>
+          </button>
 
-        <button
+          <button
             class="suggestion"
-            onclick="useSuggestion(this)"
-        >
+            onclick="useSuggestion(this)">
             Explique-moi les chandeliers japonais
-        </button>
+          </button>
 
-        <button
+          <button
             class="suggestion"
-            onclick="useSuggestion(this)"
-        >
+            onclick="useSuggestion(this)">
             Qu'est-ce que le leverage ?
-        </button>
+          </button>
 
-    </div>
+        </div>
 
 
-    <!-- INPUT -->
+        <!-- ================= INPUT ================= -->
 
-    <div class="chat-input">
+        <div class="chat-input">
 
-        <div class="input-box">
+          <div class="input-box">
 
             <textarea
-                id="prompt"
-                placeholder="Pose ta question à Atlas IA..."
-                rows="1"
+              id="prompt"
+              placeholder="Pose ta question à Atlas IA..."
+              rows="1"
+              onkeydown="handleKey(event)"
             ></textarea>
 
             <button
-                id="sendBtn"
-                class="send-btn"
-                onclick="sendMessage()"
-            >
-                ➤
+              id="sendBtn"
+              class="send-btn"
+              onclick="sendMessage()">
+              ➤
             </button>
 
-        </div>
+          </div>
 
-        <div class="input-help">
+          <div class="input-help">
             Entrée pour envoyer · Shift + Entrée pour nouvelle ligne
+          </div>
+
         </div>
 
-    </div>
-
-</section>
+      </section>
 
 
-<!-- ================= MARKET ================= -->
+      <!-- ================= MARKET ================= -->
 
-<aside class="panel market-panel">
+      <aside class="panel market-panel">
 
-    <div class="market-header">
+        <div class="market-header">
 
-        <strong>
+          <strong>
             Marché
-        </strong>
+          </strong>
 
-        <div class="live">
-
+          <div class="live">
             <span class="status-dot"></span>
-
             LIVE
+          </div>
 
         </div>
 
-    </div>
+
+        <div
+          id="marketList"
+          class="market-list">
 
 
-    <div
-        id="marketList"
-        class="market-list"
-    >
-
-        <div class="market-card">
+          <div class="market-card">
 
             <div class="market-top">
 
-                <span class="symbol">
-                    EUR/USD
-                </span>
+              <span class="symbol">
+                EUR/USD
+              </span>
 
-                <span
-                    id="eurusd-price"
-                    class="price"
-                >
-                    —
-                </span>
+              <span
+                id="eurusd-price"
+                class="price">
+                —
+              </span>
 
             </div>
 
             <div
-                id="eurusd-change"
-                class="change"
-            >
-                Données indisponibles
+              id="eurusd-change"
+              class="change">
+              Données indisponibles
             </div>
 
-        </div>
+          </div>
 
 
-        <div class="market-card">
+          <div class="market-card">
 
             <div class="market-top">
 
-                <span class="symbol">
-                    GBP/USD
-                </span>
+              <span class="symbol">
+                GBP/USD
+              </span>
 
-                <span
-                    id="gbpusd-price"
-                    class="price"
-                >
-                    —
-                </span>
+              <span
+                id="gbpusd-price"
+                class="price">
+                —
+              </span>
 
             </div>
 
             <div
-                id="gbpusd-change"
-                class="change"
-            >
-                Données indisponibles
+              id="gbpusd-change"
+              class="change">
+              Données indisponibles
             </div>
 
-        </div>
+          </div>
 
 
-        <div class="market-card">
+          <div class="market-card">
 
             <div class="market-top">
 
-                <span class="symbol">
-                    USD/JPY
-                </span>
+              <span class="symbol">
+                USD/JPY
+              </span>
 
-                <span
-                    id="usdjpy-price"
-                    class="price"
-                >
-                    —
-                </span>
+              <span
+                id="usdjpy-price"
+                class="price">
+                —
+              </span>
 
             </div>
 
             <div
-                id="usdjpy-change"
-                class="change"
-            >
-                Données indisponibles
+              id="usdjpy-change"
+              class="change">
+              Données indisponibles
             </div>
 
-        </div>
+          </div>
 
 
-        <div class="market-card">
+          <div class="market-card">
 
             <div class="market-top">
 
-                <span class="symbol">
-                    BTC/USD
-                </span>
+              <span class="symbol">
+                BTC/USD
+              </span>
 
-                <span
-                    id="btcusd-price"
-                    class="price"
-                >
-                    —
-                </span>
+              <span
+                id="btcusd-price"
+                class="price">
+                —
+              </span>
 
             </div>
 
             <div
-                id="btcusd-change"
-                class="change"
-            >
-                Données indisponibles
+              id="btcusd-change"
+              class="change">
+              Données indisponibles
             </div>
+
+          </div>
 
         </div>
 
-    </div>
+
+        <div class="market-note">
+
+          💡 <strong>Contexte marché</strong>
+
+          <br><br>
+
+          Les données affichées ici servent
+          uniquement de contexte pour Atlas IA.
+
+          Elles ne constituent pas
+          un conseil financier.
+
+        </div>
 
 
-    <div class="market-note">
-
-        💡
-        <strong>Contexte marché</strong>
-
-        <br><br>
-
-        Les données affichées ici servent
-        uniquement de contexte pour Atlas IA.
-        Elles ne constituent pas un conseil financier.
-
-    </div>
+        <div class="panel-title">
+          Analyse rapide
+        </div>
 
 
-    <div class="panel-title">
-        Analyse rapide
-    </div>
+        <div class="context-buttons">
 
-
-    <div class="context-buttons">
-
-        <button
+          <button
             class="context-btn"
-            onclick="askMarket('EUR/USD')"
-        >
+            onclick="askMarket('EUR/USD')">
             📊 Analyser EUR/USD
-        </button>
+          </button>
 
-        <button
+          <button
             class="context-btn"
-            onclick="askMarket('BTC/USD')"
-        >
+            onclick="askMarket('BTC/USD')">
             ₿ Analyser BTC/USD
-        </button>
+          </button>
 
-        <button
+          <button
             class="context-btn"
-            onclick="askMarket('GBP/USD')"
-        >
+            onclick="askMarket('GBP/USD')">
             💱 Analyser GBP/USD
-        </button>
+          </button>
 
-        <button
+          <button
             class="context-btn"
-            onclick="askMarket('USD/JPY')"
-        >
+            onclick="askMarket('USD/JPY')">
             📈 Analyser USD/JPY
-        </button>
+          </button>
+
+        </div>
+
+      </aside>
 
     </div>
 
-</aside>
-
-</div>
-
-</main>
+  </main>
 
 </div>
 
@@ -1074,1283 +1045,1011 @@ button{
 <script>
 
 /* =========================================================
-   CONFIGURATION SUPABASE
-   ========================================================= */
+   ATLAS CONFIGURATION
+========================================================= */
 
 /*
-   IMPORTANT :
+   IMPORTANT:
 
-   SUPABASE_URL = URL piblik pwojè Supabase la.
+   API KEY OPENAI A PA JANM NAN FICHYE SA.
 
-   SUPABASE_ANON_KEY =
-   Publishable/anon key pwojè a.
-
-   PA METE OPENAI_API_KEY LA.
-
-   OPENAI_API_KEY rete nan:
-   Supabase → Edge Functions → atlas-chat → Settings → Secrets
+   Frontend GitHub Pages
+          ↓
+   Supabase Edge Function
+          ↓
+   OpenAI / Demo Mode
 */
 
-const SUPABASE_URL =
-    "https://jmkwek gpsogbdpkjqqyx.supabase.co"
-        .replace(/\s/g, "");
-
-
-/*
-   Mete PUBLISHABLE / ANON KEY Supabase ou la anba a.
-*/
-const SUPABASE_ANON_KEY =
-    "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
-
-
-/*
-   Non Edge Function lan.
-*/
-const ATLAS_FUNCTION_NAME =
-    "atlas-chat";
-
-
-/* =========================================================
-   SUPABASE CLIENT
-   ========================================================= */
-
-let supabaseClient = null;
-
-try {
-
-    if (
-        typeof window.supabase !== "undefined" &&
-        SUPABASE_ANON_KEY &&
-        !SUPABASE_ANON_KEY.startsWith("METE_")
-    ){
-
-        supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
-
-    }
-
-} catch(error){
-
-    console.error(
-        "ATLAS SUPABASE INIT ERROR:",
-        error
-    );
-
-}
+const ATLAS_API_URL =
+  "https://jmkwekgpsogbdpkjqqyx.supabase.co/functions/v1/rapid-endpoint";
 
 
 /* =========================================================
    STATE
-   ========================================================= */
+========================================================= */
 
 let conversation = [];
 
 let isLoading = false;
 
+let currentConversationId = null;
+
 
 /* =========================================================
    DASHBOARD
-   ========================================================= */
+========================================================= */
 
-function goDashboard(){
+function goDashboard() {
 
-    window.location.href =
-        "dashboard.html";
-
-}
-
-
-/* =========================================================
-   HTML ESCAPE
-   ========================================================= */
-
-function escapeHTML(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+  window.location.href = "dashboard.html";
 
 }
 
 
 /* =========================================================
-   STATUS
-   ========================================================= */
+   ESCAPE HTML
+========================================================= */
 
-function setStatus(
-    connected,
-    text
-){
+function escapeHTML(value) {
 
-    const dot =
-        document.getElementById(
-            "statusDot"
-        );
+  return String(value)
 
-    const statusText =
-        document.getElementById(
-            "statusText"
-        );
+    .replace(/&/g, "&amp;")
 
+    .replace(/</g, "&lt;")
 
-    statusText.textContent =
-        text;
+    .replace(/>/g, "&gt;")
 
+    .replace(/"/g, "&quot;")
 
-    if(connected){
-
-        dot.style.background =
-            "#22c55e";
-
-        dot.style.boxShadow =
-            "0 0 8px rgba(34,197,94,.7)";
-
-    }else{
-
-        dot.style.background =
-            "#ef4444";
-
-        dot.style.boxShadow =
-            "0 0 8px rgba(239,68,68,.7)";
-
-    }
+    .replace(/'/g, "&#039;");
 
 }
 
 
 /* =========================================================
    ADD MESSAGE
-   ========================================================= */
+========================================================= */
 
-function addMessage(
-    role,
-    text,
-    isError = false
-){
+function addMessage(role, text) {
 
-    const messages =
-        document.getElementById(
-            "messages"
-        );
+  const messages =
+    document.getElementById("messages");
 
-    const welcome =
-        document.getElementById(
-            "welcome"
-        );
+  const welcome =
+    document.getElementById("welcome");
+
+  if (welcome) {
+
+    welcome.remove();
+
+  }
 
 
-    if(welcome){
+  const wrapper =
+    document.createElement("div");
 
-        welcome.remove();
-
-    }
-
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        "message " + role;
+  wrapper.className =
+    "message " + role;
 
 
-    const avatar =
-        document.createElement(
-            "div"
-        );
+  const avatar =
+    document.createElement("div");
 
-    avatar.className =
-        "avatar";
+  avatar.className =
+    "avatar";
 
-
-    avatar.textContent =
-        role === "ai"
-            ? "AI"
-            : "W";
+  avatar.textContent =
+    role === "ai"
+      ? "AI"
+      : "W";
 
 
-    const bubble =
-        document.createElement(
-            "div"
-        );
+  const bubble =
+    document.createElement("div");
 
-    bubble.className =
-        "bubble";
+  bubble.className =
+    "bubble";
 
-
-    if(isError){
-
-        bubble.classList.add(
-            "error-bubble"
-        );
-
-    }
+  bubble.textContent =
+    text;
 
 
-    /*
-       textContent enpòtan:
-       li anpeche repons AI a egzekite
-       HTML oswa JavaScript.
-    */
+  wrapper.appendChild(avatar);
 
-    bubble.textContent =
-        text;
+  wrapper.appendChild(bubble);
+
+  messages.appendChild(wrapper);
 
 
-    wrapper.appendChild(
-        avatar
-    );
+  messages.scrollTop =
+    messages.scrollHeight;
 
-    wrapper.appendChild(
-        bubble
-    );
-
-    messages.appendChild(
-        wrapper
-    );
+}
 
 
-    messages.scrollTop =
-        messages.scrollHeight;
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
+
+function addConnectionError(message) {
+
+  const messages =
+    document.getElementById("messages");
+
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "connection-error";
+
+
+  wrapper.textContent =
+    "⚠️ " + message;
+
+
+  messages.appendChild(wrapper);
+
+
+  messages.scrollTop =
+    messages.scrollHeight;
 
 }
 
 
 /* =========================================================
    TYPING
-   ========================================================= */
+========================================================= */
 
-function showTyping(){
+function showTyping() {
 
-    const messages =
-        document.getElementById(
-            "messages"
-        );
+  const messages =
+    document.getElementById("messages");
 
 
-    const wrapper =
-        document.createElement(
-            "div"
-        );
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.id =
+    "typingMessage";
+
+  wrapper.className =
+    "message ai";
 
 
-    wrapper.id =
-        "typingMessage";
+  wrapper.innerHTML = `
+
+    <div class="avatar">
+      AI
+    </div>
+
+    <div class="bubble">
+
+      <div class="typing">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </div>
+
+    </div>
+
+  `;
 
 
-    wrapper.className =
-        "message ai";
+  messages.appendChild(wrapper);
 
 
-    wrapper.innerHTML = `
-        <div class="avatar">AI</div>
-
-        <div class="bubble">
-
-            <div class="typing">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
-
-        </div>
-    `;
-
-
-    messages.appendChild(
-        wrapper
-    );
-
-
-    messages.scrollTop =
-        messages.scrollHeight;
+  messages.scrollTop =
+    messages.scrollHeight;
 
 }
 
 
 /* =========================================================
    REMOVE TYPING
-   ========================================================= */
+========================================================= */
 
-function removeTyping(){
+function removeTyping() {
 
-    const typing =
-        document.getElementById(
-            "typingMessage"
-        );
+  const typing =
+    document.getElementById(
+      "typingMessage"
+    );
 
 
-    if(typing){
+  if (typing) {
 
-        typing.remove();
+    typing.remove();
 
-    }
+  }
 
 }
 
 
 /* =========================================================
-   GET SUPABASE SESSION
-   ========================================================= */
+   GET MARKET CONTEXT
+========================================================= */
 
-async function getCurrentSession(){
+function getMarketContext() {
 
-    if(!supabaseClient){
+  return {
 
-        throw new Error(
-            "Supabase client pa configure."
-        );
+    EURUSD: {
+
+      price:
+        document.getElementById(
+          "eurusd-price"
+        )?.textContent || "—",
+
+      change:
+        document.getElementById(
+          "eurusd-change"
+        )?.textContent || "—"
+
+    },
+
+    GBPUSD: {
+
+      price:
+        document.getElementById(
+          "gbpusd-price"
+        )?.textContent || "—",
+
+      change:
+        document.getElementById(
+          "gbpusd-change"
+        )?.textContent || "—"
+
+    },
+
+    USDJPY: {
+
+      price:
+        document.getElementById(
+          "usdjpy-price"
+        )?.textContent || "—",
+
+      change:
+        document.getElementById(
+          "usdjpy-change"
+        )?.textContent || "—"
+
+    },
+
+    BTCUSD: {
+
+      price:
+        document.getElementById(
+          "btcusd-price"
+        )?.textContent || "—",
+
+      change:
+        document.getElementById(
+          "btcusd-change"
+        )?.textContent || "—"
 
     }
 
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient.auth
-            .getSession();
-
-
-    if(error){
-
-        throw error;
-
-    }
-
-
-    return data.session;
+  };
 
 }
 
 
 /* =========================================================
    SEND MESSAGE
-   ========================================================= */
+========================================================= */
 
-async function sendMessage(){
+async function sendMessage() {
 
-    if(isLoading){
+  if (isLoading) {
 
-        return;
+    return;
 
-    }
-
-
-    const input =
-        document.getElementById(
-            "prompt"
-        );
+  }
 
 
-    const prompt =
-        input.value.trim();
+  const input =
+    document.getElementById("prompt");
 
 
-    if(!prompt){
+  const sendButton =
+    document.getElementById("sendBtn");
 
-        return;
+
+  const prompt =
+    input.value.trim();
+
+
+  if (!prompt) {
+
+    return;
+
+  }
+
+
+  input.value = "";
+
+  autoResize(input);
+
+
+  addMessage(
+    "user",
+    prompt
+  );
+
+
+  conversation.push({
+
+    role: "user",
+
+    content: prompt
+
+  });
+
+
+  showTyping();
+
+
+  isLoading = true;
+
+  sendButton.disabled = true;
+
+
+  try {
+
+    const response =
+      await fetch(
+        ATLAS_API_URL,
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "Accept":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              message:
+                prompt,
+
+              history:
+                conversation.slice(-20),
+
+              market_context:
+                getMarketContext(),
+
+              student_level:
+                document
+                  .getElementById(
+                    "studentLevel"
+                  )
+                  .textContent
+                  .trim(),
+
+              conversation_id:
+                currentConversationId
+
+            })
+
+        }
+      );
+
+
+    /*
+       JSON RESPONSE
+    */
+
+    let data = null;
+
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch (_) {
+
+      throw new Error(
+        "Réponse serveur invalide."
+      );
 
     }
 
 
     /*
-       Vérifie configuration
+       BACKEND ERROR
     */
 
-    if(
-        !SUPABASE_ANON_KEY ||
-        SUPABASE_ANON_KEY.startsWith("METE_")
-    ){
+    if (!response.ok) {
 
-        addMessage(
-            "ai",
-            "⚠️ Atlas IA pa konfigire: mete Supabase Publishable/Anon Key la nan atlas.html.",
-            true
-        );
+      throw new Error(
 
-        return;
+        data?.error ||
+        data?.message ||
+        "Atlas IA indisponible."
+
+      );
 
     }
 
 
-    input.value = "";
+    /*
+       CONVERSATION ID
+    */
 
-    autoResize(input);
+    if (
+      data?.conversation_id
+    ) {
+
+      currentConversationId =
+        data.conversation_id;
+
+    }
+
+
+    /*
+       EXTRACT ANSWER
+
+       Backend Atlas returns:
+
+       {
+         message: {
+           role: "assistant",
+           content: "..."
+         }
+       }
+
+       We also support:
+
+       data.answer
+
+       and
+
+       data.message as string.
+    */
+
+    let answer = "";
+
+
+    if (
+      typeof data?.message
+        ?.content === "string"
+    ) {
+
+      answer =
+        data.message.content.trim();
+
+    }
+
+
+    if (
+      !answer &&
+      typeof data?.answer === "string"
+    ) {
+
+      answer =
+        data.answer.trim();
+
+    }
+
+
+    if (
+      !answer &&
+      typeof data?.message === "string"
+    ) {
+
+      answer =
+        data.message.trim();
+
+    }
+
+
+    if (!answer) {
+
+      throw new Error(
+        "Atlas IA pa retounen okenn repons."
+      );
+
+    }
+
+
+    removeTyping();
 
 
     addMessage(
-        "user",
-        prompt
+      "ai",
+      answer
     );
 
 
     conversation.push({
 
-        role:"user",
+      role: "assistant",
 
-        content:prompt
+      content: answer
 
     });
 
 
-    showTyping();
+    /*
+       SAVE LOCAL HISTORY
+    */
 
+    saveHistory(prompt);
 
-    isLoading = true;
 
+  } catch (error) {
 
-    document.getElementById(
-        "sendBtn"
-    ).disabled = true;
+    console.error(
+      "ATLAS ERROR:",
+      error
+    );
 
 
-    try{
+    removeTyping();
 
 
-        /* =========================================
-           1. RECUPERE SESSION
-           ========================================= */
+    const errorMessage =
+      error?.message ||
+      "Impossible de contacter Atlas IA.";
 
-        const session =
-            await getCurrentSession();
 
+    addConnectionError(
+      errorMessage
+    );
 
-        if(!session){
 
-            removeTyping();
+  } finally {
 
+    isLoading = false;
 
-            addMessage(
-                "ai",
-                "⚠️ Atlas IA pa konekte. Session Supabase itilizatè a pa jwenn. Tanpri konekte sou Trading Academy AI epi retounen sou Atlas IA.",
-                true
-            );
+    sendButton.disabled = false;
 
+    input.focus();
 
-            setStatus(
-                false,
-                "Non connecté"
-            );
-
-
-            return;
-
-        }
-
-
-        const accessToken =
-            session.access_token;
-
-
-        if(!accessToken){
-
-            throw new Error(
-                "Aucun access_token Supabase trouvé."
-            );
-
-        }
-
-
-        /* =========================================
-           2. MARKET CONTEXT
-           ========================================= */
-
-        const market =
-            getMarketContext();
-
-
-        /* =========================================
-           3. STUDENT LEVEL
-           ========================================= */
-
-        const studentLevel =
-            document
-                .getElementById(
-                    "studentLevel"
-                )
-                .textContent
-                .trim();
-
-
-        /* =========================================
-           4. CALL EDGE FUNCTION
-           ========================================= */
-
-        const functionURL =
-            SUPABASE_URL +
-            "/functions/v1/" +
-            ATLAS_FUNCTION_NAME;
-
-
-        console.log(
-            "ATLAS REQUEST:",
-            functionURL
-        );
-
-
-        const response =
-            await fetch(
-                functionURL,
-                {
-
-                    method:"POST",
-
-                    headers:{
-
-                        "Content-Type":
-                            "application/json",
-
-                        /*
-                           Sa a se pati ki te
-                           manke nan ansyen version an.
-                        */
-
-                        "Authorization":
-                            "Bearer " +
-                            accessToken,
-
-                        /*
-                           Ansyen Edge Function
-                           ka li sa tou.
-                        */
-
-                        "apikey":
-                            SUPABASE_ANON_KEY
-
-                    },
-
-
-                    body:JSON.stringify({
-
-                        message:prompt,
-
-                        conversation:
-                            conversation,
-
-                        student_level:
-                            studentLevel,
-
-                        market:
-                            market
-
-                    })
-
-                }
-            );
-
-
-        /* =========================================
-           5. READ RESPONSE
-           ========================================= */
-
-        let data = null;
-
-        try{
-
-            data =
-                await response.json();
-
-        }catch(jsonError){
-
-            data = null;
-
-        }
-
-
-        if(!response.ok){
-
-            console.error(
-                "ATLAS FUNCTION ERROR:",
-                response.status,
-                data
-            );
-
-
-            let errorMessage =
-                "Atlas IA pa kapab reponn kounye a.";
-
-
-            if(
-                data &&
-                data.error
-            ){
-
-                errorMessage =
-                    data.error;
-
-            }
-
-            else if(
-                data &&
-                data.message
-            ){
-
-                errorMessage =
-                    data.message;
-
-            }
-
-
-            throw new Error(
-                errorMessage
-            );
-
-        }
-
-
-        removeTyping();
-
-
-        /*
-           Atlas ka retounen:
-           { answer: "..." }
-
-           oswa:
-           { message: "..." }
-        */
-
-        const answer =
-            data &&
-            (
-                data.answer ||
-                data.message ||
-                data.response
-            );
-
-
-        if(!answer){
-
-            throw new Error(
-                "Atlas IA pa retounen okenn repons."
-            );
-
-        }
-
-
-        addMessage(
-            "ai",
-            answer
-        );
-
-
-        conversation.push({
-
-            role:"assistant",
-
-            content:answer
-
-        });
-
-
-        saveHistory(
-            prompt
-        );
-
-
-        setStatus(
-            true,
-            "Atlas IA actif"
-        );
-
-
-    }catch(error){
-
-
-        console.error(
-            "ATLAS ERROR:",
-            error
-        );
-
-
-        removeTyping();
-
-
-        let message =
-            error.message ||
-            "Erreur inconnue.";
-
-
-        /*
-           Message espesyal pou session.
-        */
-
-        if(
-            message
-                .toLowerCase()
-                .includes(
-                    "access_token"
-                )
-        ){
-
-            message =
-                "⚠️ Atlas IA pa jwenn access_token Supabase la. Verifye si itilizatè a konekte sou Trading Academy AI epi si session Supabase la aktif.";
-
-        }
-
-
-        addMessage(
-            "ai",
-            "⚠️ Atlas IA pa kapab konekte.\n\n" +
-            message +
-            "\n\n" +
-            "Verifye Edge Function atlas-chat ak Logs nan Supabase.",
-            true
-        );
-
-
-        setStatus(
-            false,
-            "Erreur connexion"
-        );
-
-
-    }finally{
-
-
-        isLoading =
-            false;
-
-
-        document.getElementById(
-            "sendBtn"
-        ).disabled =
-            false;
-
-
-        input.focus();
-
-    }
+  }
 
 }
 
 
 /* =========================================================
    SUGGESTION
-   ========================================================= */
+========================================================= */
 
-function useSuggestion(button){
+function useSuggestion(button) {
 
-    const input =
-        document.getElementById(
-            "prompt"
-        );
-
-
-    input.value =
-        button.textContent.trim();
-
-
-    autoResize(
-        input
+  const input =
+    document.getElementById(
+      "prompt"
     );
 
 
-    input.focus();
+  input.value =
+    button.textContent.trim();
+
+
+  autoResize(input);
+
+  input.focus();
 
 }
 
 
 /* =========================================================
    KEYBOARD
-   ========================================================= */
+========================================================= */
 
-function handleKey(event){
+function handleKey(event) {
 
-    if(
-        event.key === "Enter" &&
-        !event.shiftKey
-    ){
+  if (
+    event.key === "Enter" &&
+    !event.shiftKey
+  ) {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        sendMessage();
+    sendMessage();
 
-    }
-
-}
-
-
-/* =========================================================
-   TEXTAREA
-   ========================================================= */
-
-function autoResize(element){
-
-    element.style.height =
-        "auto";
-
-
-    element.style.height =
-        Math.min(
-            element.scrollHeight,
-            120
-        ) + "px";
+  }
 
 }
 
 
 /* =========================================================
-   MARKET CONTEXT
-   ========================================================= */
+   TEXTAREA RESIZE
+========================================================= */
 
-function getMarketContext(){
+function autoResize(element) {
 
-    return {
+  element.style.height =
+    "auto";
 
-        EURUSD:
-            document
-                .getElementById(
-                    "eurusd-price"
-                )
-                .textContent,
 
-        GBPUSD:
-            document
-                .getElementById(
-                    "gbpusd-price"
-                )
-                .textContent,
+  element.style.height =
+    Math.min(
+      element.scrollHeight,
+      120
+    ) + "px";
 
-        USDJPY:
-            document
-                .getElementById(
-                    "usdjpy-price"
-                )
-                .textContent,
+}
 
-        BTCUSD:
-            document
-                .getElementById(
-                    "btcusd-price"
-                )
-                .textContent
 
-    };
+/* =========================================================
+   MARKET DISPLAY
+========================================================= */
+
+function setMarket(
+  symbol,
+  price,
+  change
+) {
+
+  const priceEl =
+    document.getElementById(
+      symbol + "-price"
+    );
+
+
+  const changeEl =
+    document.getElementById(
+      symbol + "-change"
+    );
+
+
+  if (!priceEl || !changeEl) {
+
+    return;
+
+  }
+
+
+  priceEl.textContent =
+    price;
+
+
+  changeEl.textContent =
+    change;
+
+
+  changeEl.classList.remove(
+    "positive",
+    "negative"
+  );
 
 }
 
 
 /* =========================================================
    MARKET DATA
-   ========================================================= */
 
-function fetchMarketData(){
+   IMPORTANT:
+   Pa envante done realtime.
 
-    setMarket(
-        "eurusd",
-        "—",
-        "Données indisponibles"
-    );
+   Pou kounye a UI a montre done
+   kòm indisponib.
 
+   Lè market-data backend la pare,
+   nou ka konekte l pita.
+========================================================= */
 
-    setMarket(
-        "gbpusd",
-        "—",
-        "Données indisponibles"
-    );
+function fetchMarketData() {
 
-
-    setMarket(
-        "usdjpy",
-        "—",
-        "Données indisponibles"
-    );
+  setMarket(
+    "eurusd",
+    "—",
+    "Données indisponibles"
+  );
 
 
-    setMarket(
-        "btcusd",
-        "—",
-        "Données indisponibles"
-    );
-
-}
+  setMarket(
+    "gbpusd",
+    "—",
+    "Données indisponibles"
+  );
 
 
-function setMarket(
-    symbol,
-    price,
-    change
-){
-
-    const priceEl =
-        document.getElementById(
-            symbol + "-price"
-        );
+  setMarket(
+    "usdjpy",
+    "—",
+    "Données indisponibles"
+  );
 
 
-    const changeEl =
-        document.getElementById(
-            symbol + "-change"
-        );
-
-
-    if(
-        !priceEl ||
-        !changeEl
-    ){
-
-        return;
-
-    }
-
-
-    priceEl.textContent =
-        price;
-
-
-    changeEl.textContent =
-        change;
+  setMarket(
+    "btcusd",
+    "—",
+    "Données indisponibles"
+  );
 
 }
 
 
 /* =========================================================
    MARKET QUESTION
-   ========================================================= */
+========================================================= */
 
-function askMarket(symbol){
+function askMarket(symbol) {
 
-    const input =
-        document.getElementById(
-            "prompt"
-        );
-
-
-    input.value =
-        `Analyse ${symbol} et explique-moi les facteurs importants à surveiller.`;
-
-
-    autoResize(
-        input
+  const input =
+    document.getElementById(
+      "prompt"
     );
 
 
-    input.focus();
+  input.value =
+    `Analyse ${symbol} et explique-moi les facteurs importants à surveiller.`;
+
+
+  autoResize(input);
+
+  input.focus();
 
 }
 
 
 /* =========================================================
    NEW CHAT
-   ========================================================= */
+========================================================= */
 
-function newChat(){
+function newChat() {
 
-    conversation = [];
+  conversation = [];
 
-
-    const messages =
-        document.getElementById(
-            "messages"
-        );
+  currentConversationId = null;
 
 
-    messages.innerHTML = `
+  const messages =
+    document.getElementById(
+      "messages"
+    );
 
-        <div
-            id="welcome"
-            class="welcome"
-        >
 
-            <div class="welcome-icon">
-                🧠
-            </div>
+  messages.innerHTML = `
 
-            <h2>
-                Nouvelle conversation
-            </h2>
+    <div
+      id="welcome"
+      class="welcome">
 
-            <p>
-                Pose ta question à Atlas IA.
-                <br>
-                Je suis prêt à t'accompagner
-                dans ton apprentissage du trading.
-            </p>
+      <div class="welcome-icon">
+        🧠
+      </div>
 
-        </div>
+      <h2>
+        Nouvelle conversation
+      </h2>
 
-    `;
+      <p>
+        Pose ta question à Atlas IA.
+        <br>
+        Je suis prêt à t'accompagner
+        dans ton apprentissage du trading.
+      </p>
+
+    </div>
+
+  `;
 
 }
 
 
 /* =========================================================
-   HISTORY
-   ========================================================= */
+   LOCAL HISTORY
+========================================================= */
 
-function saveHistory(title){
+function saveHistory(title) {
+
+  try {
 
     const history =
-        JSON.parse(
-            localStorage.getItem(
-                "atlas_history"
-            ) || "[]"
-        );
+      JSON.parse(
+        localStorage.getItem(
+          "atlas_history"
+        ) || "[]"
+      );
 
 
     history.unshift({
 
-        title:
-            title.substring(
-                0,
-                45
-            ),
+      title:
+        title.substring(0, 45),
 
-        date:
-            new Date()
-                .toLocaleString()
+      date:
+        new Date().toLocaleString()
 
     });
 
 
     localStorage.setItem(
-        "atlas_history",
-        JSON.stringify(
-            history.slice(
-                0,
-                20
-            )
-        )
+
+      "atlas_history",
+
+      JSON.stringify(
+        history.slice(0, 20)
+      )
+
     );
 
 
     loadHistory();
 
-}
 
+  } catch (error) {
 
-function loadHistory(){
-
-    const list =
-        document.getElementById(
-            "historyList"
-        );
-
-
-    const history =
-        JSON.parse(
-            localStorage.getItem(
-                "atlas_history"
-            ) || "[]"
-        );
-
-
-    list.innerHTML = "";
-
-
-    if(
-        history.length === 0
-    ){
-
-        const empty =
-            document.createElement(
-                "div"
-            );
-
-
-        empty.style.padding =
-            "15px";
-
-
-        empty.style.color =
-            "#94a3b8";
-
-
-        empty.style.fontSize =
-            "11px";
-
-
-        empty.textContent =
-            "Aucune conversation";
-
-
-        list.appendChild(
-            empty
-        );
-
-
-        return;
-
-    }
-
-
-    history.forEach(
-        item => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.className =
-                "history-item";
-
-
-            button.innerHTML = `
-
-                💬
-                ${escapeHTML(
-                    item.title
-                )}
-
-                <div
-                    class="history-date"
-                >
-                    ${escapeHTML(
-                        item.date
-                    )}
-                </div>
-
-            `;
-
-
-            list.appendChild(
-                button
-            );
-
-        }
+    console.error(
+      "History error:",
+      error
     );
+
+  }
 
 }
 
 
 /* =========================================================
-   INITIALIZE
-   ========================================================= */
+   LOAD HISTORY
+========================================================= */
 
-async function initializeAtlas(){
+function loadHistory() {
+
+  const list =
+    document.getElementById(
+      "historyList"
+    );
+
+
+  if (!list) {
+
+    return;
+
+  }
+
+
+  let history = [];
+
+
+  try {
+
+    history =
+      JSON.parse(
+        localStorage.getItem(
+          "atlas_history"
+        ) || "[]"
+      );
+
+  } catch (_) {
+
+    history = [];
+
+  }
+
+
+  list.innerHTML = "";
+
+
+  if (
+    history.length === 0
+  ) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+
+    empty.style.padding =
+      "15px";
+
+    empty.style.color =
+      "#94a3b8";
+
+    empty.style.fontSize =
+      "11px";
+
+    empty.textContent =
+      "Aucune conversation récente.";
+
+
+    list.appendChild(empty);
+
+    return;
+
+  }
+
+
+  history.forEach(
+    (item) => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "history-item";
+
+
+      button.innerHTML = `
+
+        💬 ${escapeHTML(
+          item.title
+        )}
+
+        <div class="history-date">
+
+          ${escapeHTML(
+            item.date
+          )}
+
+        </div>
+
+      `;
+
+
+      /*
+         Local history is currently
+         a visual history only.
+
+         Conversations themselves
+         are stored by Atlas backend
+         in Supabase.
+      */
+
+
+      list.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    const prompt =
+      document.getElementById(
+        "prompt"
+      );
+
+
+    if (prompt) {
+
+      prompt.addEventListener(
+        "input",
+        function() {
+
+          autoResize(this);
+
+        }
+      );
+
+    }
+
 
     loadHistory();
 
     fetchMarketData();
 
-
-    /*
-       Vérifie configuration
-    */
-
-    if(
-        !SUPABASE_ANON_KEY ||
-        SUPABASE_ANON_KEY.startsWith("METE_")
-    ){
-
-        setStatus(
-            false,
-            "Configuration requise"
-        );
-
-
-        console.warn(
-            "ATLAS: SUPABASE_ANON_KEY pa mete."
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-       Vérifie Supabase session.
-    */
-
-    try{
-
-        const session =
-            await getCurrentSession();
-
-
-        if(session){
-
-            setStatus(
-                true,
-                "Atlas IA actif"
-            );
-
-
-            console.log(
-                "ATLAS: Session Supabase trouvée."
-            );
-
-        }else{
-
-            setStatus(
-                false,
-                "Non connecté"
-            );
-
-
-            console.warn(
-                "ATLAS: Aucun utilisateur connecté."
-            );
-
-        }
-
-
-    }catch(error){
-
-        console.error(
-            "ATLAS INIT ERROR:",
-            error
-        );
-
-
-        setStatus(
-            false,
-            "Erreur Supabase"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   EVENTS
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        const input =
-            document.getElementById(
-                "prompt"
-            );
-
-
-        input.addEventListener(
-            "input",
-            function(){
-
-                autoResize(
-                    this
-                );
-
-            }
-        );
-
-
-        input.addEventListener(
-            "keydown",
-            handleKey
-        );
-
-
-        initializeAtlas();
-
-    }
+  }
 );
 
 </script>
