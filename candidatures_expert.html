@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>
+    Candidatures Expert | Trading Academy AI
+</title>
+
+<style>
+
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #172033;
+}
+
+
+/* =========================================
+   APP
+========================================= */
+
+.app {
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+
+    width: 255px;
+
+    position: fixed;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    background: #0f172a;
+
+    color: white;
+
+    padding: 22px 15px;
+
+    z-index: 1000;
+
+    transition: .3s;
+
+    overflow-y: auto;
+}
+
+
+.logo {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    padding:
+        8px 12px 22px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+
+    margin-bottom: 18px;
+}
+
+
+.logo span {
+    color: #3b82f6;
+}
+
+
+.admin-badge {
+
+    margin:
+        0 10px 20px;
+
+    padding: 10px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(37,99,235,.15);
+
+    color: #bfdbfe;
+
+    font-size: 12px;
+
+    border:
+        1px solid
+        rgba(59,130,246,.2);
+}
+
+
+.menu-title {
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    padding:
+        10px 12px;
+}
+
+
+.menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-bottom: 10px;
+}
+
+
+.menu button {
+
+    width: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #cbd5e1;
+
+    text-align: left;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+.menu button:hover,
+.menu button.active {
+
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.menu-icon {
+
+    display: inline-block;
+
+    width: 28px;
+}
+
+
+.sidebar-bottom {
+
+    margin-top: 25px;
+}
+
+
+.logout {
+
+    width: 100%;
+
+    border: 0;
+
+    background:
+        rgba(239,68,68,.12);
+
+    color: #fca5a5;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.logout:hover {
+
+    background: #dc2626;
+
+    color: white;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main {
+
+    margin-left: 255px;
+
+    min-height: 100vh;
+
+    padding: 25px 30px;
+}
+
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+
+.title-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.title-area h1 {
+
+    margin: 0;
+
+    font-size: 27px;
+}
+
+
+.title-area p {
+
+    margin:
+        6px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+.mobile-menu {
+
+    display: none;
+
+    border: 0;
+
+    background: white;
+
+    border-radius: 8px;
+
+    padding: 9px;
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn {
+
+    border: 0;
+
+    padding:
+        10px 15px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.btn-primary {
+
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.btn-primary:hover {
+
+    background: #1d4ed8;
+}
+
+
+.btn-success {
+
+    background: #16a34a;
+
+    color: white;
+}
+
+
+.btn-success:hover {
+
+    background: #15803d;
+}
+
+
+.btn-danger {
+
+    background: #dc2626;
+
+    color: white;
+}
+
+
+.btn-danger:hover {
+
+    background: #b91c1c;
+}
+
+
+.btn-secondary {
+
+    background: #e2e8f0;
+
+    color: #334155;
+}
+
+
+.btn-secondary:hover {
+
+    background: #cbd5e1;
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+
+.stat-card {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.stat-card p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+.stat-card h2 {
+
+    margin:
+        7px 0 0;
+
+    font-size: 27px;
+}
+
+
+.stat-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+
+/* =========================================
+   PANEL
+========================================= */
+
+.panel {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 21px;
+
+    margin-bottom: 20px;
+}
+
+
+.panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+
+.panel-header h2 {
+
+    margin: 0;
+
+    font-size: 18px;
+}
+
+
+.panel-header span {
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   FILTER
+========================================= */
+
+.filters {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 18px;
+}
+
+
+.filter-btn {
+
+    border: 1px solid #e2e8f0;
+
+    background: white;
+
+    color: #475569;
+
+    padding: 9px 13px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    font-size: 12px;
+}
+
+
+.filter-btn:hover,
+.filter-btn.active {
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    border-color: #93c5fd;
+}
+
+
+/* =========================================
+   APPLICATION CARD
+========================================= */
+
+.application {
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    margin-bottom: 14px;
+
+    background: #fff;
+}
+
+
+.application:last-child {
+
+    margin-bottom: 0;
+}
+
+
+.application-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+
+.application-title {
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+
+.application-id {
+
+    font-size: 11px;
+
+    color: #64748b;
+
+    word-break: break-all;
+
+    line-height: 1.5;
+}
+
+
+.application-message {
+
+    margin-top: 15px;
+
+    background: #f8fafc;
+
+    border-radius: 9px;
+
+    padding: 13px;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+.application-date {
+
+    margin-top: 12px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+.application-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+/* =========================================
+   STATUS BADGES
+========================================= */
+
+.badge {
+
+    display: inline-block;
+
+    padding:
+        6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+.badge-pending {
+
+    background: #fef3c7;
+
+    color: #92400e;
+}
+
+
+.badge-approved {
+
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+
+.badge-rejected {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+}
+
+
+/* =========================================
+   REVIEW
+========================================= */
+
+.review-info {
+
+    margin-top: 13px;
+
+    padding: 12px;
+
+    background: #f8fafc;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    color: #475569;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty {
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #64748b;
+}
+
+
+.empty-icon {
+
+    font-size: 38px;
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: #f4f7fb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 5000;
+
+    font-size: 16px;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.toast {
+
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 20px;
+
+    max-width: 350px;
+
+    padding: 14px 17px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    z-index: 6000;
+
+    display: none;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.18);
+}
+
+
+.toast.success {
+
+    background: #16a34a;
+}
+
+
+.toast.error {
+
+    background: #dc2626;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:800px) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+    }
+
+
+    .sidebar.open {
+
+        transform:
+            translateX(0);
+    }
+
+
+    .main {
+
+        margin-left: 0;
+
+        padding: 18px;
+    }
+
+
+    .mobile-menu {
+
+        display: block;
+    }
+
+
+    .topbar {
+
+        align-items:
+            flex-start;
+    }
+
+
+    .topbar > .btn {
+
+        padding:
+            9px 11px;
+
+        font-size: 11px;
+    }
+
+
+    .stats {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .application-top {
+
+        flex-direction: column;
+    }
+
+
+    .application-actions {
+
+        justify-content: stretch;
+    }
+
+
+    .application-actions .btn {
+
+        flex: 1;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     LOADING
+========================================= -->
+
+<div
+    id="loading"
+    class="loading">
+
+    Vérification des privilèges...
+
+</div>
+
+
+<div
+    id="app"
+    class="app"
+    style="display:none;">
+
+
+<!-- =========================================
+     SIDEBAR
+========================================= -->
+
+<aside
+    id="sidebar"
+    class="sidebar">
+
+
+    <div class="logo">
+
+        Trading Academy
+        <span>AI</span>
+
+    </div>
+
+
+    <div class="admin-badge">
+
+        👑 Super Admin
+
+    </div>
+
+
+    <div class="menu-title">
+        Principal
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            onclick="goDashboard()">
+
+            <span class="menu-icon">
+                📊
+            </span>
+
+            Dashboard
+
+        </button>
+
+
+        <button
+            onclick="goCourses()">
+
+            <span class="menu-icon">
+                📚
+            </span>
+
+            Cours
+
+        </button>
+
+
+        <button
+            onclick="window.location.href='gestion_modules.html'">
+
+            <span class="menu-icon">
+                📦
+            </span>
+
+            Modules
+
+        </button>
+
+
+        <button
+            onclick="window.location.href='gestion_lessons.html'">
+
+            <span class="menu-icon">
+                📝
+            </span>
+
+            Lessons
+
+        </button>
+
+    </nav>
+
+
+    <div class="menu-title">
+        Utilisateurs
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            onclick="window.location.href='gestion_utilisateurs.html'">
+
+            <span class="menu-icon">
+                👥
+            </span>
+
+            Utilisateurs
+
+        </button>
+
+
+        <button
+            onclick="window.location.href='gestion_administrateurs.html'">
+
+            <span class="menu-icon">
+                👑
+            </span>
+
+            Administrateurs
+
+        </button>
+
+
+        <button
+            class="active"
+            onclick="window.location.href='candidatures_expert.html'">
+
+            <span class="menu-icon">
+                🎓
+            </span>
+
+            Candidatures Expert
+
+        </button>
+
+    </nav>
+
+
+    <div class="menu-title">
+        Système
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            onclick="window.location.href='statistiques.html'">
+
+            <span class="menu-icon">
+                📈
+            </span>
+
+            Statistiques
+
+        </button>
+
+
+        <button
+            onclick="window.location.href='parametres.html'">
+
+            <span class="menu-icon">
+                ⚙️
+            </span>
+
+            Paramètres
+
+        </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            id="logout"
+            class="logout">
+
+            🚪 Déconnexion
+
+        </button>
+
+    </div>
+
+
+</aside>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+
+    <div class="title-area">
+
+
+        <button
+            id="mobileMenu"
+            class="mobile-menu">
+
+            ☰
+
+        </button>
+
+
+        <div>
+
+            <h1>
+                Candidatures Expert
+            </h1>
+
+            <p>
+                Gestion des candidatures pour devenir membre de l'Academy
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="btn btn-primary"
+        onclick="loadApplications()">
+
+        🔄 Actualiser
+
+    </button>
+
+
+</header>
+
+
+<!-- =========================================
+     STATISTICS
+========================================= -->
+
+<section class="stats">
+
+
+    <div class="stat-card">
+
+        <div>
+
+            <p>
+                En attente
+            </p>
+
+            <h2 id="pendingCount">
+                —
+            </h2>
+
+        </div>
+
+        <div class="stat-icon">
+            🟡
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div>
+
+            <p>
+                Approuvées
+            </p>
+
+            <h2 id="approvedCount">
+                —
+            </h2>
+
+        </div>
+
+        <div class="stat-icon">
+            ✅
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div>
+
+            <p>
+                Rejetées
+            </p>
+
+            <h2 id="rejectedCount">
+                —
+            </h2>
+
+        </div>
+
+        <div class="stat-icon">
+            ❌
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================
+     APPLICATIONS
+========================================= -->
+
+<section class="panel">
+
+
+    <div class="panel-header">
+
+        <div>
+
+            <h2>
+                Candidatures
+            </h2>
+
+            <span>
+                Seul le Super Admin peut prendre une décision.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="filters">
+
+        <button
+            class="filter-btn active"
+            data-status="all">
+
+            Toutes
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-status="pending">
+
+            🟡 En attente
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-status="approved">
+
+            ✅ Approuvées
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-status="rejected">
+
+            ❌ Rejetées
+
+        </button>
+
+    </div>
+
+
+    <div id="applications">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🎓
+            </div>
+
+            Chargement des candidatures...
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<!-- =========================================
+     TOAST
+========================================= -->
+
+<div
+    id="toast"
+    class="toast">
+</div>
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================
+   SUPABASE CONFIG
+========================================= */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+
+const supabaseClient =
+window.supabase.createClient(
+
+    SUPABASE_URL,
+
+    SUPABASE_PUBLISHABLE_KEY
+
+);
+
+
+/* =========================================
+   RPC FUNCTIONS
+=========================================
+
+   IMPORTANT:
+
+   Mete la non EXACT fonksyon SQL
+   ou te deja kreye pou APPROVE ak REJECT
+   isit la si non yo diferan.
+
+========================================= */
+
+const APPROVE_RPC =
+"approve_expert_application";
+
+
+const REJECT_RPC =
+"reject_expert_application";
+
+
+/* =========================================
+   STATE
+========================================= */
+
+let currentUser = null;
+
+let applicationsData = [];
+
+let currentFilter = "all";
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goDashboard(){
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+function goCourses(){
+
+    window.location.href =
+        "gestion_courses.html";
+
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+function showToast(
+    message,
+    type = "success"
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        "toast " + type;
+
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        function(){
+
+            toast.style.display =
+                "none";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =========================================
+   VERIFY SUPER ADMIN
+========================================= */
+
+async function verifySuperAdmin(){
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+        if(
+            error ||
+            !data ||
+            !data.user
+        ){
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+        /* ================================
+           GET USER ROLE
+        ================================= */
+
+        const {
+            data: userRoles,
+            error: roleError
+        } =
+        await supabaseClient
+
+            .from("user_roles")
+
+            .select(`
+                role_id,
+                roles (
+                    id,
+                    name
+                )
+            `)
+
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+        if(roleError){
+
+            console.error(
+                "ROLE ERROR:",
+                roleError
+            );
+
+            showToast(
+                roleError.message,
+                "error"
+            );
+
+            return false;
+
+        }
+
+
+        const isSuperAdmin =
+            (userRoles || []).some(
+                row => {
+
+                    if(
+                        !row.roles ||
+                        !row.roles.name
+                    ){
+
+                        return false;
+
+                    }
+
+
+                    return (
+                        row.roles.name
+                            .trim()
+                            .toLowerCase()
+                        ===
+                        "super admin"
+                    );
+
+                }
+            );
+
+
+        if(!isSuperAdmin){
+
+            alert(
+                "Accès refusé : seul le Super Admin peut gérer les candidatures Expert."
+            );
+
+
+            window.location.href =
+                "dashboard.html";
+
+
+            return false;
+
+        }
+
+
+        document
+            .getElementById(
+                "loading"
+            )
+            .style.display =
+                "none";
+
+
+        document
+            .getElementById(
+                "app"
+            )
+            .style.display =
+                "block";
+
+
+        await loadApplications();
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "SUPER ADMIN VERIFY ERROR:",
+            error
+        );
+
+
+        window.location.href =
+            "admin-login.html";
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD APPLICATIONS
+========================================= */
+
+async function loadApplications(){
+
+    const container =
+        document.getElementById(
+            "applications"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ⏳
+            </div>
+
+            Chargement...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from(
+                "admin_applications"
+            )
+
+            .select(`
+                id,
+                user_id,
+                status,
+                message,
+                reviewed_by,
+                reviewed_at,
+                review_note,
+                created_at,
+                updated_at
+            `)
+
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        applicationsData =
+            data || [];
+
+
+        updateStatistics();
+
+
+        renderApplications();
+
+    }
+    catch(error){
+
+        console.error(
+            "APPLICATION LOAD ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ❌
+                </div>
+
+                Impossible de charger
+                les candidatures.
+
+                <br><br>
+
+                <small>
+                    ${escapeHTML(
+                        error.message || ""
+                    )}
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+function updateStatistics(){
+
+    const pending =
+        applicationsData.filter(
+            item =>
+                String(item.status)
+                    .toLowerCase()
+                ===
+                "pending"
+        ).length;
+
+
+    const approved =
+        applicationsData.filter(
+            item =>
+                String(item.status)
+                    .toLowerCase()
+                ===
+                "approved"
+        ).length;
+
+
+    const rejected =
+        applicationsData.filter(
+            item =>
+                String(item.status)
+                    .toLowerCase()
+                ===
+                "rejected"
+        ).length;
+
+
+    document
+        .getElementById(
+            "pendingCount"
+        )
+        .textContent =
+            pending;
+
+
+    document
+        .getElementById(
+            "approvedCount"
+        )
+        .textContent =
+            approved;
+
+
+    document
+        .getElementById(
+            "rejectedCount"
+        )
+        .textContent =
+            rejected;
+
+}
+
+
+/* =========================================
+   RENDER
+========================================= */
+
+function renderApplications(){
+
+    const container =
+        document.getElementById(
+            "applications"
+        );
+
+
+    let list =
+        applicationsData;
+
+
+    if(
+        currentFilter !==
+        "all"
+    ){
+
+        list =
+            applicationsData.filter(
+                item =>
+                    String(
+                        item.status
+                    ).toLowerCase()
+                    ===
+                    currentFilter
+            );
+
+    }
+
+
+    if(
+        !list ||
+        list.length === 0
+    ){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🎓
+                </div>
+
+                Aucune candidature
+                trouvée.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    list.forEach(
+        application => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "application";
+
+
+            const status =
+                String(
+                    application.status ||
+                    "pending"
+                ).toLowerCase();
+
+
+            let badgeClass =
+                "badge-pending";
+
+
+            let badgeText =
+                "En attente";
+
+
+            if(
+                status ===
+                "approved"
+            ){
+
+                badgeClass =
+                    "badge-approved";
+
+                badgeText =
+                    "Approuvée";
+
+            }
+
+
+            if(
+                status ===
+                "rejected"
+            ){
+
+                badgeClass =
+                    "badge-rejected";
+
+                badgeText =
+                    "Rejetée";
+
+            }
+
+
+            let reviewInfo = "";
+
+
+            if(
+                status ===
+                    "approved" ||
+                status ===
+                    "rejected"
+            ){
+
+                reviewInfo = `
+
+                    <div class="review-info">
+
+                        <strong>
+                            Décision :
+                        </strong>
+
+                        ${
+                            status === "approved"
+                            ? "Candidature approuvée"
+                            : "Candidature rejetée"
+                        }
+
+                        ${
+                            application.reviewed_at
+                            ?
+                            `<br>
+                            <strong>
+                                Date :
+                            </strong>
+                            ${formatDate(
+                                application.reviewed_at
+                            )}`
+                            :
+                            ""
+                        }
+
+                        ${
+                            application.review_note
+                            ?
+                            `<br><br>
+                            <strong>
+                                Note :
+                            </strong>
+                            ${escapeHTML(
+                                application.review_note
+                            )}`
+                            :
+                            ""
+                        }
+
+                    </div>
+
+                `;
+
+            }
+
+
+            const actionButtons =
+                status ===
+                "pending"
+
+                ?
+
+                `
+
+                    <div class="application-actions">
+
+                        <button
+                            class="btn btn-success"
+                            onclick="approveApplication('${application.id}')">
+
+                            ✓ Approuver
+
+                        </button>
+
+
+                        <button
+                            class="btn btn-danger"
+                            onclick="rejectApplication('${application.id}')">
+
+                            ✕ Rejeter
+
+                        </button>
+
+                    </div>
+
+                `
+
+                :
+
+                "";
+
+
+            card.innerHTML = `
+
+                <div class="application-top">
+
+                    <div>
+
+                        <div class="application-title">
+
+                            🎓 Candidature Expert
+
+                        </div>
+
+
+                        <div class="application-id">
+
+                            <strong>
+                                User ID:
+                            </strong>
+
+                            ${escapeHTML(
+                                application.user_id
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="badge ${badgeClass}">
+
+                        ${badgeText}
+
+                    </span>
+
+                </div>
+
+
+                ${
+                    application.message
+                    ?
+
+                    `
+
+                    <div class="application-message">
+
+                        <strong>
+                            Message du candidat
+                        </strong>
+
+                        <br><br>
+
+                        ${escapeHTML(
+                            application.message
+                        )}
+
+                    </div>
+
+                    `
+
+                    :
+
+                    `
+
+                    <div class="application-message">
+
+                        Aucun message fourni.
+
+                    </div>
+
+                    `
+                }
+
+
+                <div class="application-date">
+
+                    Candidature envoyée le :
+
+                    ${formatDate(
+                        application.created_at
+                    )}
+
+                </div>
+
+
+                ${reviewInfo}
+
+
+                ${actionButtons}
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   APPROVE
+========================================= */
+
+async function approveApplication(
+    applicationId
+){
+
+    if(
+        !applicationId
+    ){
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Voulez-vous vraiment approuver cette candidature Expert ?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    let reviewNote =
+        prompt(
+            "Note de validation (optionnel) :"
+        );
+
+
+    if(
+        reviewNote ===
+        null
+    ){
+
+        reviewNote = "";
+
+    }
+
+
+    try {
+
+        /*
+         * APPEL DE LA FONCTION SQL
+         * APPROVE EXISTANTE
+         */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .rpc(
+                APPROVE_RPC,
+                {
+                    p_application_id:
+                        applicationId,
+
+                    p_review_note:
+                        reviewNote
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        console.log(
+            "APPROVE RESULT:",
+            data
+        );
+
+
+        showToast(
+            "Candidature approuvée avec succès.",
+            "success"
+        );
+
+
+        await loadApplications();
+
+    }
+    catch(error){
+
+        console.error(
+            "APPROVE ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Erreur lors de l'approbation : " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   REJECT
+========================================= */
+
+async function rejectApplication(
+    applicationId
+){
+
+    if(
+        !applicationId
+    ){
+
+        return;
+
+    }
+
+
+    let reviewNote =
+        prompt(
+            "Pourquoi cette candidature est-elle rejetée ?"
+        );
+
+
+    if(
+        reviewNote ===
+        null
+    ){
+
+        return;
+
+    }
+
+
+    reviewNote =
+        reviewNote.trim();
+
+
+    if(
+        reviewNote.length === 0
+    ){
+
+        alert(
+            "Veuillez fournir une raison du rejet."
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Confirmer le rejet de cette candidature ?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    try {
+
+        /*
+         * APPEL DE LA FONCTION SQL
+         * REJECT EXISTANTE
+         */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .rpc(
+                REJECT_RPC,
+                {
+                    p_application_id:
+                        applicationId,
+
+                    p_review_note:
+                        reviewNote
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        console.log(
+            "REJECT RESULT:",
+            data
+        );
+
+
+        showToast(
+            "Candidature rejetée.",
+            "success"
+        );
+
+
+        await loadApplications();
+
+    }
+    catch(error){
+
+        console.error(
+            "REJECT ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Erreur lors du rejet : " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DATE
+========================================= */
+
+function formatDate(
+    value
+){
+
+    if(!value){
+
+        return "-";
+
+    }
+
+
+    try {
+
+        return new Date(
+            value
+        ).toLocaleString(
+            "fr-FR",
+            {
+                dateStyle:
+                    "medium",
+
+                timeStyle:
+                    "short"
+            }
+        );
+
+    }
+    catch(error){
+
+        return String(
+            value
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   HTML SECURITY
+========================================= */
+
+function escapeHTML(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   FILTERS
+========================================= */
+
+document
+    .querySelectorAll(
+        ".filter-btn"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    document
+                        .querySelectorAll(
+                            ".filter-btn"
+                        )
+                        .forEach(
+                            btn =>
+                                btn.classList
+                                    .remove(
+                                        "active"
+                                    )
+                        );
+
+
+                    this.classList
+                        .add(
+                            "active"
+                        );
+
+
+                    currentFilter =
+                        this.dataset.status;
+
+
+                    renderApplications();
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+document
+    .getElementById(
+        "mobileMenu"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            document
+                .getElementById(
+                    "sidebar"
+                )
+                .classList
+                .toggle(
+                    "open"
+                );
+
+        }
+    );
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document
+    .getElementById(
+        "logout"
+    )
+    .addEventListener(
+        "click",
+        async function(){
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            window.location.href =
+                "admin-login.html";
+
+        }
+    );
+
+
+/* =========================================
+   START
+========================================= */
+
+verifySuperAdmin();
+
+</script>
+
+</body>
+
+</html>

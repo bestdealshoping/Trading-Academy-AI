@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="ht">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>
+    Candidature Expert | Trading Academy AI
+</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #172033;
+
+}
+
+.container {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    margin: 0 auto;
+
+    padding: 25px 18px 50px;
+
+}
+
+.header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a
+        );
+
+    color: white;
+
+    border-radius: 16px;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+}
+
+.header h1 {
+
+    margin: 0 0 8px;
+
+    font-size: 25px;
+
+}
+
+.header p {
+
+    margin: 0;
+
+    color: #dbeafe;
+
+    line-height: 1.6;
+
+}
+
+.card {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 15px;
+
+    padding: 22px;
+
+    margin-bottom: 18px;
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,.05);
+
+}
+
+.profile-box {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 15px;
+
+}
+
+.info {
+
+    background: #f8fafc;
+
+    border-radius: 10px;
+
+    padding: 13px;
+
+}
+
+.info small {
+
+    display: block;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+
+}
+
+.info strong {
+
+    font-size: 14px;
+
+}
+
+h2 {
+
+    margin-top: 0;
+
+    font-size: 19px;
+
+}
+
+label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+
+}
+
+textarea {
+
+    width: 100%;
+
+    min-height: 150px;
+
+    resize: vertical;
+
+    border:
+        1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    padding: 13px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+}
+
+textarea:focus {
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,.1);
+
+}
+
+.btn {
+
+    border: 0;
+
+    border-radius: 9px;
+
+    padding: 12px 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+.btn-primary {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+.btn-primary:hover {
+
+    background: #1d4ed8;
+
+}
+
+.btn-secondary {
+
+    background: #e2e8f0;
+
+    color: #172033;
+
+}
+
+.btn-danger {
+
+    background: #dc2626;
+
+    color: white;
+
+}
+
+.btn:disabled {
+
+    opacity: .55;
+
+    cursor: not-allowed;
+
+}
+
+.actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: 15px;
+
+}
+
+.status {
+
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+}
+
+.status-pending {
+
+    background: #fef3c7;
+
+    color: #92400e;
+
+}
+
+.status-approved {
+
+    background: #dcfce7;
+
+    color: #166534;
+
+}
+
+.status-rejected {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+}
+
+.notice {
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    margin-bottom: 15px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+.notice-info {
+
+    background: #eff6ff;
+
+    color: #1e40af;
+
+}
+
+.notice-success {
+
+    background: #ecfdf5;
+
+    color: #166534;
+
+}
+
+.notice-warning {
+
+    background: #fffbeb;
+
+    color: #92400e;
+
+}
+
+.notice-danger {
+
+    background: #fef2f2;
+
+    color: #991b1b;
+
+}
+
+.loading {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    color: #475569;
+
+}
+
+.error {
+
+    color: #991b1b;
+
+}
+
+.hidden {
+
+    display: none !important;
+
+}
+
+.footer {
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin-top: 25px;
+
+}
+
+@media(max-width:600px) {
+
+    .container {
+
+        padding:
+            15px 12px 40px;
+
+    }
+
+    .profile-box {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .header h1 {
+
+        font-size: 21px;
+
+    }
+
+    .card {
+
+        padding: 18px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div
+    id="loading"
+    class="loading">
+
+    <div>
+
+        <strong>
+            Vérification de votre profil...
+        </strong>
+
+        <br><br>
+
+        Veuillez patienter.
+
+    </div>
+
+</div>
+
+
+
+<div
+    id="app"
+    class="container hidden">
+
+
+    <!-- HEADER -->
+
+    <section class="header">
+
+        <h1>
+            🎓 Candidature Expert
+        </h1>
+
+        <p>
+            Postulez pour devenir membre de
+            l'administration de Trading Academy AI.
+            Votre candidature sera examinée
+            exclusivement par le Super Admin.
+        </p>
+
+    </section>
+
+
+
+    <!-- PROFILE -->
+
+    <section class="card">
+
+        <h2>
+            👤 Votre profil
+        </h2>
+
+        <div
+            id="profileBox"
+            class="profile-box">
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CURRENT APPLICATION -->
+
+    <section
+        id="currentApplication"
+        class="card hidden">
+
+        <h2>
+            📋 Votre candidature
+        </h2>
+
+        <div id="applicationContent"></div>
+
+    </section>
+
+
+
+    <!-- FORM -->
+
+    <section
+        id="applicationFormCard"
+        class="card hidden">
+
+        <h2>
+            📝 Déposer votre candidature
+        </h2>
+
+        <div class="notice notice-info">
+
+            Vous êtes actuellement au niveau
+            <strong>Expert</strong>.
+
+            Vous pouvez maintenant présenter
+            votre candidature pour rejoindre
+            l'administration de Trading Academy AI.
+
+            <br><br>
+
+            Le Super Admin est la seule autorité
+            pouvant accepter ou refuser cette
+            candidature.
+
+        </div>
+
+
+        <label for="message">
+
+            Message de candidature
+
+        </label>
+
+
+        <textarea
+            id="message"
+            maxlength="3000"
+            placeholder="Expliquez pourquoi vous souhaitez rejoindre l'administration de Trading Academy AI, vos compétences, votre expérience et ce que vous pouvez apporter à l'Academy...">
+        </textarea>
+
+
+        <div class="actions">
+
+            <button
+                id="submitBtn"
+                class="btn btn-primary">
+
+                🚀 Envoyer ma candidature
+
+            </button>
+
+            <button
+                class="btn btn-secondary"
+                onclick="goBack()">
+
+                ← Retour
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- NOT EXPERT -->
+
+    <section
+        id="notExpert"
+        class="card hidden">
+
+        <div class="notice notice-warning">
+
+            ⚠️ Cette page est réservée aux
+            étudiants ayant atteint le niveau
+            <strong>Expert</strong>.
+
+        </div>
+
+        <button
+            class="btn btn-secondary"
+            onclick="goBack()">
+
+            ← Retour au profil
+
+        </button>
+
+    </section>
+
+
+
+    <div class="footer">
+
+        Trading Academy AI © 2026
+
+    </div>
+
+
+</div>
+
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+
+const supabaseClient =
+window.supabase.createClient(
+
+    SUPABASE_URL,
+
+    SUPABASE_PUBLISHABLE_KEY
+
+);
+
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentUser = null;
+
+let currentProfile = null;
+
+let currentApplication = null;
+
+
+
+/* =====================================================
+   HTML SECURITY
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value || "")
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(date) {
+
+    if (!date) {
+
+        return "-";
+
+    }
+
+    try {
+
+        return new Date(date)
+            .toLocaleString(
+                "fr-FR",
+                {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                }
+            );
+
+    }
+
+    catch {
+
+        return date;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function statusLabel(status) {
+
+    if (status === "pending") {
+
+        return `
+            <span class="status status-pending">
+                ⏳ En attente
+            </span>
+        `;
+
+    }
+
+    if (status === "approved") {
+
+        return `
+            <span class="status status-approved">
+                ✅ Approuvée
+            </span>
+        `;
+
+    }
+
+    if (status === "rejected") {
+
+        return `
+            <span class="status status-rejected">
+                ❌ Rejetée
+            </span>
+        `;
+
+    }
+
+    return `
+        <span class="status">
+            ${escapeHTML(status)}
+        </span>
+    `;
+
+}
+
+
+
+/* =====================================================
+   SHOW APP
+===================================================== */
+
+function showApp() {
+
+    document
+        .getElementById("loading")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("app")
+        .classList
+        .remove("hidden");
+
+}
+
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function renderProfile() {
+
+    const box =
+        document.getElementById(
+            "profileBox"
+        );
+
+
+    const niveau =
+        currentProfile.niveau || "-";
+
+
+    box.innerHTML = `
+
+        <div class="info">
+
+            <small>
+                Niveau
+            </small>
+
+            <strong>
+                ${escapeHTML(niveau)}
+            </strong>
+
+        </div>
+
+
+        <div class="info">
+
+            <small>
+                Identifiant
+            </small>
+
+            <strong>
+                ${escapeHTML(currentUser.id)}
+            </strong>
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   LOAD PROFILE
+===================================================== */
+
+async function loadProfile() {
+
+    /*
+       IMPORTANT:
+
+       Nou itilize profiles.
+       Nou pa itilize profil.
+    */
+
+    const {
+
+        data,
+        error
+
+    } = await supabaseClient
+
+        .from("profils")
+
+        .select(`
+            id,
+            niveau
+        `)
+
+        .eq(
+            "id",
+            currentUser.id
+        )
+
+        /*
+           maybeSingle() pa bay erè si
+           pa gen profile.
+        */
+
+        .maybeSingle();
+
+
+    if (error) {
+
+        throw new Error(
+            "Impossible de charger votre profil : "
+            + error.message
+        );
+
+    }
+
+
+    if (!data) {
+
+        throw new Error(
+            "Aucun profil trouvé pour cet utilisateur."
+        );
+
+    }
+
+
+    currentProfile = data;
+
+
+    renderProfile();
+
+
+    return data;
+
+}
+
+
+
+/* =====================================================
+   CHECK EXPERT
+===================================================== */
+
+function isExpert() {
+
+    if (!currentProfile) {
+
+        return false;
+
+    }
+
+
+    return String(
+        currentProfile.niveau || ""
+    )
+    .trim()
+    .toLowerCase()
+    === "expert";
+
+}
+
+
+
+/* =====================================================
+   LOAD APPLICATION
+===================================================== */
+
+async function loadApplication() {
+
+    const {
+
+        data,
+        error
+
+    } = await supabaseClient
+
+        .from("admin_applications")
+
+        .select(`
+            id,
+            user_id,
+            status,
+            message,
+            reviewed_by,
+            reviewed_at,
+            review_note,
+            created_at,
+            updated_at
+        `)
+
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        )
+
+        .limit(1);
+
+
+    if (error) {
+
+        throw new Error(
+            "Impossible de charger votre candidature : "
+            + error.message
+        );
+
+    }
+
+
+    /*
+       data se yon ARRAY.
+       Nou pran premye candidature a
+       si li egziste.
+    */
+
+    currentApplication =
+        data && data.length > 0
+        ? data[0]
+        : null;
+
+
+    renderApplication();
+
+}
+
+
+
+/* =====================================================
+   RENDER APPLICATION
+===================================================== */
+
+function renderApplication() {
+
+    const applicationCard =
+        document.getElementById(
+            "currentApplication"
+        );
+
+
+    const content =
+        document.getElementById(
+            "applicationContent"
+        );
+
+
+    const formCard =
+        document.getElementById(
+            "applicationFormCard"
+        );
+
+
+    const notExpert =
+        document.getElementById(
+            "notExpert"
+        );
+
+
+    applicationCard
+        .classList
+        .add("hidden");
+
+
+    formCard
+        .classList
+        .add("hidden");
+
+
+    notExpert
+        .classList
+        .add("hidden");
+
+
+
+    /* NOT EXPERT */
+
+    if (!isExpert()) {
+
+        notExpert
+            .classList
+            .remove("hidden");
+
+        return;
+
+    }
+
+
+
+    /* NO APPLICATION */
+
+    if (!currentApplication) {
+
+        formCard
+            .classList
+            .remove("hidden");
+
+        return;
+
+    }
+
+
+
+    /* SHOW APPLICATION */
+
+    applicationCard
+        .classList
+        .remove("hidden");
+
+
+    let html = `
+
+        <div style="margin-bottom:15px">
+
+            ${statusLabel(
+                currentApplication.status
+            )}
+
+        </div>
+
+
+        <div class="notice notice-info">
+
+            <strong>
+                Candidature envoyée :
+            </strong>
+
+            ${formatDate(
+                currentApplication.created_at
+            )}
+
+        </div>
+
+
+        <div class="info">
+
+            <small>
+                Votre message
+            </small>
+
+            <div style="
+                margin-top:7px;
+                line-height:1.6;
+                white-space:pre-wrap;
+            ">
+
+                ${escapeHTML(
+                    currentApplication.message
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+
+    /* PENDING */
+
+    if (
+        currentApplication.status
+        === "pending"
+    ) {
+
+        html += `
+
+            <div class="notice notice-warning"
+                 style="margin-top:15px">
+
+                ⏳ Votre candidature est en cours
+                d'examen.
+
+                <br><br>
+
+                Seul le Super Admin peut prendre
+                la décision finale.
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* APPROVED */
+
+    if (
+        currentApplication.status
+        === "approved"
+    ) {
+
+        html += `
+
+            <div class="notice notice-success"
+                 style="margin-top:15px">
+
+                🎉 Félicitations !
+
+                <br><br>
+
+                Votre candidature a été
+                <strong>approuvée</strong> par
+                le Super Admin.
+
+                <br><br>
+
+                Vous pouvez maintenant suivre
+                les instructions de
+                l'administration pour votre
+                intégration.
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* REJECTED */
+
+    if (
+        currentApplication.status
+        === "rejected"
+    ) {
+
+        html += `
+
+            <div class="notice notice-danger"
+                 style="margin-top:15px">
+
+                ❌ Votre candidature a été
+                rejetée.
+
+                ${
+                    currentApplication.review_note
+                    ?
+                    `
+                    <br><br>
+
+                    <strong>
+                        Note du Super Admin :
+                    </strong>
+
+                    <br>
+
+                    ${escapeHTML(
+                        currentApplication.review_note
+                    )}
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="showResubmitForm()">
+
+                    🔄 Soumettre une nouvelle
+                    candidature
+
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    content.innerHTML = html;
+
+}
+
+
+
+/* =====================================================
+   RESUBMIT
+===================================================== */
+
+function showResubmitForm() {
+
+    const formCard =
+        document.getElementById(
+            "applicationFormCard"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.value = "";
+
+
+    formCard
+        .classList
+        .remove("hidden");
+
+
+    formCard.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+
+/* =====================================================
+   SUBMIT APPLICATION
+===================================================== */
+
+async function submitApplication() {
+
+    const button =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    const textarea =
+        document.getElementById(
+            "message"
+        );
+
+
+    const message =
+        textarea.value.trim();
+
+
+    if (!message) {
+
+        alert(
+            "Veuillez écrire votre message de candidature."
+        );
+
+        textarea.focus();
+
+        return;
+
+    }
+
+
+    if (message.length < 50) {
+
+        alert(
+            "Votre message doit contenir au moins 50 caractères."
+        );
+
+        textarea.focus();
+
+        return;
+
+    }
+
+
+    if (!isExpert()) {
+
+        alert(
+            "Seuls les utilisateurs Expert peuvent déposer une candidature."
+        );
+
+        return;
+
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Envoi en cours...";
+
+
+    try {
+
+
+        /*
+           Si candidature rejetée,
+           nou autorize nouvo candidature.
+        */
+
+        if (
+            currentApplication &&
+            currentApplication.status
+            === "pending"
+        ) {
+
+            throw new Error(
+                "Vous avez déjà une candidature en attente."
+            );
+
+        }
+
+
+        if (
+            currentApplication &&
+            currentApplication.status
+            === "approved"
+        ) {
+
+            throw new Error(
+                "Votre candidature a déjà été approuvée."
+            );
+
+        }
+
+
+
+        const {
+
+            data,
+            error
+
+        } = await supabaseClient
+
+            .from("admin_applications")
+
+            .insert({
+
+                user_id:
+                    currentUser.id,
+
+                status:
+                    "pending",
+
+                message:
+                    message
+
+            })
+
+            .select(`
+                id,
+                user_id,
+                status,
+                message,
+                created_at
+            `);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.length === 0) {
+
+            throw new Error(
+                "La candidature n'a pas pu être créée."
+            );
+
+        }
+
+
+        alert(
+            "✅ Votre candidature a été envoyée au Super Admin."
+        );
+
+
+        textarea.value = "";
+
+
+        await loadApplication();
+
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "APPLICATION ERROR:",
+            error
+        );
+
+
+        alert(
+            "❌ Impossible d'envoyer la candidature.\n\n"
+            + error.message
+        );
+
+    }
+
+    finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "🚀 Envoyer ma candidature";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+function goBack() {
+
+    window.history.back();
+
+}
+
+
+
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
+
+async function initialize() {
+
+    try {
+
+
+        const {
+
+            data,
+            error
+
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+            error ||
+            !data ||
+            !data.user
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+
+        /*
+           1. Charger profiles
+        */
+
+        await loadProfile();
+
+
+
+        /*
+           2. Afficher l'application
+        */
+
+        showApp();
+
+
+
+        /*
+           3. Vérifier Expert
+        */
+
+        if (!isExpert()) {
+
+            renderApplication();
+
+            return;
+
+        }
+
+
+
+        /*
+           4. Charger candidature
+        */
+
+        await loadApplication();
+
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "INITIALIZATION ERROR:",
+            error
+        );
+
+
+        document
+            .getElementById(
+                "loading"
+            )
+            .innerHTML = `
+
+                <div class="error">
+
+                    <h3>
+                        ❌ Impossible de vérifier votre profil.
+                    </h3>
+
+                    <p>
+                        ${escapeHTML(
+                            error.message
+                        )}
+                    </p>
+
+                    <br>
+
+                    <button
+                        class="btn btn-secondary"
+                        onclick="window.history.back()">
+
+                        ← Retour
+
+                    </button>
+
+                </div>
+
+            `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   EVENT
+===================================================== */
+
+document
+    .getElementById(
+        "submitBtn"
+    )
+    .addEventListener(
+        "click",
+        submitApplication
+    );
+
+
+
+/* =====================================================
+   START
+===================================================== */
+
+initialize();
+
+</script>
+
+</body>
+
+</html>

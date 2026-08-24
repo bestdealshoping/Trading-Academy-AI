@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mon Profil | Trading Academy AI</title>
+
+  <!-- Supabase SDK — TOUJOU ANVAN supabase.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Client Supabase nou an -->
+  <script src="supabase.js"></script>
+</head>
+
+<body>
+
+  <!-- Kontni profil la -->
+
+  <script>
+    async function chargerProfil() {
+
+      console.log("🔵 Chargement du profil...");
+
+      const {
+        data: { user },
+        error: authError
+      } = await supabaseClient.auth.getUser();
+
+      if (authError) {
+        console.error("AUTH ERROR:", authError);
+        return;
+      }
+
+      if (!user) {
+        console.error("❌ Aucun utilisateur connecté.");
+        return;
+      }
+
+      console.log("✅ AUTH USER ID:", user.id);
+
+      const {
+        data: profile,
+        error: profileError
+      } = await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        console.error("PROFILE ERROR:", profileError);
+        return;
+      }
+
+      if (!profile) {
+        console.error(
+          "❌ Profil étudiant introuvable pour:",
+          user.id
+        );
+        return;
+      }
+
+      console.log("✅ PROFIL:", profile);
+
+      // Apre sa nou ka afiche profile la
+    }
+
+    chargerProfil();
+  </script>
+
+</body>
+</html>

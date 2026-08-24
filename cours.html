@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mes Cours | Trading Academy AI</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:#0f172a;
+    color:white;
+    padding:18px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.back-btn{
+    border:0;
+    background:#1e293b;
+    color:white;
+    padding:9px 14px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.container{
+    max-width:1100px;
+    margin:25px auto;
+    padding:0 18px;
+}
+
+.page-title{
+    margin-bottom:20px;
+}
+
+.page-title h1{
+    margin:0;
+    font-size:28px;
+}
+
+.page-title p{
+    color:#64748b;
+    margin-top:7px;
+}
+
+.loading,
+.error,
+.empty{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:30px;
+    text-align:center;
+}
+
+.course-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:15px;
+    margin-bottom:22px;
+    overflow:hidden;
+}
+
+.course-header{
+    padding:22px;
+    background:#f8fafc;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.course-header h2{
+    margin:0 0 8px;
+    font-size:21px;
+}
+
+.course-meta{
+    color:#64748b;
+    font-size:13px;
+}
+
+.progress-box{
+    margin-top:16px;
+}
+
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.progress{
+    height:9px;
+    background:#e2e8f0;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:#2563eb;
+    border-radius:20px;
+    transition:.3s;
+}
+
+.completed-bar{
+    background:#16a34a;
+}
+
+.module{
+    padding:20px 22px;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.module:last-child{
+    border-bottom:0;
+}
+
+.module-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.module-title h3{
+    margin:0;
+    font-size:16px;
+}
+
+.module-number{
+    color:#2563eb;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.lesson{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:13px;
+    margin-bottom:8px;
+    background:#f8fafc;
+    border-radius:9px;
+}
+
+.lesson:last-child{
+    margin-bottom:0;
+}
+
+.lesson-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.lesson-icon{
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e0ecff;
+}
+
+.lesson.completed .lesson-icon{
+    background:#dcfce7;
+}
+
+.lesson-title{
+    font-size:14px;
+    font-weight:600;
+}
+
+.lesson-status{
+    font-size:11px;
+    color:#64748b;
+}
+
+.lesson.completed .lesson-status{
+    color:#15803d;
+}
+
+.lesson-btn{
+    border:0;
+    padding:8px 12px;
+    border-radius:7px;
+    cursor:pointer;
+    background:#2563eb;
+    color:white;
+    font-size:12px;
+}
+
+.lesson-btn:hover{
+    background:#1d4ed8;
+}
+
+.quiz-box{
+    margin:20px 22px 22px;
+    padding:18px;
+    border-radius:12px;
+    border:1px solid #dbeafe;
+    background:#eff6ff;
+}
+
+.quiz-box h3{
+    margin:0 0 7px;
+}
+
+.quiz-box p{
+    margin:0 0 14px;
+    color:#475569;
+    font-size:13px;
+}
+
+.quiz-btn{
+    border:0;
+    padding:11px 16px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.quiz-open{
+    background:#2563eb;
+    color:white;
+}
+
+.quiz-locked{
+    background:#cbd5e1;
+    color:#64748b;
+    cursor:not-allowed;
+}
+
+.completed-message{
+    color:#15803d;
+    font-weight:bold;
+}
+
+@media(max-width:600px){
+    .header-inner{
+        flex-direction:row;
+    }
+
+    .page-title h1{
+        font-size:23px;
+    }
+
+    .lesson{
+        align-items:flex-start;
+    }
+
+    .lesson-btn{
+        padding:7px 9px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+        <div class="logo">
+            Trading Academy <span>AI</span>
+        </div>
+
+        <button
+            class="back-btn"
+            onclick="window.location.href='dashboard.html'">
+            ← Dashboard
+        </button>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="page-title">
+        <h1>Mes Cours</h1>
+        <p>
+            Suivez vos cours, complétez les leçons et débloquez vos quiz.
+        </p>
+    </section>
+
+    <div id="content">
+        <div class="loading">
+            Chargement de vos cours...
+        </div>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const COURSE_SUPABASE_URL =
+"https://jmkwekgpsogbdpkjqqyx.supabase.co";
+
+const COURSE_SUPABASE_KEY =
+"sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
+const courseClient =
+window.supabase.createClient(
+    COURSE_SUPABASE_URL,
+    COURSE_SUPABASE_KEY
+);
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHTML(value){
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* =========================================================
+   LOAD USER
+========================================================= */
+
+async function getCurrentUser(){
+
+    const {
+        data,
+        error
+    } = await courseClient.auth.getUser();
+
+    if(error || !data.user){
+        window.location.href="login.html";
+        return null;
+    }
+
+    return data.user;
+}
+
+
+/* =========================================================
+   LOAD COURSES
+========================================================= */
+
+async function loadCourses(){
+
+    const content =
+        document.getElementById("content");
+
+    try{
+
+        const user =
+            await getCurrentUser();
+
+        if(!user) return;
+
+
+        /* -----------------------------------------
+           COURSES
+        ----------------------------------------- */
+
+        const {
+            data:courses,
+            error:courseError
+        } =
+        await courseClient
+            .from("courses")
+            .select(`
+                id,
+                title,
+                description,
+                level,
+                language,
+                is_published
+            `)
+            .eq("is_published",true)
+            .order("created_at",{ascending:true});
+
+
+        if(courseError)
+            throw courseError;
+
+
+        if(!courses || courses.length===0){
+
+            content.innerHTML=`
+                <div class="empty">
+                    📚 Aucun cours disponible pour le moment.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        content.innerHTML="";
+
+
+        for(const course of courses){
+
+            await renderCourse(
+                course,
+                user.id,
+                content
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "COURSES ERROR:",
+            error
+        );
+
+        content.innerHTML=`
+            <div class="error">
+
+                ❌ Impossible de charger les cours.
+
+                <br><br>
+
+                <small>
+                    ${escapeHTML(error.message)}
+                </small>
+
+            </div>
+        `;
+    }
+}
+
+
+/* =========================================================
+   RENDER COURSE
+========================================================= */
+
+async function renderCourse(
+    course,
+    userId,
+    container
+){
+
+    /* -----------------------------------------
+       MODULES
+    ----------------------------------------- */
+
+    const {
+        data:modules,
+        error:moduleError
+    } =
+    await courseClient
+        .from("modules")
+        .select(`
+            id,
+            module_number,
+            title,
+            description,
+            is_published
+        `)
+        .eq("course_id",course.id)
+        .eq("is_published",true)
+        .order("module_number");
+
+
+    if(moduleError)
+        throw moduleError;
+
+
+    let allLessons=[];
+    let modulesHTML="";
+
+
+    /* -----------------------------------------
+       MODULES + LESSONS
+    ----------------------------------------- */
+
+    for(const module of (modules || [])){
+
+        const {
+            data:lessons,
+            error:lessonError
+        } =
+        await courseClient
+            .from("lessons")
+            .select(`
+                id,
+                lesson_number,
+                title,
+                description,
+                is_published
+            `)
+            .eq("module_id",module.id)
+            .eq("is_published",true)
+            .order("lesson_number");
+
+
+        if(lessonError)
+            throw lessonError;
+
+
+        const lessonIds =
+            (lessons || []).map(
+                lesson => lesson.id
+            );
+
+
+        let progressMap={};
+
+
+        /* -----------------------------------------
+           USER LESSON PROGRESS
+        ----------------------------------------- */
+
+        if(lessonIds.length){
+
+            const {
+                data:progress,
+                error:progressError
+            } =
+            await courseClient
+                .from("user_lesson_progress")
+                .select(`
+                    lesson_id,
+                    completed,
+                    completed_at
+                `)
+                .eq("user_id",userId)
+                .in("lesson_id",lessonIds);
+
+
+            if(progressError)
+                throw progressError;
+
+
+            (progress || []).forEach(
+                row => {
+
+                    progressMap[
+                        row.lesson_id
+                    ] = row;
+
+                }
+            );
+        }
+
+
+        (lessons || []).forEach(
+            lesson => {
+
+                const completed =
+                    progressMap[lesson.id]?.completed === true;
+
+
+                allLessons.push({
+                    ...lesson,
+                    completed
+                });
+
+            }
+        );
+
+
+        let lessonsHTML="";
+
+
+        (lessons || []).forEach(
+            lesson => {
+
+                const completed =
+                    progressMap[lesson.id]?.completed === true;
+
+
+                lessonsHTML += `
+
+                    <div class="lesson ${
+                        completed
+                        ? "completed"
+                        : ""
+                    }">
+
+                        <div class="lesson-left">
+
+                            <div class="lesson-icon">
+
+                                ${
+                                    completed
+                                    ? "✓"
+                                    : "📝"
+                                }
+
+                            </div>
+
+                            <div>
+
+                                <div class="lesson-title">
+
+                                    ${escapeHTML(
+                                        lesson.title
+                                    )}
+
+                                </div>
+
+                                <div class="lesson-status">
+
+                                    ${
+                                        completed
+                                        ? "Leçon terminée"
+                                        : "À terminer"
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="lesson-btn"
+                            onclick="openLesson(
+                                '${lesson.id}'
+                            )">
+
+                            ${
+                                completed
+                                ? "Revoir"
+                                : "Commencer"
+                            }
+
+                        </button>
+
+                    </div>
+
+                `;
+            }
+        );
+
+
+        modulesHTML += `
+
+            <div class="module">
+
+                <div class="module-title">
+
+                    <h3>
+
+                        <span class="module-number">
+                            MODULE ${escapeHTML(
+                                module.module_number
+                            )}
+                        </span>
+
+                        —
+                        ${escapeHTML(
+                            module.title
+                        )}
+
+                    </h3>
+
+                </div>
+
+                ${lessonsHTML}
+
+            </div>
+
+        `;
+    }
+
+
+    /* -----------------------------------------
+       COURSE PROGRESS
+    ----------------------------------------- */
+
+    const totalLessons =
+        allLessons.length;
+
+    const completedLessons =
+        allLessons.filter(
+            lesson => lesson.completed
+        ).length;
+
+
+    const progressPercent =
+        totalLessons === 0
+        ? 0
+        : Math.round(
+            (
+                completedLessons /
+                totalLessons
+            ) * 100
+        );
+
+
+    const courseCompleted =
+        totalLessons > 0 &&
+        completedLessons === totalLessons;
+
+
+    const courseCard =
+        document.createElement("section");
+
+
+    courseCard.className =
+        "course-card";
+
+
+    courseCard.innerHTML = `
+
+        <div class="course-header">
+
+            <h2>
+                ${escapeHTML(course.title)}
+            </h2>
+
+            <div class="course-meta">
+
+                Niveau:
+                ${escapeHTML(course.level || "-")}
+
+                ·
+
+                Langue:
+                ${escapeHTML(course.language || "-")}
+
+            </div>
+
+
+            <div class="progress-box">
+
+                <div class="progress-info">
+
+                    <span>
+                        Progression
+                    </span>
+
+                    <strong>
+                        ${completedLessons}
+                        /
+                        ${totalLessons}
+                        (${progressPercent}%)
+                    </strong>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar ${
+                            courseCompleted
+                            ? "completed-bar"
+                            : ""
+                        }"
+                        style="
+                            width:${progressPercent}%
+                        ">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        ${
+            modulesHTML ||
+            `
+                <div class="empty">
+                    Aucun module disponible.
+                </div>
+            `
+        }
+
+
+        <div class="quiz-box">
+
+            <h3>
+                🧠 Quiz du cours
+            </h3>
+
+
+            ${
+                courseCompleted
+
+                ? `
+
+                    <p class="completed-message">
+
+                        ✓ Toutes les leçons sont terminées.
+                        Le quiz est maintenant débloqué.
+
+                    </p>
+
+
+                    <button
+                        class="quiz-btn quiz-open"
+                        onclick="openQuiz(
+                            '${course.id}'
+                        )">
+
+                        🎯 Commencer le quiz
+
+                    </button>
+
+                  `
+
+                : `
+
+                    <p>
+
+                        🔒 Le quiz est verrouillé.
+
+                        <br>
+
+                        Vous devez terminer
+                        toutes les leçons
+                        de ce cours avant
+                        de pouvoir passer le quiz.
+
+                    </p>
+
+
+                    <button
+                        class="quiz-btn quiz-locked"
+                        disabled>
+
+                        🔒 Quiz verrouillé
+
+                    </button>
+
+                  `
+            }
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        courseCard
+    );
+}
+
+
+/* =========================================================
+   LESSON
+========================================================= */
+
+function openLesson(lessonId){
+
+    /*
+       Adapte ici le nom de ta page de leçon
+       si elle possède un autre nom.
+    */
+
+    window.location.href =
+        "lesson.html?id=" +
+        encodeURIComponent(lessonId);
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+function openQuiz(courseId){
+
+    window.location.href =
+        "quiz.html?course_id=" +
+        encodeURIComponent(courseId);
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadCourses();
+
+</script>
+
+</body>
+</html>
