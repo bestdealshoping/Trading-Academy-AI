@@ -1,73 +1,1081 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Mon Profil | Trading Academy AI</title>
+<title>Mon Profil | Trading Academy AI</title>
 
-  <!-- Supabase SDK — TOUJOU ANVAN supabase.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- SUPABASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Client Supabase nou an -->
-  <script src="supabase.js"></script>
+<!-- NOTRE CLIENT -->
+<script src="supabase.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #111827;
+}
+
+.header {
+    background: #071226;
+    color: white;
+    padding: 40px 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 42px;
+}
+
+.header h1 span {
+    color: #287cff;
+}
+
+.dashboard-btn {
+    display: block;
+    margin-top: 30px;
+    background: #1d2c48;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 28px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    margin-bottom: 25px;
+}
+
+.profile-top {
+    text-align: center;
+}
+
+.avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #e5e7eb;
+    border: 5px solid #287cff;
+}
+
+.profile-top h2 {
+    font-size: 32px;
+    margin: 15px 0 5px;
+}
+
+.level {
+    color: #287cff;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background: #287cff;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.save-btn {
+    background: #16a34a;
+    color: white;
+    padding: 16px 25px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 25px;
+}
+
+.cancel-btn {
+    background: #e5e7eb;
+    color: #111827;
+    padding: 16px 25px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 25px;
+    margin-left: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.info-row {
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.info-label {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.info-value {
+    margin-top: 5px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.message {
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.success {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.loading {
+    text-align: center;
+    font-size: 24px;
+    padding: 80px 20px;
+}
+
+</style>
 </head>
 
 <body>
 
-  <!-- Kontni profil la -->
+<header class="header">
 
-  <script>
-    async function chargerProfil() {
+    <h1>
+        Trading Academy <span>AI</span>
+    </h1>
 
-      console.log("🔵 Chargement du profil...");
+    <a href="dashboard.html" class="dashboard-btn">
+        ← Dashboard
+    </a>
 
-      const {
-        data: { user },
-        error: authError
-      } = await supabaseClient.auth.getUser();
+</header>
 
-      if (authError) {
-        console.error("AUTH ERROR:", authError);
-        return;
-      }
 
-      if (!user) {
-        console.error("❌ Aucun utilisateur connecté.");
-        return;
-      }
+<main class="container">
 
-      console.log("✅ AUTH USER ID:", user.id);
+    <!-- LOADING -->
+    <div id="loading" class="card loading">
+        Chargement de votre profil...
+    </div>
 
-      const {
-        data: profile,
-        error: profileError
-      } = await supabaseClient
-        .from("profiles")
-        .select("*")
-        .eq("user_id", user.id)
-        .maybeSingle();
 
-      if (profileError) {
-        console.error("PROFILE ERROR:", profileError);
-        return;
-      }
+    <!-- ERROR -->
+    <div id="errorBox" class="card message">
+    </div>
 
-      if (!profile) {
-        console.error(
-          "❌ Profil étudiant introuvable pour:",
-          user.id
+
+    <!-- PROFILE -->
+    <div id="profileContent" class="hidden">
+
+        <div class="card profile-top">
+
+            <img
+                id="avatar"
+                class="avatar"
+                src="https://via.placeholder.com/140"
+                alt="Photo de profil"
+            >
+
+            <h2 id="displayName">
+                —
+            </h2>
+
+            <div id="tradingLevel" class="level">
+                —
+            </div>
+
+            <button
+                id="editButton"
+                class="edit-btn"
+                onclick="ouvrirEdition()"
+            >
+                ✏️ Modifier mon profil
+            </button>
+
+        </div>
+
+
+        <!-- INFORMATIONS -->
+        <div class="card">
+
+            <h2>Informations personnelles</h2>
+
+            <div class="info-row">
+                <div class="info-label">
+                    Nom affiché
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoDisplayName"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">
+                    Genre
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoGender"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">
+                    Date de naissance
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoBirth"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">
+                    Pays
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoCountry"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">
+                    Ville
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoCity"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">
+                    Langue d'apprentissage
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoLanguage"
+                >
+                    —
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">
+                    Biographie
+                </div>
+
+                <div
+                    class="info-value"
+                    id="infoBio"
+                >
+                    —
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- EDITION -->
+        <div
+            id="editCard"
+            class="card hidden"
+        >
+
+            <h2>Modifier mon profil</h2>
+
+            <div id="saveMessage" class="message"></div>
+
+
+            <label for="editDisplayName">
+                Nom affiché
+            </label>
+
+            <input
+                id="editDisplayName"
+                type="text"
+                placeholder="Votre nom"
+            >
+
+
+            <label for="editGender">
+                Genre
+            </label>
+
+            <select id="editGender">
+
+                <option value="">
+                    Sélectionner
+                </option>
+
+                <option value="homme">
+                    Homme
+                </option>
+
+                <option value="femme">
+                    Femme
+                </option>
+
+                <option value="autre">
+                    Autre
+                </option>
+
+            </select>
+
+
+            <label for="editBirth">
+                Date de naissance
+            </label>
+
+            <input
+                id="editBirth"
+                type="date"
+            >
+
+
+            <label for="editCountry">
+                Pays
+            </label>
+
+            <input
+                id="editCountry"
+                type="text"
+                placeholder="Votre pays"
+            >
+
+
+            <label for="editCity">
+                Ville
+            </label>
+
+            <input
+                id="editCity"
+                type="text"
+                placeholder="Votre ville"
+            >
+
+
+            <label for="editLanguage">
+                Langue d'apprentissage
+            </label>
+
+            <select id="editLanguage">
+
+                <option value="">
+                    Sélectionner
+                </option>
+
+                <option value="français">
+                    Français
+                </option>
+
+                <option value="kreyòl">
+                    Kreyòl
+                </option>
+
+                <option value="anglais">
+                    Anglais
+                </option>
+
+            </select>
+
+
+            <label for="editBio">
+                Biographie
+            </label>
+
+            <textarea
+                id="editBio"
+                placeholder="Parlez un peu de vous..."
+            ></textarea>
+
+
+            <button
+                class="save-btn"
+                onclick="sauvegarderProfil()"
+            >
+                💾 Enregistrer
+            </button>
+
+
+            <button
+                class="cancel-btn"
+                onclick="fermerEdition()"
+            >
+                Annuler
+            </button>
+
+        </div>
+
+
+        <!-- COMPTE -->
+        <div class="card">
+
+            <h2>Informations du compte</h2>
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Email
+                </div>
+
+                <div
+                    class="info-value"
+                    id="email"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    User ID
+                </div>
+
+                <div
+                    class="info-value"
+                    id="userId"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Profil créé le
+                </div>
+
+                <div
+                    class="info-value"
+                    id="createdAt"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Dernière mise à jour
+                </div>
+
+                <div
+                    class="info-value"
+                    id="updatedAt"
+                >
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+let currentUser = null;
+let currentProfile = null;
+
+
+/* ============================
+   CHARGER LE PROFIL
+============================ */
+
+async function chargerProfil() {
+
+    const loading =
+        document.getElementById("loading");
+
+    const errorBox =
+        document.getElementById("errorBox");
+
+    const content =
+        document.getElementById("profileContent");
+
+
+    try {
+
+        console.log("🔵 Chargement du profil...");
+
+
+        if (!window.supabaseClient) {
+
+            throw new Error(
+                "Supabase Client introuvable."
+            );
+
+        }
+
+
+        const {
+            data: authData,
+            error: authError
+        } =
+            await window.supabaseClient.auth.getUser();
+
+
+        if (authError) {
+
+            console.error(
+                "AUTH ERROR:",
+                authError
+            );
+
+            throw authError;
+
+        }
+
+
+        currentUser = authData.user;
+
+
+        if (!currentUser) {
+
+            throw new Error(
+                "Aucun utilisateur connecté."
+            );
+
+        }
+
+
+        console.log(
+            "✅ AUTH USER ID:",
+            currentUser.id
         );
-        return;
-      }
 
-      console.log("✅ PROFIL:", profile);
 
-      // Apre sa nou ka afiche profile la
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await window.supabaseClient
+                .from("profiles")
+                .select(`
+                    id,
+                    user_id,
+                    display_name,
+                    bio,
+                    avatar_url,
+                    gender,
+                    date_of_birth,
+                    country,
+                    city,
+                    learning_language,
+                    trading_level,
+                    created_at,
+                    updated_at,
+                    course_1_score,
+                    course_2_score,
+                    general_average
+                `)
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .maybeSingle();
+
+
+        if (profileError) {
+
+            console.error(
+                "PROFILE ERROR:",
+                profileError
+            );
+
+            throw profileError;
+
+        }
+
+
+        if (!profile) {
+
+            throw new Error(
+                "Profil étudiant introuvable."
+            );
+
+        }
+
+
+        currentProfile = profile;
+
+        console.log(
+            "✅ PROFIL:",
+            currentProfile
+        );
+
+
+        afficherProfil();
+
+        loading.classList.add("hidden");
+
+        content.classList.remove("hidden");
+
+
+    } catch (error) {
+
+        console.error(
+            "PROFILE PAGE ERROR:",
+            error
+        );
+
+        loading.classList.add("hidden");
+
+        errorBox.textContent =
+            "Impossible de charger votre profil : " +
+            (error.message || error);
+
+        errorBox.classList.add("error");
+
     }
 
-    chargerProfil();
-  </script>
+}
+
+
+/* ============================
+   AFFICHER PROFIL
+============================ */
+
+function afficherProfil() {
+
+    const p = currentProfile;
+
+
+    document.getElementById(
+        "displayName"
+    ).textContent =
+        p.display_name || "Étudiant";
+
+
+    document.getElementById(
+        "tradingLevel"
+    ).textContent =
+        p.trading_level || "Niveau non défini";
+
+
+    document.getElementById(
+        "infoDisplayName"
+    ).textContent =
+        p.display_name || "Non renseigné";
+
+
+    document.getElementById(
+        "infoGender"
+    ).textContent =
+        p.gender || "Non renseigné";
+
+
+    document.getElementById(
+        "infoBirth"
+    ).textContent =
+        p.date_of_birth || "Non renseigné";
+
+
+    document.getElementById(
+        "infoCountry"
+    ).textContent =
+        p.country || "Non renseigné";
+
+
+    document.getElementById(
+        "infoCity"
+    ).textContent =
+        p.city || "Non renseigné";
+
+
+    document.getElementById(
+        "infoLanguage"
+    ).textContent =
+        p.learning_language || "Non renseigné";
+
+
+    document.getElementById(
+        "infoBio"
+    ).textContent =
+        p.bio || "Aucune biographie";
+
+
+    document.getElementById(
+        "email"
+    ).textContent =
+        currentUser.email || "Non disponible";
+
+
+    document.getElementById(
+        "userId"
+    ).textContent =
+        currentUser.id;
+
+
+    document.getElementById(
+        "createdAt"
+    ).textContent =
+        formatDate(p.created_at);
+
+
+    document.getElementById(
+        "updatedAt"
+    ).textContent =
+        formatDate(p.updated_at);
+
+
+    const avatar =
+        document.getElementById("avatar");
+
+
+    if (p.avatar_url) {
+
+        avatar.src =
+            p.avatar_url;
+
+    } else {
+
+        avatar.src =
+            "https://via.placeholder.com/140";
+
+    }
+
+}
+
+
+/* ============================
+   MODIFICATION
+============================ */
+
+function ouvrirEdition() {
+
+    const p = currentProfile;
+
+
+    document.getElementById(
+        "editDisplayName"
+    ).value =
+        p.display_name || "";
+
+
+    document.getElementById(
+        "editGender"
+    ).value =
+        p.gender || "";
+
+
+    document.getElementById(
+        "editBirth"
+    ).value =
+        p.date_of_birth || "";
+
+
+    document.getElementById(
+        "editCountry"
+    ).value =
+        p.country || "";
+
+
+    document.getElementById(
+        "editCity"
+    ).value =
+        p.city || "";
+
+
+    document.getElementById(
+        "editLanguage"
+    ).value =
+        p.learning_language || "";
+
+
+    document.getElementById(
+        "editBio"
+    ).value =
+        p.bio || "";
+
+
+    document.getElementById(
+        "editCard"
+    ).classList.remove("hidden");
+
+
+    window.scrollTo({
+        top: document.getElementById(
+            "editCard"
+        ).offsetTop - 20,
+        behavior: "smooth"
+    });
+
+}
+
+
+function fermerEdition() {
+
+    document.getElementById(
+        "editCard"
+    ).classList.add("hidden");
+
+}
+
+
+/* ============================
+   SAUVEGARDER
+============================ */
+
+async function sauvegarderProfil() {
+
+    const message =
+        document.getElementById(
+            "saveMessage"
+        );
+
+
+    message.className =
+        "message";
+
+    message.textContent =
+        "Sauvegarde en cours...";
+
+    message.classList.add(
+        "success"
+    );
+
+
+    try {
+
+        const updates = {
+
+            display_name:
+                document.getElementById(
+                    "editDisplayName"
+                ).value.trim() || null,
+
+            gender:
+                document.getElementById(
+                    "editGender"
+                ).value || null,
+
+            date_of_birth:
+                document.getElementById(
+                    "editBirth"
+                ).value || null,
+
+            country:
+                document.getElementById(
+                    "editCountry"
+                ).value.trim() || null,
+
+            city:
+                document.getElementById(
+                    "editCity"
+                ).value.trim() || null,
+
+            learning_language:
+                document.getElementById(
+                    "editLanguage"
+                ).value || null,
+
+            bio:
+                document.getElementById(
+                    "editBio"
+                ).value.trim() || null,
+
+            updated_at:
+                new Date().toISOString()
+
+        };
+
+
+        const {
+            data,
+            error
+        } =
+            await window.supabaseClient
+                .from("profiles")
+                .update(updates)
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .select()
+                .single();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        currentProfile = data;
+
+
+        afficherProfil();
+
+
+        message.textContent =
+            "✅ Profil sauvegardé avec succès.";
+
+        message.className =
+            "message success";
+
+
+        setTimeout(() => {
+
+            fermerEdition();
+
+        }, 1000);
+
+
+    } catch (error) {
+
+        console.error(
+            "SAVE PROFILE ERROR:",
+            error
+        );
+
+
+        message.textContent =
+            "❌ Impossible de sauvegarder : " +
+            error.message;
+
+
+        message.className =
+            "message error";
+
+    }
+
+}
+
+
+/* ============================
+   DATE
+============================ */
+
+function formatDate(date) {
+
+    if (!date) {
+
+        return "Non renseigné";
+
+    }
+
+
+    return new Date(date)
+        .toLocaleDateString(
+            "fr-FR",
+            {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+}
+
+
+/* ============================
+   START
+============================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    chargerProfil
+);
+
+</script>
 
 </body>
 </html>

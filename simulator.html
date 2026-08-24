@@ -1,1 +1,2457 @@
-<!DOCTYPE html> <html lang="ht"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Trading Simulator | Trading Academy AI</title> <style> *{ box-sizing:border-box; } body{ margin:0; font-family:Arial,Helvetica,sans-serif; background:#f4f7fb; color:#172033; } .header{ background:#0f172a; color:white; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; gap:15px; } .brand{ font-size:20px; font-weight:800; } .brand span{ color:#3b82f6; } .header-right{ display:flex; align-items:center; gap:10px; } .btn{ border:0; border-radius:8px; padding:10px 15px; cursor:pointer; font-weight:bold; } .btn-dashboard{ background:#1e293b; color:white; } .btn-dashboard:hover{ background:#334155; } .container{ max-width:1450px; margin:auto; padding:20px; } /* MARKET BAR */ .market-bar{ background:white; border:1px solid #e5e7eb; border-radius:12px; padding:15px; display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:18px; } .market-bar select, .market-bar input{ border:1px solid #dbe2ea; border-radius:8px; padding:10px; background:white; outline:none; } .symbol{ width:130px; font-weight:bold; } .status{ margin-left:auto; display:flex; align-items:center; gap:7px; font-size:13px; } .status-dot{ width:9px; height:9px; border-radius:50%; background:#f59e0b; } .status-dot.connected{ background:#22c55e; } /* STATS */ .stats{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:18px; } .stat{ background:white; border:1px solid #e5e7eb; border-radius:12px; padding:17px; } .stat p{ margin:0; color:#64748b; font-size:12px; } .stat h2{ margin:7px 0 0; font-size:22px; } /* MAIN GRID */ .main-grid{ display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:18px; } .panel{ background:white; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; margin-bottom:18px; } .panel-header{ padding:15px 17px; border-bottom:1px solid #eef2f7; display:flex; justify-content:space-between; align-items:center; } .panel-header h3{ margin:0; font-size:16px; } .chart{ height:470px; position:relative; padding:15px; } canvas{ width:100%; height:100%; } /* ORDER */ .order-panel{ padding:17px; } .order-tabs{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:15px; } .order-tab{ padding:11px; border:0; border-radius:8px; font-weight:bold; cursor:pointer; } .buy-tab{ background:#dcfce7; color:#166534; } .sell-tab{ background:#fee2e2; color:#991b1b; } .form-group{ margin-bottom:12px; } .form-group label{ display:block; font-size:12px; color:#64748b; margin-bottom:5px; } .form-group input{ width:100%; padding:11px; border:1px solid #dbe2ea; border-radius:8px; outline:none; } .order-buttons{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:15px; } .buy-btn{ background:#16a34a; color:white; } .sell-btn{ background:#dc2626; color:white; } .buy-btn:hover{ background:#15803d; } .sell-btn:hover{ background:#b91c1c; } /* POSITIONS */ .position{ padding:13px 17px; border-bottom:1px solid #eef2f7; } .position:last-child{ border-bottom:0; } .position-top{ display:flex; justify-content:space-between; font-weight:bold; } .position-meta{ color:#64748b; font-size:12px; margin-top:6px; } .profit{ color:#16a34a; } .loss{ color:#dc2626; } /* HISTORY */ .history{ overflow-x:auto; } table{ width:100%; border-collapse:collapse; } th, td{ padding:11px 14px; border-bottom:1px solid #eef2f7; text-align:left; font-size:12px; } th{ color:#64748b; font-weight:bold; background:#f8fafc; } /* EMPTY */ .empty{ padding:30px; text-align:center; color:#64748b; } /* RESPONSIVE */ @media(max-width:1100px){ .stats{ grid-template-columns:repeat(3,1fr); } .main-grid{ grid-template-columns:1fr; } } @media(max-width:700px){ .header{ padding:13px; } .brand{ font-size:16px; } .container{ padding:12px; } .stats{ grid-template-columns:repeat(2,1fr); } .market-bar{ align-items:stretch; } .symbol{ width:100%; } .status{ margin-left:0; width:100%; } .chart{ height:330px; } } @media(max-width:450px){ .stats{ grid-template-columns:1fr; } .header-right{ display:none; } } </style> </head> <body> <header class="header"> <div class="brand"> Trading Academy <span>AI</span> </div> <div class="header-right"> <button class="btn btn-dashboard" onclick="window.location.href='dashboard.html'"> ← Dashboard </button> </div> </header> <div class="container"> <!-- MARKET --> <div class="market-bar"> <select id="market"> <option value="forex">Forex</option> <option value="crypto">Crypto</option> <option value="stocks">Actions</option> </select> <input id="symbol" class="symbol" value="EUR/USD" placeholder="Symbole"> <select id="timeframe"> <option value="1m">1 min</option> <option value="5m">5 min</option> <option value="15m">15 min</option> <option value="1h">1 heure</option> <option value="4h">4 heures</option> <option value="1d">1 jour</option> </select> <button class="btn" style="background:#eff6ff;color:#1d4ed8" onclick="changeMarket()"> Actualiser </button> <div class="status"> <span id="statusDot" class="status-dot"> </span> <span id="statusText"> Simulation </span> </div> </div> <!-- STATISTICS --> <section class="stats"> <div class="stat"> <p>Virtual Balance</p> <h2 id="balance"> $10,000.00 </h2> </div> <div class="stat"> <p>Equity</p> <h2 id="equity"> $10,000.00 </h2> </div> <div class="stat"> <p>P&L</p> <h2 id="pnl"> $0.00 </h2> </div> <div class="stat"> <p>P&L %</p> <h2 id="pnlPercent"> 0.00% </h2> </div> <div class="stat"> <p>Positions</p> <h2 id="positionCount"> 0 </h2> </div> </section> <div class="main-grid"> <!-- LEFT --> <div> <!-- CHART --> <section class="panel"> <div class="panel-header"> <h3 id="chartTitle"> EUR/USD — 1 min </h3> <strong id="currentPrice"> 1.08500 </strong> </div> <div class="chart"> <canvas id="chartCanvas"></canvas> </div> </section> <!-- POSITIONS --> <section class="panel"> <div class="panel-header"> <h3> Positions ouvertes </h3> <span id="positionLabel"> 0 position </span> </div> <div id="positions"> <div class="empty"> Aucune position ouverte. </div> </div> </section> <!-- HISTORY --> <section class="panel"> <div class="panel-header"> <h3> Historique des trades </h3> </div> <div class="history"> <table> <thead> <tr> <th>Symbole</th> <th>Type</th> <th>Quantité</th> <th>Entrée</th> <th>Sortie</th> <th>P&L</th> </tr> </thead> <tbody id="tradeHistory"> </tbody> </table> </div> </section> </div> <!-- RIGHT --> <aside> <!-- ORDER --> <section class="panel"> <div class="panel-header"> <h3> Passer un ordre </h3> </div> <div class="order-panel"> <div class="order-tabs"> <button class="order-tab buy-tab"> BUY </button> <button class="order-tab sell-tab"> SELL </button> </div> <div class="form-group"> <label> Quantité </label> <input id="quantity" type="number" min="0.01" step="0.01" value="1"> </div> <div class="form-group"> <label> Prix d'entrée </label> <input id="entryPrice" type="number" step="0.00001" value="1.08500"> </div> <div class="form-group"> <label> Stop Loss </label> <input id="stopLoss" type="number" step="0.00001" placeholder="Optionnel"> </div> <div class="form-group"> <label> Take Profit </label> <input id="takeProfit" type="number" step="0.00001" placeholder="Optionnel"> </div> <div class="order-buttons"> <button class="btn buy-btn" onclick="openPosition('BUY')"> 🟢 Acheter </button> <button class="btn sell-btn" onclick="openPosition('SELL')"> 🔴 Vendre </button> </div> </div> </section> <!-- MARKET INFO --> <section class="panel"> <div class="panel-header"> <h3> Informations marché </h3> </div> <div class="order-panel"> <p> <strong>Symbole:</strong> <span id="infoSymbol"> EUR/USD </span> </p> <p> <strong>Prix:</strong> <span id="infoPrice"> 1.08500 </span> </p> <p> <strong>Spread:</strong> <span> 0.00010 </span> </p> <p> <strong>Marché:</strong> <span id="infoMarket"> Forex </span> </p> <p> <strong>Mode:</strong> Simulation virtuelle </p> </div> </section> </aside> </div> </div> <script> /* ========================================= SIMULATION ENGINE ========================================= */ const account = { initialBalance:10000, balance:10000, positions:[], history:[] }; let currentPrice = 1.08500; /* ========================================= FORMAT ========================================= */ function money(value){ return "$" + Number(value).toLocaleString( "en-US", { minimumFractionDigits:2, maximumFractionDigits:2 } ); } function price(value){ return Number(value) .toFixed(5); } /* ========================================= UPDATE UI ========================================= */ function updateUI(){ let floatingPnL = 0; account.positions.forEach( position => { if(position.type === "BUY"){ floatingPnL += ( currentPrice - position.entry ) * position.quantity; } else{ floatingPnL += ( position.entry - currentPrice ) * position.quantity; } } ); const equity = account.balance + floatingPnL; const totalPnL = equity - account.initialBalance; const pnlPercent = ( totalPnL / account.initialBalance ) * 100; document .getElementById("balance") .textContent = money(account.balance); document .getElementById("equity") .textContent = money(equity); const pnlElement = document.getElementById("pnl"); pnlElement.textContent = money(totalPnL); pnlElement.className = totalPnL >= 0 ? "profit" : "loss"; const pnlPercentElement = document.getElementById("pnlPercent"); pnlPercentElement.textContent = pnlPercent.toFixed(2) + "%"; pnlPercentElement.className = pnlPercent >= 0 ? "profit" : "loss"; document .getElementById("positionCount") .textContent = account.positions.length; document .getElementById("positionLabel") .textContent = account.positions.length + ( account.positions.length === 1 ? " position" : " positions" ); renderPositions(); renderHistory(); } /* ========================================= OPEN POSITION ========================================= */ function openPosition(type){ const quantity = Number( document.getElementById( "quantity" ).value ); const entry = Number( document.getElementById( "entryPrice" ).value ); const stopLossValue = document.getElementById( "stopLoss" ).value; const takeProfitValue = document.getElementById( "takeProfit" ).value; if( !quantity || quantity <= 0 ){ alert( "Veuillez entrer une quantité valide." ); return; } if( !entry || entry <= 0 ){ alert( "Prix d'entrée invalide." ); return; } const position = { id: Date.now(), symbol: document.getElementById( "symbol" ).value .toUpperCase(), type, quantity, entry, stopLoss: stopLossValue ? Number(stopLossValue) : null, takeProfit: takeProfitValue ? Number(takeProfitValue) : null, openedAt: new Date() }; account.positions.push( position ); alert( type === "BUY" ? "Position BUY ouverte." : "Position SELL ouverte." ); updateUI(); } /* ========================================= CLOSE POSITION ========================================= */ function closePosition(id){ const index = account.positions.findIndex( position => position.id === id ); if(index === -1){ return; } const position = account.positions[index]; let pnl; if(position.type === "BUY"){ pnl = ( currentPrice - position.entry ) * position.quantity; } else{ pnl = ( position.entry - currentPrice ) * position.quantity; } account.balance += pnl; account.history.unshift({ symbol: position.symbol, type: position.type, quantity: position.quantity, entry: position.entry, exit: currentPrice, pnl }); account.positions.splice( index, 1 ); updateUI(); } /* ========================================= POSITION AUTO SL / TP ========================================= */ function checkStops(){ const positions = [...account.positions]; positions.forEach( position => { if( position.type === "BUY" ){ if( position.stopLoss && currentPrice <= position.stopLoss ){ closePosition( position.id ); return; } if( position.takeProfit && currentPrice >= position.takeProfit ){ closePosition( position.id ); return; } } if( position.type === "SELL" ){ if( position.stopLoss && currentPrice >= position.stopLoss ){ closePosition( position.id ); return; } if( position.takeProfit && currentPrice <= position.takeProfit ){ closePosition( position.id ); } } } ); } /* ========================================= RENDER POSITIONS ========================================= */ function renderPositions(){ const container = document.getElementById( "positions" ); if( account.positions.length === 0 ){ container.innerHTML = ` <div class="empty"> Aucune position ouverte. </div> `; return; } container.innerHTML = ""; account.positions.forEach( position => { let pnl; if( position.type === "BUY" ){ pnl = ( currentPrice - position.entry ) * position.quantity; } else{ pnl = ( position.entry - currentPrice ) * position.quantity; } const div = document.createElement( "div" ); div.className = "position"; div.innerHTML = ` <div class="position-top"> <span> ${position.symbol} · ${position.type} </span> <span class="${ pnl >= 0 ? "profit" : "loss" }"> ${money(pnl)} </span> </div> <div class="position-meta"> Qty: ${position.quantity} · Entry: ${price(position.entry)} · Current: ${price(currentPrice)} <br> SL: ${ position.stopLoss ? price(position.stopLoss) : "-" } · TP: ${ position.takeProfit ? price(position.takeProfit) : "-" } <br><br> <button class="btn sell-btn" onclick="closePosition(${position.id})"> Fermer la position </button> </div> `; container.appendChild( div ); } ); } /* ========================================= HISTORY ========================================= */ function renderHistory(){ const tbody = document.getElementById( "tradeHistory" ); tbody.innerHTML = ""; if( account.history.length === 0 ){ tbody.innerHTML = ` <tr> <td colspan="6" style="text-align:center;color:#64748b"> Aucun trade terminé. </td> </tr> `; return; } account.history.forEach( trade => { const row = document.createElement( "tr" ); row.innerHTML = ` <td> ${trade.symbol} </td> <td> ${trade.type} </td> <td> ${trade.quantity} </td> <td> ${price(trade.entry)} </td> <td> ${price(trade.exit)} </td> <td class="${ trade.pnl >= 0 ? "profit" : "loss" }"> ${money(trade.pnl)} </td> `; tbody.appendChild( row ); } ); } /* ========================================= MARKET ========================================= */ function changeMarket(){ const market = document.getElementById( "market" ).value; const symbol = document.getElementById( "symbol" ).value .toUpperCase(); document .getElementById( "infoMarket" ) .textContent = market === "forex" ? "Forex" : market === "crypto" ? "Crypto" : "Actions"; document .getElementById( "infoSymbol" ) .textContent = symbol; document .getElementById( "chartTitle" ) .textContent = symbol + " — " + document.getElementById( "timeframe" ).value; drawChart(); } /* ========================================= SIMULATED PRICE ========================================= */ function simulatePrice(){ const movement = ( Math.random() - 0.5 ) * 0.0008; currentPrice += movement; currentPrice = Math.max( 0.00001, currentPrice ); document .getElementById( "currentPrice" ) .textContent = price(currentPrice); document .getElementById( "infoPrice" ) .textContent = price(currentPrice); document .getElementById( "entryPrice" ) .value = price(currentPrice); checkStops(); updateUI(); drawChart(); } /* ========================================= CHART ========================================= */ const canvas = document.getElementById( "chartCanvas" ); const ctx = canvas.getContext("2d"); let chartPrices = []; function resizeCanvas(){ const rect = canvas.getBoundingClientRect(); canvas.width = rect.width * window.devicePixelRatio; canvas.height = rect.height * window.devicePixelRatio; ctx.scale( window.devicePixelRatio, window.devicePixelRatio ); drawChart(); } function drawChart(){ const rect = canvas.getBoundingClientRect(); const width = rect.width; const height = rect.height; if(!width || !height){ return; } chartPrices.push( currentPrice ); if( chartPrices.length > 80 ){ chartPrices.shift(); } ctx.clearRect( 0, 0, width, height ); /* GRID */ ctx.strokeStyle = "#e5e7eb"; ctx.lineWidth = 1; for( let i = 1; i < 6; i++ ){ const y = ( height / 6 ) * i; ctx.beginPath(); ctx.moveTo( 0, y ); ctx.lineTo( width, y ); ctx.stroke(); } if(chartPrices.length < 2){ return; } const min = Math.min( ...chartPrices ); const max = Math.max( ...chartPrices ); const range = max - min || 0.0001; ctx.strokeStyle = "#2563eb"; ctx.lineWidth = 2; ctx.beginPath(); chartPrices.forEach( (value,index) => { const x = ( index / ( chartPrices.length - 1 ) ) * width; const y = height - ( ( value - min ) / range ) * ( height - 20 ) - 10; if(index === 0){ ctx.moveTo( x, y ); } else{ ctx.lineTo( x, y ); } } ); ctx.stroke(); } /* ========================================= INITIALIZATION ========================================= */ window.addEventListener( "resize", resizeCanvas ); document.addEventListener( "DOMContentLoaded", function(){ currentPrice = 1.08500; document .getElementById( "entryPrice" ) .value = price(currentPrice); updateUI(); resizeCanvas(); } ); /* ========================================= SIMULATION LOOP ========================================= */ setInterval( simulatePrice, 1500 ); </script> </body> </html> 
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trading Simulator | Trading Academy AI</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#f1f5f9;
+    --card:#ffffff;
+    --dark:#071226;
+    --dark2:#0f1d35;
+    --blue:#2563eb;
+    --green:#16a34a;
+    --red:#dc2626;
+    --orange:#f59e0b;
+    --purple:#7c3aed;
+    --text:#172033;
+    --muted:#64748b;
+    --border:#e2e8f0;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+/* HEADER */
+
+header{
+    background:var(--dark);
+    color:white;
+    padding:16px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.header-inner{
+    max-width:1250px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.header-actions{
+    display:flex;
+    gap:8px;
+}
+
+.header-btn{
+    border:0;
+    background:#172844;
+    color:white;
+    padding:9px 13px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+.container{
+    max-width:1250px;
+    margin:22px auto;
+    padding:0 15px 50px;
+}
+
+.page-title{
+    margin-bottom:18px;
+}
+
+.page-title h1{
+    margin:0;
+    font-size:28px;
+}
+
+.page-title p{
+    margin:7px 0 0;
+    color:var(--muted);
+}
+
+/* ACCOUNT */
+
+.account-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.account-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:17px;
+}
+
+.account-card small{
+    color:var(--muted);
+}
+
+.account-value{
+    margin-top:7px;
+    font-size:22px;
+    font-weight:800;
+}
+
+.positive{
+    color:var(--green);
+}
+
+.negative{
+    color:var(--red);
+}
+
+/* TERMINAL */
+
+.terminal{
+    display:grid;
+    grid-template-columns:280px 1fr 300px;
+    gap:15px;
+    align-items:start;
+}
+
+/* CARDS */
+
+.panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.panel-title{
+    padding:15px;
+    font-weight:800;
+    border-bottom:1px solid var(--border);
+}
+
+.panel-body{
+    padding:15px;
+}
+
+/* MARKET */
+
+.market-tabs{
+    display:flex;
+    overflow:auto;
+    border-bottom:1px solid var(--border);
+}
+
+.market-tab{
+    flex:0 0 auto;
+    border:0;
+    background:white;
+    padding:10px 13px;
+    cursor:pointer;
+    color:var(--muted);
+}
+
+.market-tab.active{
+    color:var(--blue);
+    font-weight:bold;
+    border-bottom:2px solid var(--blue);
+}
+
+.search{
+    width:100%;
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.asset{
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:7px;
+    cursor:pointer;
+    border:1px solid transparent;
+}
+
+.asset:hover{
+    background:#f8fafc;
+}
+
+.asset.active{
+    background:#eff6ff;
+    border-color:#bfdbfe;
+}
+
+.asset-top{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.asset-name{
+    font-weight:bold;
+    font-size:13px;
+}
+
+.asset-price{
+    margin-top:5px;
+    font-weight:bold;
+}
+
+.asset-change{
+    font-size:11px;
+    margin-top:3px;
+}
+
+.up{
+    color:var(--green);
+}
+
+.down{
+    color:var(--red);
+}
+
+/* CENTER */
+
+.market-header{
+    padding:18px;
+    border-bottom:1px solid var(--border);
+}
+
+.market-symbol{
+    font-size:22px;
+    font-weight:800;
+}
+
+.market-price{
+    font-size:32px;
+    font-weight:800;
+    margin-top:7px;
+}
+
+.market-info{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:10px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* CHART */
+
+.chart{
+    height:330px;
+    background:#071226;
+    position:relative;
+    overflow:hidden;
+}
+
+.chart-grid{
+    position:absolute;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+    background-size:50px 50px;
+}
+
+canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+/* TIMEFRAME */
+
+.timeframes{
+    display:flex;
+    gap:5px;
+    padding:10px;
+    border-bottom:1px solid var(--border);
+}
+
+.tf{
+    border:0;
+    padding:7px 10px;
+    border-radius:6px;
+    background:#f1f5f9;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.tf.active{
+    background:var(--blue);
+    color:white;
+}
+
+/* ORDER */
+
+.order-box{
+    padding:18px;
+}
+
+.order-side{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.side-btn{
+    padding:12px;
+    border:0;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+    color:white;
+}
+
+.buy{
+    background:var(--green);
+}
+
+.sell{
+    background:var(--red);
+}
+
+.side-btn.selected{
+    outline:3px solid #bfdbfe;
+}
+
+.field{
+    margin-bottom:12px;
+}
+
+.field label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:5px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--blue);
+}
+
+.order-summary{
+    background:#f8fafc;
+    border-radius:10px;
+    padding:12px;
+    margin-top:12px;
+    font-size:13px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:7px;
+}
+
+.summary-row:last-child{
+    margin-bottom:0;
+}
+
+.execute{
+    width:100%;
+    border:0;
+    padding:13px;
+    border-radius:9px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:12px;
+    background:var(--blue);
+}
+
+/* POSITION */
+
+.position{
+    padding:12px;
+    background:#f8fafc;
+    border-radius:10px;
+    margin-bottom:8px;
+}
+
+.position-head{
+    display:flex;
+    justify-content:space-between;
+}
+
+.position-symbol{
+    font-weight:bold;
+}
+
+.position-info{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.close-btn{
+    border:0;
+    background:#fee2e2;
+    color:#991b1b;
+    padding:6px 9px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* HISTORY */
+
+.history{
+    margin-top:18px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+}
+
+th,
+td{
+    padding:11px;
+    border-bottom:1px solid var(--border);
+    text-align:left;
+    white-space:nowrap;
+}
+
+th{
+    color:var(--muted);
+    background:#f8fafc;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    color:var(--muted);
+    padding:25px 10px;
+}
+
+.notice{
+    padding:12px;
+    background:#fff7ed;
+    color:#9a3412;
+    border:1px solid #fed7aa;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:12px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px){
+
+    .terminal{
+        grid-template-columns:240px 1fr;
+    }
+
+    .order-panel{
+        grid-column:1/-1;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .account-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .terminal{
+        grid-template-columns:1fr;
+    }
+
+    .market-panel,
+    .order-panel{
+        grid-column:auto;
+    }
+
+    .market-price{
+        font-size:27px;
+    }
+
+}
+
+@media(max-width:450px){
+
+    .account-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .account-value{
+        font-size:17px;
+    }
+
+    .page-title h1{
+        font-size:23px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+        <div class="logo">
+            Trading Academy <span>AI</span>
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                class="header-btn"
+                onclick="window.location.href='dashboard.html'">
+                ← Dashboard
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+
+<main class="container">
+
+    <section class="page-title">
+
+        <h1>Trading Simulator</h1>
+
+        <p>
+            Laboratwa trading virtuel pou pratike estrateji,
+            jesyon risk ak ekzekisyon trades.
+        </p>
+
+    </section>
+
+
+    <div class="notice">
+        ⚠️ <strong>Simulation pédagogique :</strong>
+        Tout kapital, pri ak rezilta yo se done virtuel.
+        Pa gen lajan reyèl ki enplike.
+    </div>
+
+
+    <!-- ACCOUNT -->
+
+    <section class="account-grid">
+
+        <div class="account-card">
+            <small>Balance</small>
+            <div
+                id="balance"
+                class="account-value">
+                $10,000.00
+            </div>
+        </div>
+
+        <div class="account-card">
+            <small>Equity</small>
+            <div
+                id="equity"
+                class="account-value">
+                $10,000.00
+            </div>
+        </div>
+
+        <div class="account-card">
+            <small>Free Margin</small>
+            <div
+                id="freeMargin"
+                class="account-value">
+                $10,000.00
+            </div>
+        </div>
+
+        <div class="account-card">
+            <small>P&L</small>
+            <div
+                id="totalPnl"
+                class="account-value">
+                $0.00
+            </div>
+        </div>
+
+    </section>
+
+
+    <section class="terminal">
+
+
+        <!-- ================= MARKET ================= -->
+
+        <div class="panel market-panel">
+
+            <div class="panel-title">
+                📊 Marché
+            </div>
+
+            <div class="market-tabs">
+
+                <button
+                    class="market-tab active"
+                    onclick="changeCategory('Forex',this)">
+                    Forex
+                </button>
+
+                <button
+                    class="market-tab"
+                    onclick="changeCategory('Crypto',this)">
+                    Crypto
+                </button>
+
+                <button
+                    class="market-tab"
+                    onclick="changeCategory('Indices',this)">
+                    Indices
+                </button>
+
+                <button
+                    class="market-tab"
+                    onclick="changeCategory('Commodities',this)">
+                    Matières
+                </button>
+
+                <button
+                    class="market-tab"
+                    onclick="changeCategory('Actions',this)">
+                    Actions
+                </button>
+
+            </div>
+
+            <div class="panel-body">
+
+                <input
+                    id="searchAsset"
+                    class="search"
+                    type="text"
+                    placeholder="🔎 Rechercher un actif..."
+                    oninput="renderAssets()">
+
+                <div id="assetList"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CENTER ================= -->
+
+        <div class="panel">
+
+            <div class="market-header">
+
+                <div
+                    id="marketSymbol"
+                    class="market-symbol">
+                    EUR/USD
+                </div>
+
+                <div
+                    id="marketPrice"
+                    class="market-price">
+                    1.0850
+                </div>
+
+                <div
+                    id="marketChange"
+                    class="market-info">
+                    +0.25%
+                </div>
+
+                <div class="market-info">
+
+                    <span>
+                        Bid:
+                        <strong id="bid">
+                            1.0849
+                        </strong>
+                    </span>
+
+                    <span>
+                        Ask:
+                        <strong id="ask">
+                            1.0851
+                        </strong>
+                    </span>
+
+                    <span>
+                        Spread:
+                        <strong id="spread">
+                            0.0002
+                        </strong>
+                    </span>
+
+                    <span>
+                        High:
+                        <strong id="high">
+                            —
+                        </strong>
+                    </span>
+
+                    <span>
+                        Low:
+                        <strong id="low">
+                            —
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeframes">
+
+                <button
+                    class="tf active"
+                    onclick="setTimeframe('1m',this)">
+                    1m
+                </button>
+
+                <button
+                    class="tf"
+                    onclick="setTimeframe('5m',this)">
+                    5m
+                </button>
+
+                <button
+                    class="tf"
+                    onclick="setTimeframe('15m',this)">
+                    15m
+                </button>
+
+                <button
+                    class="tf"
+                    onclick="setTimeframe('1h',this)">
+                    1H
+                </button>
+
+                <button
+                    class="tf"
+                    onclick="setTimeframe('4h',this)">
+                    4H
+                </button>
+
+                <button
+                    class="tf"
+                    onclick="setTimeframe('1D',this)">
+                    1D
+                </button>
+
+            </div>
+
+
+            <div class="chart">
+
+                <div class="chart-grid"></div>
+
+                <canvas id="chartCanvas"></canvas>
+
+            </div>
+
+
+            <!-- POSITIONS -->
+
+            <div class="panel-title">
+                💼 Positions ouvertes
+            </div>
+
+            <div
+                id="positions"
+                class="panel-body">
+
+                <div class="empty">
+                    Pa gen position ouvè.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= ORDER ================= -->
+
+        <div class="panel order-panel">
+
+            <div class="panel-title">
+                📝 Nouvo ordre
+            </div>
+
+            <div class="order-box">
+
+                <div class="order-side">
+
+                    <button
+                        id="buyBtn"
+                        class="side-btn buy selected"
+                        onclick="selectSide('BUY')">
+                        BUY
+                    </button>
+
+                    <button
+                        id="sellBtn"
+                        class="side-btn sell"
+                        onclick="selectSide('SELL')">
+                        SELL
+                    </button>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Actif</label>
+
+                    <select
+                        id="orderAsset"
+                        onchange="selectAsset(this.value)">
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Volume / Position size</label>
+
+                    <input
+                        id="volume"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        value="0.10"
+                        oninput="updateOrderSummary()">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Leverage</label>
+
+                    <select
+                        id="leverage"
+                        onchange="updateOrderSummary()">
+
+                        <option value="1">1:1</option>
+                        <option value="5">1:5</option>
+                        <option value="10">1:10</option>
+                        <option value="20">1:20</option>
+                        <option value="50">1:50</option>
+                        <option value="100">1:100</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Stop Loss</label>
+
+                    <input
+                        id="stopLoss"
+                        type="number"
+                        step="0.0001"
+                        placeholder="Optionnel"
+                        oninput="updateOrderSummary()">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Take Profit</label>
+
+                    <input
+                        id="takeProfit"
+                        type="number"
+                        step="0.0001"
+                        placeholder="Optionnel"
+                        oninput="updateOrderSummary()">
+
+                </div>
+
+
+                <div class="order-summary">
+
+                    <div class="summary-row">
+
+                        <span>Entry</span>
+
+                        <strong id="summaryEntry">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-row">
+
+                        <span>Risk</span>
+
+                        <strong id="summaryRisk">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-row">
+
+                        <span>Potential Profit</span>
+
+                        <strong id="summaryProfit">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-row">
+
+                        <span>Risk / Reward</span>
+
+                        <strong id="summaryRR">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-row">
+
+                        <span>Margin</span>
+
+                        <strong id="summaryMargin">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="execute"
+                    onclick="executeTrade()">
+
+                    🚀 Exécuter le trade
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HISTORY ================= -->
+
+    <section class="panel history">
+
+        <div class="panel-title">
+            📜 Historique des trades
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Actif</th>
+                        <th>Type</th>
+                        <th>Volume</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>P&L</th>
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="historyBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div
+            id="emptyHistory"
+            class="empty">
+            Aucun trade fermé.
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   MARKET DATA — VIRTUAL
+===================================================== */
+
+const markets = {
+
+    Forex:[
+        ["EUR/USD",1.0850],
+        ["GBP/USD",1.2730],
+        ["USD/JPY",151.20],
+        ["USD/CHF",0.8820],
+        ["AUD/USD",0.6540],
+        ["USD/CAD",1.3610],
+        ["NZD/USD",0.6010],
+        ["EUR/GBP",0.8530],
+        ["EUR/JPY",164.10],
+        ["GBP/JPY",192.40]
+    ],
+
+    Crypto:[
+        ["BTC/USD",67250],
+        ["ETH/USD",3480],
+        ["BNB/USD",590],
+        ["SOL/USD",168],
+        ["XRP/USD",0.61],
+        ["ADA/USD",0.39],
+        ["DOGE/USD",0.14],
+        ["AVAX/USD",35]
+    ],
+
+    Indices:[
+        ["S&P 500",5320],
+        ["NASDAQ 100",18750],
+        ["Dow Jones",39100],
+        ["DAX 40",18500],
+        ["CAC 40",8100],
+        ["FTSE 100",8250],
+        ["Nikkei 225",38600]
+    ],
+
+    Commodities:[
+        ["Gold",2360],
+        ["Silver",31.20],
+        ["Crude Oil WTI",79.50],
+        ["Brent Oil",83.20],
+        ["Natural Gas",2.15],
+        ["Copper",4.35]
+    ],
+
+    Actions:[
+        ["Apple",190],
+        ["Microsoft",420],
+        ["NVIDIA",125],
+        ["Amazon",185],
+        ["Tesla",175],
+        ["Alphabet",180],
+        ["Meta",510]
+    ]
+
+};
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let category = "Forex";
+
+let selectedAsset = "EUR/USD";
+
+let selectedSide = "BUY";
+
+let timeframe = "1m";
+
+let balance = 10000;
+
+let positions = [];
+
+let history = [];
+
+let prices = {};
+
+let chartData = [];
+
+
+/* =====================================================
+   INITIALIZE PRICES
+===================================================== */
+
+Object.keys(markets).forEach(cat => {
+
+    markets[cat].forEach(asset => {
+
+        prices[asset[0]] = asset[1];
+
+    });
+
+});
+
+
+/* =====================================================
+   FORMAT MONEY
+===================================================== */
+
+function money(value){
+
+    return new Intl.NumberFormat(
+        "en-US",
+        {
+            style:"currency",
+            currency:"USD"
+        }
+    ).format(value);
+
+}
+
+
+/* =====================================================
+   FORMAT PRICE
+===================================================== */
+
+function formatPrice(price){
+
+    if(price >= 1000)
+        return price.toFixed(2);
+
+    if(price >= 100)
+        return price.toFixed(2);
+
+    if(price >= 1)
+        return price.toFixed(4);
+
+    return price.toFixed(5);
+
+}
+
+
+/* =====================================================
+   RENDER ASSETS
+===================================================== */
+
+function renderAssets(){
+
+    const list =
+        document.getElementById(
+            "assetList"
+        );
+
+    const search =
+        document.getElementById(
+            "searchAsset"
+        ).value.toLowerCase();
+
+    const assets =
+        markets[category]
+        .filter(asset =>
+            asset[0]
+                .toLowerCase()
+                .includes(search)
+        );
+
+    list.innerHTML = "";
+
+    assets.forEach(asset => {
+
+        const name = asset[0];
+
+        const price =
+            prices[name];
+
+        const base =
+            asset[1];
+
+        const change =
+            ((price-base)/base)*100;
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "asset " +
+            (name===selectedAsset
+                ? "active"
+                : "");
+
+        div.onclick = () =>
+            selectAsset(name);
+
+        div.innerHTML = `
+
+            <div class="asset-top">
+
+                <span class="asset-name">
+                    ${name}
+                </span>
+
+                <span>
+                    ${formatPrice(price)}
+                </span>
+
+            </div>
+
+            <div class="asset-change ${
+                change >= 0
+                ? "up"
+                : "down"
+            }">
+
+                ${
+                    change >= 0
+                    ? "+"
+                    : ""
+                }${change.toFixed(2)}%
+
+            </div>
+
+        `;
+
+        list.appendChild(div);
+
+    });
+
+}
+
+
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+function changeCategory(
+    newCategory,
+    button
+){
+
+    category = newCategory;
+
+    document
+        .querySelectorAll(".market-tab")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    selectedAsset =
+        markets[category][0][0];
+
+    renderAssets();
+
+    updateMarket();
+
+    populateOrderAssets();
+
+}
+
+
+/* =====================================================
+   SELECT ASSET
+===================================================== */
+
+function selectAsset(name){
+
+    selectedAsset = name;
+
+    document.getElementById(
+        "orderAsset"
+    ).value = name;
+
+    renderAssets();
+
+    updateMarket();
+
+    generateChart();
+
+    updateOrderSummary();
+
+}
+
+
+/* =====================================================
+   POPULATE ORDER SELECT
+===================================================== */
+
+function populateOrderAssets(){
+
+    const select =
+        document.getElementById(
+            "orderAsset"
+        );
+
+    select.innerHTML = "";
+
+    markets[category].forEach(
+        asset => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                asset[0];
+
+            option.textContent =
+                asset[0];
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+    select.value =
+        selectedAsset;
+
+}
+
+
+/* =====================================================
+   UPDATE MARKET
+===================================================== */
+
+function updateMarket(){
+
+    const price =
+        prices[selectedAsset];
+
+    const original =
+        markets[category]
+        .find(a =>
+            a[0] === selectedAsset
+        )[1];
+
+    const change =
+        ((price-original)/original)*100;
+
+    const spread =
+        price >= 1000
+        ? price*0.00015
+        : price >= 10
+            ? price*0.0002
+            : price*0.00015;
+
+    document.getElementById(
+        "marketSymbol"
+    ).textContent =
+        selectedAsset;
+
+    document.getElementById(
+        "marketPrice"
+    ).textContent =
+        formatPrice(price);
+
+    document.getElementById(
+        "marketChange"
+    ).innerHTML = `
+
+        <span class="${
+            change>=0
+            ? "up"
+            : "down"
+        }">
+
+        ${
+            change>=0
+            ? "+"
+            : ""
+        }${change.toFixed(2)}%
+
+        </span>
+
+    `;
+
+    document.getElementById(
+        "bid"
+    ).textContent =
+        formatPrice(
+            price-spread/2
+        );
+
+    document.getElementById(
+        "ask"
+    ).textContent =
+        formatPrice(
+            price+spread/2
+        );
+
+    document.getElementById(
+        "spread"
+    ).textContent =
+        formatPrice(spread);
+
+    document.getElementById(
+        "high"
+    ).textContent =
+        formatPrice(
+            price*1.012
+        );
+
+    document.getElementById(
+        "low"
+    ).textContent =
+        formatPrice(
+            price*0.988
+        );
+
+}
+
+
+/* =====================================================
+   SIDE
+===================================================== */
+
+function selectSide(side){
+
+    selectedSide = side;
+
+    document.getElementById(
+        "buyBtn"
+    ).classList.toggle(
+        "selected",
+        side==="BUY"
+    );
+
+    document.getElementById(
+        "sellBtn"
+    ).classList.toggle(
+        "selected",
+        side==="SELL"
+    );
+
+    updateOrderSummary();
+
+}
+
+
+/* =====================================================
+   ORDER SUMMARY
+===================================================== */
+
+function updateOrderSummary(){
+
+    const entry =
+        prices[selectedAsset];
+
+    const volume =
+        parseFloat(
+            document.getElementById(
+                "volume"
+            ).value
+        ) || 0;
+
+    const leverage =
+        parseFloat(
+            document.getElementById(
+                "leverage"
+            ).value
+        ) || 1;
+
+    const sl =
+        parseFloat(
+            document.getElementById(
+                "stopLoss"
+            ).value
+        );
+
+    const tp =
+        parseFloat(
+            document.getElementById(
+                "takeProfit"
+            ).value
+        );
+
+    const contract =
+        getContractMultiplier();
+
+    let risk = 0;
+
+    let profit = 0;
+
+    if(!isNaN(sl)){
+
+        risk =
+            Math.abs(entry-sl)
+            *volume
+            *contract;
+
+    }
+
+    if(!isNaN(tp)){
+
+        profit =
+            Math.abs(tp-entry)
+            *volume
+            *contract;
+
+    }
+
+    const rr =
+        risk > 0
+        ? profit/risk
+        : null;
+
+    const margin =
+        (entry *
+        volume *
+        contract) /
+        leverage;
+
+    document.getElementById(
+        "summaryEntry"
+    ).textContent =
+        formatPrice(entry);
+
+    document.getElementById(
+        "summaryRisk"
+    ).textContent =
+        money(risk);
+
+    document.getElementById(
+        "summaryProfit"
+    ).textContent =
+        money(profit);
+
+    document.getElementById(
+        "summaryRR"
+    ).textContent =
+        rr !== null
+        ? "1 : " + rr.toFixed(2)
+        : "—";
+
+    document.getElementById(
+        "summaryMargin"
+    ).textContent =
+        money(margin);
+
+}
+
+
+/* =====================================================
+   CONTRACT MULTIPLIER
+===================================================== */
+
+function getContractMultiplier(){
+
+    if(category==="Forex")
+        return 100000;
+
+    if(category==="Crypto")
+        return 1;
+
+    if(category==="Indices")
+        return 1;
+
+    if(category==="Commodities")
+        return 1;
+
+    if(category==="Actions")
+        return 1;
+
+    return 1;
+
+}
+
+
+/* =====================================================
+   EXECUTE TRADE
+===================================================== */
+
+function executeTrade(){
+
+    const entry =
+        prices[selectedAsset];
+
+    const volume =
+        parseFloat(
+            document.getElementById(
+                "volume"
+            ).value
+        );
+
+    const leverage =
+        parseFloat(
+            document.getElementById(
+                "leverage"
+            ).value
+        );
+
+    const sl =
+        parseFloat(
+            document.getElementById(
+                "stopLoss"
+            ).value
+        );
+
+    const tp =
+        parseFloat(
+            document.getElementById(
+                "takeProfit"
+            ).value
+        );
+
+    if(!volume || volume<=0){
+
+        alert(
+            "Veuillez entrer un volume valide."
+        );
+
+        return;
+
+    }
+
+    const margin =
+        (entry *
+        volume *
+        getContractMultiplier()) /
+        leverage;
+
+    if(margin > getFreeMargin()){
+
+        alert(
+            "Marge insuffisante."
+        );
+
+        return;
+
+    }
+
+    const position = {
+
+        id:
+            Date.now(),
+
+        asset:
+            selectedAsset,
+
+        side:
+            selectedSide,
+
+        volume:
+            volume,
+
+        entry:
+            entry,
+
+        stopLoss:
+            isNaN(sl)
+            ? null
+            : sl,
+
+        takeProfit:
+            isNaN(tp)
+            ? null
+            : tp,
+
+        leverage:
+            leverage,
+
+        margin:
+            margin,
+
+        openedAt:
+            new Date()
+
+    };
+
+    positions.push(position);
+
+    renderPositions();
+
+    updateAccount();
+
+    alert(
+        "Trade virtuel exécuté avec succès."
+    );
+
+}
+
+
+/* =====================================================
+   P&L POSITION
+===================================================== */
+
+function calculatePnl(position){
+
+    const current =
+        prices[position.asset];
+
+    const difference =
+        position.side==="BUY"
+        ? current-position.entry
+        : position.entry-current;
+
+    return (
+        difference *
+        position.volume *
+        getContractMultiplierForAsset(
+            position.asset
+        )
+    );
+
+}
+
+
+/* =====================================================
+   CONTRACT FOR ASSET
+===================================================== */
+
+function getContractMultiplierForAsset(
+    asset
+){
+
+    const forex =
+        markets.Forex
+        .some(a=>a[0]===asset);
+
+    if(forex)
+        return 100000;
+
+    return 1;
+
+}
+
+
+/* =====================================================
+   FREE MARGIN
+===================================================== */
+
+function getFreeMargin(){
+
+    const used =
+        positions.reduce(
+            (sum,p)=>
+                sum+p.margin,
+            0
+        );
+
+    const floating =
+        positions.reduce(
+            (sum,p)=>
+                sum+calculatePnl(p),
+            0
+        );
+
+    return balance+
+        floating-
+        used;
+
+}
+
+
+/* =====================================================
+   RENDER POSITIONS
+===================================================== */
+
+function renderPositions(){
+
+    const container =
+        document.getElementById(
+            "positions"
+        );
+
+    if(
+        positions.length===0
+    ){
+
+        container.innerHTML = `
+            <div class="empty">
+                Pa gen position ouvè.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML = "";
+
+    positions.forEach(
+        position => {
+
+            const pnl =
+                calculatePnl(
+                    position
+                );
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "position";
+
+            div.innerHTML = `
+
+                <div class="position-head">
+
+                    <span class="position-symbol">
+
+                        ${position.side}
+                        ·
+                        ${position.asset}
+
+                    </span>
+
+                    <button
+                        class="close-btn"
+                        onclick="closePosition(
+                            ${position.id}
+                        )">
+
+                        Fermer
+
+                    </button>
+
+                </div>
+
+                <div class="position-info">
+
+                    Volume:
+                    ${position.volume}
+
+                    <br>
+
+                    Entry:
+                    ${formatPrice(
+                        position.entry
+                    )}
+
+                    <br>
+
+                    Current:
+                    ${formatPrice(
+                        prices[position.asset]
+                    )}
+
+                    <br>
+
+                    Stop Loss:
+                    ${
+                        position.stopLoss
+                        ? formatPrice(
+                            position.stopLoss
+                          )
+                        : "—"
+                    }
+
+                    <br>
+
+                    Take Profit:
+                    ${
+                        position.takeProfit
+                        ? formatPrice(
+                            position.takeProfit
+                          )
+                        : "—"
+                    }
+
+                    <br>
+
+                    P&L:
+                    <strong class="${
+                        pnl>=0
+                        ? "positive"
+                        : "negative"
+                    }">
+
+                        ${money(pnl)}
+
+                    </strong>
+
+                </div>
+
+            `;
+
+            container.appendChild(div);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE POSITION
+===================================================== */
+
+function closePosition(id){
+
+    const index =
+        positions.findIndex(
+            p=>p.id===id
+        );
+
+    if(index===-1)
+        return;
+
+    const position =
+        positions[index];
+
+    const exit =
+        prices[position.asset];
+
+    const pnl =
+        calculatePnl(position);
+
+    balance += pnl;
+
+    history.unshift({
+
+        asset:
+            position.asset,
+
+        side:
+            position.side,
+
+        volume:
+            position.volume,
+
+        entry:
+            position.entry,
+
+        exit:
+            exit,
+
+        pnl:
+            pnl,
+
+        date:
+            new Date()
+
+    });
+
+    positions.splice(
+        index,
+        1
+    );
+
+    renderPositions();
+
+    renderHistory();
+
+    updateAccount();
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function renderHistory(){
+
+    const body =
+        document.getElementById(
+            "historyBody"
+        );
+
+    const empty =
+        document.getElementById(
+            "emptyHistory"
+        );
+
+    body.innerHTML = "";
+
+    if(history.length===0){
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+    empty.style.display =
+        "none";
+
+    history.forEach(
+        trade => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+            row.innerHTML = `
+
+                <td>
+                    ${trade.asset}
+                </td>
+
+                <td>
+                    ${trade.side}
+                </td>
+
+                <td>
+                    ${trade.volume}
+                </td>
+
+                <td>
+                    ${formatPrice(
+                        trade.entry
+                    )}
+                </td>
+
+                <td>
+                    ${formatPrice(
+                        trade.exit
+                    )}
+                </td>
+
+                <td class="${
+                    trade.pnl>=0
+                    ? "positive"
+                    : "negative"
+                }">
+
+                    ${money(
+                        trade.pnl
+                    )}
+
+                </td>
+
+                <td>
+                    ${trade.date.toLocaleString()}
+                </td>
+
+            `;
+
+            body.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ACCOUNT
+===================================================== */
+
+function updateAccount(){
+
+    const floating =
+        positions.reduce(
+            (sum,p)=>
+                sum+calculatePnl(p),
+            0
+        );
+
+    const equity =
+        balance+floating;
+
+    const freeMargin =
+        getFreeMargin();
+
+    const pnl =
+        equity-10000;
+
+    document.getElementById(
+        "balance"
+    ).textContent =
+        money(balance);
+
+    document.getElementById(
+        "equity"
+    ).textContent =
+        money(equity);
+
+    document.getElementById(
+        "freeMargin"
+    ).textContent =
+        money(freeMargin);
+
+    const pnlElement =
+        document.getElementById(
+            "totalPnl"
+        );
+
+    pnlElement.textContent =
+        money(pnl);
+
+    pnlElement.className =
+        "account-value " +
+        (
+            pnl>=0
+            ? "positive"
+            : "negative"
+        );
+
+}
+
+
+/* =====================================================
+   CHART DATA
+===================================================== */
+
+function generateChart(){
+
+    const base =
+        prices[selectedAsset];
+
+    chartData = [];
+
+    let value = base;
+
+    for(
+        let i=0;
+        i<80;
+        i++
+    ){
+
+        const variation =
+            (
+                Math.random()-
+                0.48
+            ) *
+            base *
+            0.003;
+
+        value += variation;
+
+        chartData.push(
+            value
+        );
+
+    }
+
+    drawChart();
+
+}
+
+
+/* =====================================================
+   DRAW CHART
+===================================================== */
+
+function drawChart(){
+
+    const canvas =
+        document.getElementById(
+            "chartCanvas"
+        );
+
+    const rect =
+        canvas.parentElement
+            .getBoundingClientRect();
+
+    canvas.width =
+        rect.width *
+        window.devicePixelRatio;
+
+    canvas.height =
+        rect.height *
+        window.devicePixelRatio;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.scale(
+        window.devicePixelRatio,
+        window.devicePixelRatio
+    );
+
+    const width =
+        rect.width;
+
+    const height =
+        rect.height;
+
+    if(
+        chartData.length===0
+    )
+        return;
+
+    const min =
+        Math.min(...chartData);
+
+    const max =
+        Math.max(...chartData);
+
+    const range =
+        max-min || 1;
+
+    ctx.beginPath();
+
+    chartData.forEach(
+        (value,index) => {
+
+            const x =
+                index /
+                (chartData.length-1) *
+                width;
+
+            const y =
+                height -
+                (
+                    (value-min) /
+                    range
+                ) *
+                (height-30) -
+                15;
+
+            if(index===0)
+                ctx.moveTo(x,y);
+            else
+                ctx.lineTo(x,y);
+
+        }
+    );
+
+    ctx.strokeStyle =
+        "#3b82f6";
+
+    ctx.lineWidth = 2;
+
+    ctx.stroke();
+
+}
+
+
+/* =====================================================
+   TIMEFRAME
+===================================================== */
+
+function setTimeframe(
+    value,
+    button
+){
+
+    timeframe = value;
+
+    document
+        .querySelectorAll(".tf")
+        .forEach(
+            btn =>
+                btn.classList.remove(
+                    "active"
+                )
+        );
+
+    button.classList.add(
+        "active"
+    );
+
+    generateChart();
+
+}
+
+
+/* =====================================================
+   VIRTUAL MARKET TICK
+===================================================== */
+
+function marketTick(){
+
+    Object.keys(prices)
+        .forEach(
+            asset => {
+
+                const price =
+                    prices[asset];
+
+                const volatility =
+                    price >= 1000
+                    ? 0.0003
+                    : price >= 10
+                        ? 0.0005
+                        : 0.0007;
+
+                const movement =
+                    (
+                        Math.random()-
+                        0.5
+                    ) *
+                    price *
+                    volatility;
+
+                prices[asset] =
+                    Math.max(
+                        0.00001,
+                        price+movement
+                    );
+
+            }
+        );
+
+
+    /* Stop Loss / Take Profit */
+
+    positions
+        .slice()
+        .forEach(
+            position => {
+
+                const price =
+                    prices[position.asset];
+
+                if(
+                    position.side==="BUY"
+                ){
+
+                    if(
+                        position.stopLoss &&
+                        price <=
+                        position.stopLoss
+                    ){
+
+                        closePosition(
+                            position.id
+                        );
+
+                    }
+                    else if(
+                        position.takeProfit &&
+                        price >=
+                        position.takeProfit
+                    ){
+
+                        closePosition(
+                            position.id
+                        );
+
+                    }
+
+                }
+                else{
+
+                    if(
+                        position.stopLoss &&
+                        price >=
+                        position.stopLoss
+                    ){
+
+                        closePosition(
+                            position.id
+                        );
+
+                    }
+                    else if(
+                        position.takeProfit &&
+                        price <=
+                        position.takeProfit
+                    ){
+
+                        closePosition(
+                            position.id
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+
+    renderAssets();
+
+    updateMarket();
+
+    renderPositions();
+
+    updateAccount();
+
+}
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    drawChart
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        renderAssets();
+
+        populateOrderAssets();
+
+        updateMarket();
+
+        generateChart();
+
+        updateOrderSummary();
+
+        renderHistory();
+
+        updateAccount();
+
+        setInterval(
+            marketTick,
+            2500
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
