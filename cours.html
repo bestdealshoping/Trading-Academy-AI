@@ -903,19 +903,33 @@ function openLesson(lessonId){
 
 
 /* =========================================================
-   QUIZ
+   OUVRIR LE QUIZ FINAL DU COURS
 ========================================================= */
 
 async function openQuiz(courseId){
 
-    try{
+    console.log("🎯 Recherche du quiz final...");
+    console.log("Course ID:", courseId);
+
+    try {
+
+        if(!courseId){
+
+            throw new Error(
+                "ID du cours manquant."
+            );
+
+        }
+
 
         const {
             data: quiz,
             error
         } =
         await courseClient
+
             .from("quizzes")
+
             .select(`
                 id,
                 course_id,
@@ -923,45 +937,90 @@ async function openQuiz(courseId){
                 title,
                 is_published
             `)
-            .eq("course_id", courseId)
-            .is("lesson_id", null)
-            .eq("is_published", true)
+
+            .eq(
+                "course_id",
+                courseId
+            )
+
+            /*
+             * Quiz final = quiz ki pa
+             * asosye ak yon lesson espesifik.
+             */
+            .is(
+                "lesson_id",
+                null
+            )
+
+            .eq(
+                "is_published",
+                true
+            )
+
             .limit(1)
+
             .maybeSingle();
 
+
         if(error){
-            console.error("QUIZ SEARCH ERROR:", error);
-            alert(
-                "Impossible de rechercher le quiz : " +
-                error.message
+
+            console.error(
+                "❌ QUIZ SEARCH ERROR:",
+                error
             );
-            return;
+
+            throw error;
+
         }
+
 
         if(!quiz){
 
+            console.error(
+                "❌ Aucun quiz final trouvé."
+            );
+
             alert(
-                "Quiz final introuvable ou non publié pour ce cours."
+                "Quiz introuvable ou non publié pour ce cours."
             );
 
             return;
+
         }
+
+
+        console.log(
+            "✅ Quiz trouvé:",
+            quiz
+        );
+
+
+        /*
+         * IMPORTANT:
+         * On envoie maintenant le ID du QUIZ,
+         * et non le ID du COURS.
+         */
 
         window.location.href =
             "quiz.html?id=" +
-            encodeURIComponent(quiz.id);
+            encodeURIComponent(
+                quiz.id
+            );
 
     }
     catch(error){
 
         console.error(
-            "OPEN QUIZ ERROR:",
+            "❌ OPEN QUIZ ERROR:",
             error
         );
 
         alert(
             "Impossible d'ouvrir le quiz : " +
-            error.message
+            (
+                error.message ||
+                "Erreur inconnue."
+            )
         );
 
     }
