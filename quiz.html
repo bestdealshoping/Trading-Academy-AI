@@ -286,6 +286,7 @@
 
             </p>
 
+
             <p>
 
                 Répondez aux
@@ -444,10 +445,17 @@
 
 
 <!-- =================================
-     SUPABASE
+     SUPABASE SDK
 ================================== -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<!-- =================================
+     SUPABASE CLIENT
+================================== -->
 
 <script src="supabase.js"></script>
 
@@ -466,56 +474,332 @@ let submitting = false;
 
 
 /* ==========================================
-   GET QUIZ ID
+   HELPERS
 ========================================== */
 
-function getQuizId() {
+function show(id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+
+        element.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+function hide(id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+
+        element.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* ==========================================
+   RÉCUPÉRER LES PARAMÈTRES URL
+========================================== */
+
+function getUrlParameters() {
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
-    return params.get("quiz_id");
+
+    return {
+
+        /*
+         * Nouvelle méthode:
+         * quiz.html?id=QUIZ_ID
+         */
+
+        id:
+            params.get("id"),
+
+
+        /*
+         * Ancienne méthode:
+         * quiz.html?quiz_id=QUIZ_ID
+         */
+
+        quiz_id:
+            params.get("quiz_id"),
+
+
+        /*
+         * Méthode par cours:
+         * quiz.html?course_id=COURSE_ID
+         */
+
+        course_id:
+            params.get("course_id")
+
+    };
 
 }
 
+
 /* ==========================================
-   INIT QUIZ
+   RÉSOUDRE LE QUIZ
+========================================== */
+
+async function resolveQuiz() {
+
+    const params =
+        getUrlParameters();
+
+
+    console.log(
+        "🔎 Paramètres URL:",
+        params
+    );
+
+
+    /*
+     * CAS 1
+     * URL contient directement le quiz ID.
+     */
+
+    const directQuizId =
+        params.id ||
+        params.quiz_id;
+
+
+    if (directQuizId) {
+
+        console.log(
+            "🎯 Quiz ID direct:",
+            directQuizId
+        );
+
+
+        const {
+            data: quiz,
+            error
+        } =
+        await supabaseClient
+
+            .from("quizzes")
+
+            .select(`
+                id,
+                title,
+                description,
+                course_id,
+                lesson_id,
+                is_published
+            `)
+
+            .eq(
+                "id",
+                directQuizId
+            )
+
+            .eq(
+                "is_published",
+                true
+            )
+
+            .maybeSingle();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!quiz) {
+
+            throw new Error(
+                "Quiz introuvable ou non publié."
+            );
+
+        }
+
+
+        return quiz;
+
+    }
+
+
+    /*
+     * CAS 2
+     * URL contient seulement course_id.
+     *
+     * On recherche le quiz FINAL du cours.
+     *
+     * Un quiz final possède:
+     * lesson_id = NULL
+     */
+
+    if(params.course_id){
+
+        console.log(
+            "📚 Recherche du quiz final du cours:",
+            params.course_id
+        );
+
+
+        const {
+            data: quiz,
+            error
+        } =
+        await supabaseClient
+
+            .from("quizzes")
+
+            .select(`
+                id,
+                title,
+                description,
+                course_id,
+                lesson_id,
+                is_published
+            `)
+
+            .eq(
+                "course_id",
+                params.course_id
+            )
+
+            .is(
+                "lesson_id",
+                null
+            )
+
+            .eq(
+                "is_published",
+                true
+            )
+
+            .limit(1)
+
+            .maybeSingle();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!quiz) {
+
+            throw new Error(
+                "Aucun quiz final publié n'est associé à ce cours."
+            );
+
+        }
+
+
+        console.log(
+            "✅ Quiz final trouvé:",
+            quiz.id
+        );
+
+
+        return quiz;
+
+    }
+
+
+    /*
+     * CAS 3
+     * Aucun paramètre.
+     */
+
+    throw new Error(
+        "Aucun quiz sélectionné. Ouvrez le quiz depuis la page Mes Cours."
+    );
+
+}
+
+
+/* ==========================================
+   INITIALISER LE QUIZ
 ========================================== */
 
 async function initQuiz() {
 
     try {
 
+
         /*
-         * 1 — Récupérer ID quiz
+         * 1 — Vérifier Supabase
          */
 
-        quizId =
-            getQuizId();
-
-
-        if (!quizId) {
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
 
             throw new Error(
-                "Aucun quiz sélectionné."
+                "Supabase Client introuvable. Vérifiez supabase.js."
             );
 
         }
 
 
         /*
-         * 2 — Vérifier utilisateur connecté
+         * 2 — Vérifier session
          */
 
         const {
             data: sessionData,
             error: sessionError
         } =
-            await supabaseClient
-                .auth
-                .getSession();
+        await supabaseClient
+
+            .auth
+
+            .getSession();
 
 
         if (sessionError) {
@@ -530,64 +814,48 @@ async function initQuiz() {
             !sessionData.session
         ) {
 
-            throw new Error(
-                "Vous devez être connecté pour passer ce quiz."
-            );
+            window.location.href =
+                "login.html";
+
+            return;
 
         }
 
 
         /*
-         * 3 — Charger quiz
+         * 3 — Récupérer le quiz
          */
 
-        const {
-            data: quiz,
-            error: quizError
-        } =
-            await supabaseClient
-                .from("quizzes")
-                .select(`
-                    id,
-                    title,
-                    description,
-                    is_published
-                `)
-                .eq(
-                    "id",
-                    quizId
-                )
-                .eq(
-                    "is_published",
-                    true
-                )
-                .maybeSingle();
-
-
-        if (quizError) {
-
-            throw quizError;
-
-        }
-
-
-        if (!quiz) {
-
-            throw new Error(
-                "Quiz introuvable ou non publié."
-            );
-
-        }
+        const quiz =
+            await resolveQuiz();
 
 
         /*
-         * 4 — Afficher informations quiz
+         * IMPORTANT
+         *
+         * À partir d'ici, on utilise
+         * toujours le vrai ID du quiz.
+         */
+
+        quizId =
+            quiz.id;
+
+
+        console.log(
+            "✅ Quiz ID final:",
+            quizId
+        );
+
+
+        /*
+         * 4 — Afficher les informations
          */
 
         document.getElementById(
             "quizTitle"
         ).textContent =
-            quiz.title;
+            quiz.title ||
+            "Quiz";
 
 
         document.getElementById(
@@ -598,14 +866,16 @@ async function initQuiz() {
 
 
         /*
-         * 5 — Start quiz côté serveur
+         * 5 — Démarrer le quiz côté serveur
          */
 
         const {
             data,
             error
         } =
-            await supabaseClient.rpc(
+        await supabaseClient
+
+            .rpc(
                 "start_quiz",
                 {
                     p_quiz_id:
@@ -622,7 +892,7 @@ async function initQuiz() {
 
 
         /*
-         * Vérification
+         * 6 — Vérifier les questions
          */
 
         if (
@@ -637,9 +907,7 @@ async function initQuiz() {
         }
 
 
-        if (
-            data.length !== 10
-        ) {
+        if(data.length !== 10){
 
             throw new Error(
                 "Le quiz doit contenir exactement 10 questions. Questions trouvées : " +
@@ -658,6 +926,10 @@ async function initQuiz() {
         ).textContent =
             quizData.length;
 
+
+        /*
+         * 7 — Afficher questions
+         */
 
         renderQuestions();
 
@@ -687,7 +959,7 @@ async function initQuiz() {
 
 
 /* ==========================================
-   RENDER QUESTIONS
+   AFFICHER LES QUESTIONS
 ========================================== */
 
 function renderQuestions() {
@@ -726,10 +998,14 @@ function renderQuestions() {
             ) {
 
                 optionsHTML = `
+
                     <div class="error">
+
                         Aucune réponse disponible
                         pour cette question.
+
                     </div>
+
                 `;
 
             }
@@ -808,7 +1084,7 @@ function renderQuestions() {
 
 
 /* ==========================================
-   UPDATE QUESTION PROGRESS
+   PROGRESSION QUESTIONS
 ========================================== */
 
 function updateQuestionProgress() {
@@ -859,7 +1135,7 @@ document.addEventListener(
 
 
 /* ==========================================
-   SUBMIT QUIZ
+   SOUMETTRE LE QUIZ
 ========================================== */
 
 document.getElementById(
@@ -878,7 +1154,8 @@ document.getElementById(
         }
 
 
-        submitting = true;
+        submitting =
+            true;
 
 
         const submitBtn =
@@ -897,10 +1174,6 @@ document.getElementById(
 
         try {
 
-
-            /*
-             * Vérifier toutes les réponses
-             */
 
             const answers = [];
 
@@ -939,14 +1212,16 @@ document.getElementById(
 
 
             /*
-             * Correction SERVER-SIDE
+             * Correction côté serveur
              */
 
             const {
                 data,
                 error
             } =
-                await supabaseClient.rpc(
+            await supabaseClient
+
+                .rpc(
                     "submit_quiz",
                     {
 
@@ -966,10 +1241,6 @@ document.getElementById(
 
             }
 
-
-            /*
-             * Vérifier réponse serveur
-             */
 
             if (!data) {
 
@@ -1018,7 +1289,7 @@ document.getElementById(
 
 
 /* ==========================================
-   SHOW RESULT
+   AFFICHER RESULTAT
 ========================================== */
 
 function showResult(result) {
@@ -1027,10 +1298,6 @@ function showResult(result) {
 
     show("resultArea");
 
-
-    /*
-     * Valeurs serveur
-     */
 
     const total =
         Number(
@@ -1053,13 +1320,13 @@ function showResult(result) {
             result.percentage ??
             (
                 total > 0
-                    ? Math.round(
-                        (
-                            score /
-                            total
-                        ) * 100
-                    )
-                    : 0
+                ? Math.round(
+                    (
+                        score /
+                        total
+                    ) * 100
+                )
+                : 0
             )
         );
 
@@ -1095,10 +1362,6 @@ function showResult(result) {
         );
 
 
-    /*
-     * Score
-     */
-
     document.getElementById(
         "resultScore"
     ).textContent =
@@ -1129,10 +1392,6 @@ function showResult(result) {
         xp;
 
 
-    /*
-     * Réussite
-     */
-
     const title =
         document.getElementById(
             "resultTitle"
@@ -1151,7 +1410,7 @@ function showResult(result) {
         );
 
 
-    if (passed) {
+    if(passed){
 
         title.textContent =
             "🎉 Félicitations !";
@@ -1169,7 +1428,7 @@ function showResult(result) {
             "Vous avez réussi le quiz. Note minimale : 70%.";
 
     }
-    else {
+    else{
 
         title.textContent =
             "❌ Quiz non réussi";
@@ -1192,7 +1451,7 @@ function showResult(result) {
 
 
 /* ==========================================
-   RETRY
+   REFAIRE LE QUIZ
 ========================================== */
 
 document.getElementById(
@@ -1225,48 +1484,6 @@ document.getElementById(
 
 
 /* ==========================================
-   SHOW
-========================================== */
-
-function show(id) {
-
-    const element =
-        document.getElementById(id);
-
-
-    if (element) {
-
-        element.classList.remove(
-            "hidden"
-        );
-
-    }
-
-}
-
-
-/* ==========================================
-   HIDE
-========================================== */
-
-function hide(id) {
-
-    const element =
-        document.getElementById(id);
-
-
-    if (element) {
-
-        element.classList.add(
-            "hidden"
-        );
-
-    }
-
-}
-
-
-/* ==========================================
    ERROR
 ========================================== */
 
@@ -1283,39 +1500,6 @@ function showError(message) {
         "errorMessage"
     ).textContent =
         message;
-
-}
-
-
-/* ==========================================
-   ESCAPE HTML
-========================================== */
-
-function escapeHTML(value) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
 
 }
 
