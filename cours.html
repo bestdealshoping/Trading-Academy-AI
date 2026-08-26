@@ -906,13 +906,67 @@ function openLesson(lessonId){
    QUIZ
 ========================================================= */
 
-function openQuiz(courseId){
+async function openQuiz(courseId){
 
-    window.location.href =
-        "quiz.html?course_id=" +
-        encodeURIComponent(courseId);
+    try{
+
+        const {
+            data: quiz,
+            error
+        } =
+        await courseClient
+            .from("quizzes")
+            .select(`
+                id,
+                course_id,
+                lesson_id,
+                title,
+                is_published
+            `)
+            .eq("course_id", courseId)
+            .is("lesson_id", null)
+            .eq("is_published", true)
+            .limit(1)
+            .maybeSingle();
+
+        if(error){
+            console.error("QUIZ SEARCH ERROR:", error);
+            alert(
+                "Impossible de rechercher le quiz : " +
+                error.message
+            );
+            return;
+        }
+
+        if(!quiz){
+
+            alert(
+                "Quiz final introuvable ou non publié pour ce cours."
+            );
+
+            return;
+        }
+
+        window.location.href =
+            "quiz.html?id=" +
+            encodeURIComponent(quiz.id);
+
+    }
+    catch(error){
+
+        console.error(
+            "OPEN QUIZ ERROR:",
+            error
+        );
+
+        alert(
+            "Impossible d'ouvrir le quiz : " +
+            error.message
+        );
+
+    }
+
 }
-
 
 /* =========================================================
    START
