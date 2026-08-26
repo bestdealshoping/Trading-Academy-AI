@@ -999,13 +999,14 @@ async function openQuiz(courseId){
          * IMPORTANT:
          * On envoie maintenant le ID du QUIZ,
          * et non le ID du COURS.
-         */
+        
+ */
 
         window.location.href =
-            "quiz.html?id=" +
-            encodeURIComponent(
-                quiz.id
-            );
+    "quiz.html?quiz_id=" +
+    encodeURIComponent(
+        quiz.id
+    );
 
     }
     catch(error){
