@@ -1,1215 +1,1007 @@
 <!DOCTYPE html>
-<html lang="ht">
+<html lang="fr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mon Dashboard | Trading Academy AI</title>
+<title>Dashboard | Trading Academy AI</title>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Notre client Supabase unique -->
+<script src="supabase.js"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
-}
-
-:root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --dark:#0f172a;
-    --dark-2:#172033;
-    --bg:#f4f7fb;
-    --card:#ffffff;
-    --text:#172033;
-    --muted:#64748b;
-    --border:#e5e7eb;
-    --success:#16a34a;
-    --success-bg:#dcfce7;
-    --warning:#d97706;
-    --warning-bg:#fef3c7;
-    --danger:#dc2626;
-    --danger-bg:#fee2e2;
 }
 
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+    background:#f4f7fb;
+    color:#172033;
 }
 
 button{
     font-family:inherit;
 }
 
-.loading-screen{
-    position:fixed;
-    inset:0;
-    background:var(--bg);
+a{
+    text-decoration:none;
+}
+
+.hidden{
+    display:none !important;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+    background:#0f172a;
+    color:white;
+    padding:18px 24px;
+
     display:flex;
     align-items:center;
-    justify-content:center;
-    z-index:9999;
-}
+    justify-content:space-between;
 
-.loading-box{
-    background:white;
-    padding:30px;
-    border-radius:16px;
-    box-shadow:0 10px 35px rgba(15,23,42,.10);
-    text-align:center;
-    width:min(90%,380px);
-}
+    gap:15px;
 
-.spinner{
-    width:42px;
-    height:42px;
-    border:4px solid #dbeafe;
-    border-top-color:var(--primary);
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-    margin:0 auto 15px;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg);}
-}
-
-.app{
-    display:none;
-    min-height:100vh;
-}
-
-.sidebar{
-    width:250px;
-    position:fixed;
+    position:sticky;
     top:0;
-    bottom:0;
-    left:0;
-    background:var(--dark);
-    color:white;
-    padding:22px 15px;
+
     z-index:1000;
-    overflow-y:auto;
 }
 
-.logo{
+.brand{
     font-size:20px;
     font-weight:800;
-    padding:8px 12px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:18px;
 }
 
-.logo span{
+.brand span{
     color:#3b82f6;
 }
 
-.user-mini{
-    background:rgba(37,99,235,.14);
-    border:1px solid rgba(59,130,246,.20);
-    padding:13px;
-    border-radius:10px;
-    margin-bottom:20px;
-}
-
-.user-mini-name{
-    font-weight:bold;
-    font-size:14px;
-}
-
-.user-mini-level{
-    color:#93c5fd;
-    font-size:11px;
-    margin-top:5px;
-}
-
-.menu-title{
-    color:#64748b;
-    font-size:10px;
-    font-weight:bold;
-    letter-spacing:1px;
-    padding:10px 12px;
-}
-
-.menu{
+.header-right{
     display:flex;
-    flex-direction:column;
-    gap:5px;
-    margin-bottom:12px;
+    align-items:center;
+    gap:10px;
 }
 
-.menu button{
-    width:100%;
-    border:0;
-    background:transparent;
-    color:#cbd5e1;
-    text-align:left;
-    padding:12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:14px;
-}
+.level-badge{
+    background:#2563eb;
+    padding:8px 13px;
+    border-radius:20px;
 
-.menu button:hover,
-.menu button.active{
-    background:var(--primary);
-    color:white;
-}
-
-.menu-icon{
-    display:inline-block;
-    width:28px;
+    font-size:12px;
+    font-weight:bold;
 }
 
 .logout{
-    width:100%;
-    border:0;
-    background:rgba(239,68,68,.12);
-    color:#fca5a5;
-    padding:12px;
+    border:1px solid rgba(255,255,255,.2);
+    background:transparent;
+
+    color:white;
+
+    padding:9px 13px;
+
     border-radius:8px;
+
     cursor:pointer;
-    margin-top:20px;
 }
 
 .logout:hover{
-    background:var(--danger);
-    color:white;
+    background:#dc2626;
 }
+
+
+/* =====================================================
+   MAIN
+===================================================== */
 
 .main{
-    margin-left:250px;
-    min-height:100vh;
-    padding:25px 30px;
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:28px 18px 80px;
 }
 
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+.welcome{
     margin-bottom:25px;
 }
 
-.title-area{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.title-area h1{
+.welcome h1{
     margin:0;
-    font-size:27px;
+
+    font-size:29px;
 }
 
-.title-area p{
-    margin:6px 0 0;
-    color:var(--muted);
-    font-size:14px;
+.welcome p{
+    color:#64748b;
+
+    margin:8px 0 0;
 }
 
-.mobile-menu{
+
+/* =====================================================
+   ALERT
+===================================================== */
+
+.alert{
+    padding:16px 18px;
+
+    border-radius:12px;
+
+    margin-bottom:20px;
+
     display:none;
-    border:0;
-    background:white;
-    border-radius:8px;
-    padding:9px;
-    cursor:pointer;
-    font-size:20px;
 }
 
-.btn{
-    border:0;
-    border-radius:8px;
-    padding:10px 15px;
-    cursor:pointer;
-    font-weight:bold;
+.alert.error{
+    background:#fee2e2;
+    color:#991b1b;
+
+    border:1px solid #fecaca;
 }
 
-.btn-primary{
-    background:var(--primary);
-    color:white;
+.alert.success{
+    background:#dcfce7;
+    color:#166534;
+
+    border:1px solid #bbf7d0;
 }
 
-.btn-primary:hover{
-    background:var(--primary-dark);
-}
 
-.btn-secondary{
-    background:#e2e8f0;
-    color:#334155;
-}
-
-.btn-success{
-    background:var(--success);
-    color:white;
-}
-
-.btn-warning{
-    background:#f59e0b;
-    color:white;
-}
-
-.btn:disabled{
-    opacity:.55;
-    cursor:not-allowed;
-}
-
-/* PROFILE */
-
-.profile-card{
-    background:linear-gradient(135deg,#0f172a,#1e3a8a);
-    color:white;
-    border-radius:16px;
-    padding:24px;
-    margin-bottom:22px;
-}
-
-.profile-content{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-}
-
-.profile-left{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.avatar{
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    background:#3b82f6;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    font-weight:bold;
-    border:3px solid rgba(255,255,255,.25);
-}
-
-.profile-name{
-    font-size:22px;
-    font-weight:bold;
-}
-
-.profile-username{
-    color:#bfdbfe;
-    font-size:13px;
-    margin-top:5px;
-}
-
-.profile-level{
-    display:inline-block;
-    margin-top:10px;
-    background:rgba(255,255,255,.13);
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:11px;
-}
-
-.profile-actions{
-    display:flex;
-    gap:8px;
-}
-
-/* STATS */
+/* =====================================================
+   STATS
+===================================================== */
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:16px;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:15px;
+
     margin-bottom:22px;
 }
 
-.stat-card{
+.stat{
     background:white;
-    border:1px solid var(--border);
-    border-radius:13px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
     padding:19px;
 }
 
-.stat-card p{
-    margin:0;
-    color:var(--muted);
+.stat-label{
+    color:#64748b;
+
     font-size:12px;
 }
 
-.stat-card h2{
-    margin:8px 0 0;
-    font-size:26px;
+.stat-value{
+    font-size:25px;
+
+    font-weight:800;
+
+    margin-top:7px;
 }
 
-.stat-icon{
-    font-size:20px;
-    margin-bottom:8px;
-}
 
-/* PANELS */
+/* =====================================================
+   PANELS
+===================================================== */
 
 .panel{
     background:white;
-    border:1px solid var(--border);
-    border-radius:13px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
     padding:21px;
+
     margin-bottom:20px;
 }
 
-.panel-header{
+.panel h2{
+    margin:0 0 18px;
+
+    font-size:19px;
+}
+
+
+/* =====================================================
+   LEVEL STATUS
+===================================================== */
+
+.level-card{
     display:flex;
-    justify-content:space-between;
+
     align-items:center;
-    gap:12px;
-    margin-bottom:18px;
-}
 
-.panel-header h2{
-    margin:0;
-    font-size:18px;
-}
+    justify-content:space-between;
 
-.panel-header span{
-    color:var(--muted);
-    font-size:12px;
-}
+    gap:20px;
 
-/* COURSES */
+    padding:18px;
 
-.course-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.course-card{
-    border:1px solid var(--border);
     border-radius:12px;
-    padding:17px;
+
+    background:#eff6ff;
+
+    border:1px solid #bfdbfe;
 }
 
-.course-title{
-    font-size:16px;
-    font-weight:bold;
-    line-height:1.4;
+.level-card h3{
+    margin:0 0 6px;
 }
 
-.course-level{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:6px;
-}
+.level-card p{
+    margin:0;
 
-.progress-wrap{
-    margin-top:15px;
-}
+    color:#475569;
 
-.progress-info{
-    display:flex;
-    justify-content:space-between;
-    color:var(--muted);
-    font-size:11px;
-    margin-bottom:6px;
-}
-
-.progress{
-    height:9px;
-    background:#e2e8f0;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.progress-bar{
-    height:100%;
-    background:var(--primary);
-    border-radius:20px;
-    transition:.3s;
-}
-
-.course-bottom{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-top:15px;
-}
-
-.status{
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:10px;
-    font-weight:bold;
-}
-
-.status-success{
-    background:var(--success-bg);
-    color:#166534;
-}
-
-.status-warning{
-    background:var(--warning-bg);
-    color:#92400e;
-}
-
-.status-danger{
-    background:var(--danger-bg);
-    color:#991b1b;
-}
-
-/* QUIZ */
-
-.quiz-table-wrap{
-    overflow-x:auto;
-}
-
-.quiz-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:600px;
-}
-
-.quiz-table th,
-.quiz-table td{
-    padding:12px;
-    text-align:left;
-    border-bottom:1px solid #f1f5f9;
     font-size:13px;
 }
 
-.quiz-table th{
-    color:var(--muted);
-    font-size:11px;
-    text-transform:uppercase;
+.level-current{
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#2563eb;
+
+    white-space:nowrap;
 }
 
-/* CERTIFICATE */
+
+/* =====================================================
+   COURSE PROGRESS
+===================================================== */
+
+.progress-card{
+    margin-bottom:20px;
+}
+
+.progress-card:last-child{
+    margin-bottom:0;
+}
+
+.progress-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:8px;
+}
+
+.progress-title{
+    font-weight:bold;
+}
+
+.progress-percent{
+    color:#2563eb;
+
+    font-weight:bold;
+}
+
+.progress-bar{
+    width:100%;
+
+    height:10px;
+
+    background:#e5e7eb;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+
+    width:0%;
+
+    background:#2563eb;
+
+    transition:.4s;
+}
+
+.progress-fill.completed{
+    background:#16a34a;
+}
+
+.course-status{
+    color:#64748b;
+
+    font-size:12px;
+
+    margin-top:7px;
+}
+
+
+/* =====================================================
+   CERTIFICATE
+===================================================== */
 
 .certificate{
-    border:1px solid #bfdbfe;
     background:#eff6ff;
-    border-radius:13px;
+
+    border:1px solid #bfdbfe;
+
+    border-radius:14px;
+
     padding:20px;
 }
 
 .certificate h3{
-    margin:0 0 7px;
+    margin:0 0 8px;
+
+    color:#1e3a8a;
 }
 
 .certificate p{
+    margin:0 0 16px;
+
     color:#475569;
-    font-size:13px;
+
+    font-size:14px;
+
     line-height:1.6;
 }
 
-.certificate-locked{
-    border-color:#e5e7eb;
-    background:#f8fafc;
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.actions{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:11px;
 }
 
-/* QUICK */
-
-.quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-}
-
-.quick{
-    border:1px solid var(--border);
-    background:#f8fafc;
-    border-radius:10px;
-    padding:16px;
-    cursor:pointer;
-    text-align:left;
-}
-
-.quick:hover{
-    border-color:var(--primary);
-    background:#eff6ff;
-}
-
-.quick strong{
-    display:block;
-    margin-bottom:6px;
-}
-
-.quick small{
-    color:var(--muted);
-}
-
-/* FLOATING ATLAS */
-
-.atlas-float{
-    position:fixed;
-    right:22px;
-    bottom:22px;
-    width:58px;
-    height:58px;
+.btn{
     border:0;
-    border-radius:50%;
+
+    padding:12px 17px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    font-size:13px;
+}
+
+.btn-primary{
     background:#2563eb;
     color:white;
-    font-size:24px;
-    cursor:pointer;
-    box-shadow:0 8px 25px rgba(37,99,235,.35);
-    z-index:2000;
 }
 
-.atlas-float:hover{
-    transform:translateY(-2px);
+.btn-primary:hover{
     background:#1d4ed8;
 }
 
-/* EMPTY / ERROR */
+.btn-success{
+    background:#16a34a;
+    color:white;
+}
 
-.empty{
+.btn-success:hover{
+    background:#15803d;
+}
+
+.btn-dark{
+    background:#0f172a;
+    color:white;
+}
+
+.btn-gray{
+    background:#e5e7eb;
+    color:#172033;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+    min-height:300px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.loading-box{
     text-align:center;
-    padding:30px;
-    color:var(--muted);
+
+    color:#64748b;
 }
 
-.error-box{
-    background:#fee2e2;
-    border:1px solid #fecaca;
-    color:#991b1b;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:20px;
-    display:none;
+.spinner{
+    width:40px;
+    height:40px;
+
+    border:4px solid #dbeafe;
+
+    border-top-color:#2563eb;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+    margin:0 auto 14px;
 }
 
-/* MOBILE */
+@keyframes spin{
 
-@media(max-width:1050px){
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:850px){
+
     .stats{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
-    .course-grid{
-        grid-template-columns:1fr;
-    }
-
-    .quick-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
 }
 
-@media(max-width:700px){
+@media(max-width:600px){
 
-    .sidebar{
-        transform:translateX(-100%);
-        transition:.3s;
+    .header{
+        padding:15px;
     }
 
-    .sidebar.open{
-        transform:translateX(0);
+    .brand{
+        font-size:16px;
+    }
+
+    .level-badge{
+        font-size:10px;
+        padding:7px 9px;
+    }
+
+    .logout{
+        font-size:11px;
+        padding:8px;
     }
 
     .main{
-        margin-left:0;
-        padding:18px;
+        padding:22px 14px 70px;
     }
 
-    .mobile-menu{
-        display:block;
-    }
-
-    .topbar{
-        align-items:flex-start;
-    }
-
-    .topbar .btn-primary{
-        font-size:11px;
-        padding:9px 10px;
+    .welcome h1{
+        font-size:23px;
     }
 
     .stats{
-        grid-template-columns:1fr 1fr;
         gap:10px;
     }
 
-    .stat-card{
-        padding:14px;
+    .stat{
+        padding:15px;
     }
 
-    .stat-card h2{
-        font-size:22px;
+    .stat-value{
+        font-size:21px;
     }
 
-    .profile-content{
-        flex-direction:column;
+    .level-card{
         align-items:flex-start;
+
+        flex-direction:column;
     }
 
-    .profile-actions{
-        width:100%;
+    .level-current{
+        font-size:21px;
     }
 
-    .profile-actions button{
-        flex:1;
-    }
-
-    .quick-grid{
-        grid-template-columns:1fr;
-    }
-
-    .atlas-float{
-        right:16px;
-        bottom:16px;
-    }
 }
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- LOADING -->
-<div id="loadingScreen" class="loading-screen">
-    <div class="loading-box">
-        <div class="spinner"></div>
-        <strong>Chargement de votre espace étudiant...</strong>
-        <p style="color:#64748b;font-size:13px;">
-            Vérification de votre session.
-        </p>
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div id="loading">
+
+    <div class="loading">
+
+        <div class="loading-box">
+
+            <div class="spinner"></div>
+
+            <div>
+                Chargement de votre espace étudiant...
+            </div>
+
+        </div>
+
     </div>
+
 </div>
 
 
-<div id="app" class="app">
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
 
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="sidebar">
+<div
+    id="app"
+    class="hidden">
 
-        <div class="logo">
-            Trading Academy <span>AI</span>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="brand">
+        Trading Academy <span>AI</span>
+    </div>
+
+
+    <div class="header-right">
+
+        <div
+            id="levelBadge"
+            class="level-badge">
+            Niveau
         </div>
 
-        <div class="user-mini">
-            <div id="sideUserName" class="user-mini-name">
-                Étudiant
-            </div>
 
-            <div id="sideUserLevel" class="user-mini-level">
-                Niveau
-            </div>
-        </div>
+        <button
+            id="logout"
+            class="logout">
 
-        <div class="menu-title">
-            ESPACE ÉTUDIANT
-        </div>
+            Déconnexion
 
-        <nav class="menu">
-
-            <button class="active" onclick="scrollToSection('profileSection')">
-                <span class="menu-icon">👤</span>
-                Mon Profil
-            </button>
-
-            <button onclick="scrollToSection('coursesSection')">
-                <span class="menu-icon">📚</span>
-                Mes Cours
-            </button>
-
-            <button onclick="scrollToSection('quizSection')">
-                <span class="menu-icon">📝</span>
-                Mes Quiz
-            </button>
-
-            <button onclick="scrollToSection('certificateSection')">
-                <span class="menu-icon">🏆</span>
-                Certificat
-            </button>
-
-        </nav>
-
-        <div class="menu-title">
-            OUTILS
-        </div>
-
-        <nav class="menu">
-
-            <button onclick="goSimulator()">
-                <span class="menu-icon">🎮</span>
-                Simulator
-            </button>
-
-            <button onclick="goExpertApplication()">
-                <span class="menu-icon">🎓</span>
-                Candidature Expert
-            </button>
-
-        </nav>
-        
-        
-        <a href="contact.html" class="menu-item">
-    📞
-    <span>Contact</span>
-</a>
-
-<a href="apropos.html" class="menu-item">
-    ℹ️
-    <span>À propos</span>
-</a>
-
-        <button id="logoutBtn" class="logout">
-            🚪 Déconnexion
         </button>
 
-    </aside>
+    </div>
+
+</header>
 
 
-    <!-- MAIN -->
-    <main class="main">
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-        <!-- TOPBAR -->
-        <header class="topbar">
+<main class="main">
 
-            <div class="title-area">
 
-                <button id="mobileMenu" class="mobile-menu">
-                    ☰
-                </button>
+    <div
+        id="errorBox"
+        class="alert error">
+    </div>
 
-                <div>
-                    <h1>Dashboard étudiant</h1>
 
-                    <p>
-                        Bienvenue dans votre espace Trading Academy AI.
-                    </p>
-                </div>
+    <div
+        id="successBox"
+        class="alert success">
+    </div>
 
+
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
+
+    <section class="welcome">
+
+        <h1>
+
+            Bonjour,
+            <span id="studentName">
+                Étudiant
+            </span>
+
+        </h1>
+
+
+        <p>
+            Bienvenue dans votre espace étudiant
+            Trading Academy AI.
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         STATS
+    ================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Niveau actuel
             </div>
 
-            <button class="btn btn-primary" onclick="goCourses()">
-                📚 Mes cours
-            </button>
-
-        </header>
-
-
-        <div id="errorBox" class="error-box"></div>
-
-
-        <!-- ==========================================
-             1. MON PROFIL
-        =========================================== -->
-        <section id="profileSection" class="profile-card">
-
-            <div class="profile-content">
-
-                <div class="profile-left">
-
-                    <div id="avatar" class="avatar">
-                        ?
-                    </div>
-
-                    <div>
-
-                        <div id="profileName" class="profile-name">
-                            Chargement...
-                        </div>
-
-                        <div id="profileUsername" class="profile-username">
-                            @...
-                        </div>
-
-                        <span id="profileLevel" class="profile-level">
-                            Niveau...
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="profile-actions">
-
-                    <button
-                        class="btn"
-                        style="background:white;color:#172033;"
-                        onclick="goProfile()">
-
-                        Modifier mon profil
-
-                    </button>
-
-                </div>
-
+            <div
+                id="currentLevel"
+                class="stat-value">
+                —
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- STATS -->
-        <section class="stats">
+        <div class="stat">
 
-            <div class="stat-card">
-
-                <div class="stat-icon">📈</div>
-
-                <p>Progression générale</p>
-
-                <h2 id="generalProgress">
-                    0%
-                </h2>
-
+            <div class="stat-label">
+                Moyenne générale
             </div>
 
-
-            <div class="stat-card">
-
-                <div class="stat-icon">🎯</div>
-
-                <p>Moyenne générale</p>
-
-                <h2 id="generalAverage">
-                    —
-                </h2>
-
+            <div
+                id="generalAverage"
+                class="stat-value">
+                —
             </div>
 
+        </div>
 
-            <div class="stat-card">
 
-                <div class="stat-icon">⚡</div>
+        <div class="stat">
 
-                <p>XP</p>
-
-                <h2 id="xpValue">
-                    0
-                </h2>
-
+            <div class="stat-label">
+                Leçons terminées
             </div>
 
-
-            <div class="stat-card">
-
-                <div class="stat-icon">🏆</div>
-
-                <p>Certificat</p>
-
-                <h2 id="certificateStatus">
-                    —
-                </h2>
-
+            <div
+                id="lessonsCompleted"
+                class="stat-value">
+                0
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- ==========================================
-             2. MES COURS
-        =========================================== -->
-        <section id="coursesSection" class="panel">
+        <div class="stat">
 
-            <div class="panel-header">
-
-                <h2>📚 Mes Cours</h2>
-
-                <span id="coursesSummary">
-                    Chargement...
-                </span>
-
+            <div class="stat-label">
+                XP gagné
             </div>
 
-
-            <div id="coursesContainer" class="course-grid">
-
-                <div class="empty">
-                    Chargement des cours...
-                </div>
-
+            <div
+                id="xpTotal"
+                class="stat-value">
+                0
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- ==========================================
-             3. MES QUIZ
-        =========================================== -->
-        <section id="quizSection" class="panel">
-
-            <div class="panel-header">
-
-                <h2>📝 Mes Quiz</h2>
-
-                <span id="quizSummary">
-                    Chargement...
-                </span>
-
-            </div>
+    </section>
 
 
-            <div class="quiz-table-wrap">
+    <!-- =================================================
+         LEVEL
+    ================================================== -->
 
-                <table class="quiz-table">
+    <section class="panel">
 
-                    <thead>
-
-                        <tr>
-                            <th>Quiz</th>
-                            <th>Score</th>
-                            <th>Pourcentage</th>
-                            <th>Résultat</th>
-                            <th>Date</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="quizTableBody">
-
-                        <tr>
-                            <td colspan="5" class="empty">
-                                Chargement...
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
+        <h2>
+            Niveau de formation
+        </h2>
 
 
-        <!-- ==========================================
-             CERTIFICATE
-        =========================================== -->
-        <section id="certificateSection" class="panel">
+        <div class="level-card">
 
-            <div class="panel-header">
+            <div>
 
-                <h2>🏆 Certificat</h2>
-
-                <span>
-                    Validation académique
-                </span>
-
-            </div>
-
-
-            <div id="certificateBox" class="certificate certificate-locked">
-
-                <h3>
-                    Certificat de réussite
+                <h3 id="levelTitle">
+                    Niveau actuel
                 </h3>
 
-                <p>
-                    Le certificat devient disponible lorsque les
-                    conditions académiques requises sont satisfaites.
+                <p id="levelDescription">
+                    Vérification de votre progression...
                 </p>
 
+            </div>
+
+
+            <div
+                id="levelCurrent"
+                class="level-current">
+
+                —
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         COURSE PROGRESS
+    ================================================== -->
+
+    <section class="panel">
+
+        <h2>
+            Progression de la formation
+        </h2>
+
+
+        <div
+            id="course1"
+            class="progress-card">
+
+            <div class="progress-top">
+
+                <div
+                    id="course1Title"
+                    class="progress-title">
+
+                    Cours 1
+
+                </div>
+
+
+                <div
+                    id="course1Percent"
+                    class="progress-percent">
+
+                    0%
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    id="course1Fill"
+                    class="progress-fill">
+                </div>
+
+            </div>
+
+
+            <div
+                id="course1Status"
+                class="course-status">
+
+                Chargement...
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="course2"
+            class="progress-card">
+
+            <div class="progress-top">
+
+                <div
+                    id="course2Title"
+                    class="progress-title">
+
+                    Cours 2
+
+                </div>
+
+
+                <div
+                    id="course2Percent"
+                    class="progress-percent">
+
+                    0%
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    id="course2Fill"
+                    class="progress-fill">
+                </div>
+
+            </div>
+
+
+            <div
+                id="course2Status"
+                class="course-status">
+
+                Chargement...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =================================================
+         CERTIFICATE
+    ================================================== -->
+
+    <section
+        id="certificatePanel"
+        class="panel hidden">
+
+        <div class="certificate">
+
+            <h3>
+                Certificat de niveau disponible
+            </h3>
+
+
+            <p id="certificateMessage">
+                Félicitations ! Votre niveau est validé.
+            </p>
+
+
+            <div class="actions">
+
                 <button
-                    id="certificateBtn"
-                    class="btn btn-primary"
-                    disabled>
+                    id="certificateButton"
+                    class="btn btn-success">
 
-                    🔒 Certificat indisponible
+                    Télécharger mon certificat
 
                 </button>
 
-            </div>
-
-        </section>
-
-
-        <!-- ==========================================
-             EXPERT
-        =========================================== -->
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <h2>🎓 Niveau Expert</h2>
-
-                <span>
-                    Évolution académique
-                </span>
-
-            </div>
-
-
-            <div id="expertBox">
-
-                <p style="color:#64748b;font-size:13px;line-height:1.6;">
-                    Complétez vos formations et maintenez une moyenne
-                    suffisante pour accéder aux prochaines étapes du
-                    parcours Expert.
-                </p>
 
                 <button
-                    id="expertBtn"
-                    class="btn btn-primary"
-                    onclick="goExpertApplication()">
+                    id="continueButton"
+                    class="btn btn-primary">
 
-                    🎓 Candidature Expert
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==========================================
-             ACTIONS RAPIDES
-        =========================================== -->
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <h2>⚡ Actions rapides</h2>
-
-                <span>
-                    Outils
-                </span>
-
-            </div>
-
-
-            <div class="quick-grid">
-
-                <button class="quick" onclick="goSimulator()">
-
-                    <strong>
-                        🎮 Simulator
-                    </strong>
-
-                    <small>
-                        Pratiquez le trading dans un environnement
-                        de simulation.
-                    </small>
-
-                </button>
-
-
-                <button class="quick" onclick="goAtlas()">
-
-                    <strong>
-                        🗺️ Atlas
-                    </strong>
-
-                    <small>
-                        Explorez les marchés et les concepts du trading.
-                    </small>
-
-                </button>
-
-
-                <button class="quick" onclick="goExpertApplication()">
-
-                    <strong>
-                        🎓 Candidature Expert
-                    </strong>
-
-                    <small>
-                        Déposez votre candidature pour le parcours Expert.
-                    </small>
+                    Continuer vers le niveau suivant
 
                 </button>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
 
-    <!-- ATLAS FLOATING BUTTON -->
-    <button
-        class="atlas-float"
-        title="Atlas"
-        onclick="goAtlas()">
+    <!-- =================================================
+         ACTIONS
+    ================================================== -->
 
-        🗺️
+    <section class="panel">
 
-    </button>
+        <h2>
+            Actions rapides
+        </h2>
+
+
+        <div class="actions">
+
+
+            <button
+                class="btn btn-primary"
+                onclick="window.location.href='mes_cours.html'">
+
+                Mes cours
+
+            </button>
+
+
+            <button
+                class="btn btn-dark"
+                onclick="window.location.href='simulator.html'">
+
+                Trading Simulator
+
+            </button>
+
+
+            <button
+                class="btn btn-gray"
+                onclick="window.location.href='profil.html'">
+
+                Mon profil
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
 
 </div>
 
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script>
-/* =========================================================
-   SUPABASE
-========================================================= */
-
-const SUPABASE_URL =
-    "https://jmkwekgpsogbdpkjqqyx.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
 
 
-/* =========================================================
-   GLOBAL DATA
-========================================================= */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let currentUser = null;
+
 let currentProfile = null;
-let coursesData = [];
-let quizzesData = [];
+
+let allCourses = [];
+
+let allLessons = [];
+
+let allAttempts = [];
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+/* =====================================================
+   HELPER
+===================================================== */
 
-function goCourses(){
-    window.location.href = "gestion_courses.html";
-}
+function $(id){
 
-function goSimulator(){
-    window.location.href = "simulator.html";
-}
+    return document.getElementById(id);
 
-function goAtlas(){
-    window.location.href = "atlas.html";
-}
-
-function goExpertApplication(){
-    window.location.href = "candidature_expert.html";
-}
-
-function goProfile(){
-    window.location.href = "profiles.html";
-}
-
-function scrollToSection(id){
-
-    const element =
-        document.getElementById(id);
-
-    if(element){
-
-        element.scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
-
-    }
-
-    document
-        .getElementById("sidebar")
-        .classList
-        .remove("open");
 }
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHTML(value){
 
@@ -1219,274 +1011,286 @@ function escapeHTML(value){
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+
 }
 
 
-function formatPercent(value){
+/* =====================================================
+   FORMAT LEVEL
+===================================================== */
 
-    const number =
-        Number(value);
+function formatLevel(level){
 
-    if(!Number.isFinite(number)){
-        return "0%";
+    const value =
+        String(level || "")
+            .toLowerCase()
+            .trim();
+
+
+    if(
+        value === "debutant" ||
+        value === "débutant"
+    ){
+
+        return "Débutant";
+
     }
 
-    return (
-        Math.round(number * 100) / 100
-    ) + "%";
+
+    if(
+        value === "intermediaire" ||
+        value === "intermédiaire"
+    ){
+
+        return "Intermédiaire";
+
+    }
+
+
+    if(
+        value === "professionnel" ||
+        value === "professionel" ||
+        value === "professionnel_analyste"
+    ){
+
+        return "Professionnel";
+
+    }
+
+
+    if(value === "expert"){
+
+        return "Expert";
+
+    }
+
+
+    return level || "Débutant";
+
 }
 
 
-function formatDate(value){
-
-    if(!value){
-        return "-";
-    }
-
-    const date =
-        new Date(value);
-
-    if(Number.isNaN(date.getTime())){
-        return "-";
-    }
-
-    return date.toLocaleDateString(
-        "fr-FR",
-        {
-            year:"numeric",
-            month:"short",
-            day:"numeric"
-        }
-    );
-}
-
+/* =====================================================
+   NORMALIZE LEVEL
+===================================================== */
 
 function normalizeLevel(level){
 
     const value =
         String(level || "")
-            .trim()
-            .toLowerCase();
+            .toLowerCase()
+            .trim();
+
+
+    if(
+        value === "débutant" ||
+        value === "debutant"
+    ){
+
+        return "debutant";
+
+    }
+
+
+    if(
+        value === "intermédiaire" ||
+        value === "intermediaire"
+    ){
+
+        return "intermediaire";
+
+    }
+
+
+    if(
+        value === "professionnel" ||
+        value === "professionel" ||
+        value === "professionnel_analyste"
+    ){
+
+        return "professionnel";
+
+    }
+
 
     if(value === "expert"){
-        return "Expert";
+
+        return "expert";
+
     }
 
-    if(value === "intermediate" ||
-       value === "intermédiaire"){
-        return "Intermédiaire";
-    }
 
-    return "Débutant";
+    return value;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    SHOW ERROR
-========================================================= */
+===================================================== */
 
 function showError(message){
 
-    const box =
-        document.getElementById("errorBox");
+    $("errorBox").textContent =
+        message;
 
-    box.textContent =
-        "❌ " + message;
-
-    box.style.display =
+    $("errorBox").style.display =
         "block";
+
 }
 
 
-/* =========================================================
-   LOAD CURRENT AUTH USER
-========================================================= */
+/* =====================================================
+   SHOW SUCCESS
+===================================================== */
 
-async function loadCurrentUser(){
+function showSuccess(message){
+
+    $("successBox").textContent =
+        message;
+
+    $("successBox").style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   HIDE MESSAGES
+===================================================== */
+
+function hideMessages(){
+
+    $("errorBox").style.display =
+        "none";
+
+    $("successBox").style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+async function getCurrentUser(){
 
     const {
         data,
         error
     } =
-    await supabaseClient
-        .auth
-        .getUser();
+        await window.supabaseClient
+            .auth
+            .getUser();
+
 
     if(error){
+
         throw error;
+
     }
+
 
     if(!data || !data.user){
 
         window.location.href =
             "login.html";
 
-        return false;
+        return null;
+
     }
 
-    currentUser =
-        data.user;
 
-    return true;
+    return data.user;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    LOAD PROFILE
-   IMPORTANT:
-   public.profiles
-   profiles.user_id = auth user.id
-========================================================= */
+===================================================== */
 
-
-async function loadProfile() {
-
-    /*
-       IMPORTANT:
-
-       Nou itilize profiles.
-       Nou pa itilize profil.
-    */
+async function loadProfile(){
 
     const {
-
         data,
         error
+    } =
+        await window.supabaseClient
 
-    } = await supabaseClient
+            .from("profils")
 
-        .from("profils")
+            .select(`
+                id,
+                nom_complet,
+                username,
+                langue,
+                niveau,
+                progression,
+                lecons_terminees,
+                xp,
+                actif
+            `)
 
-        .select(`
-            id,
-            niveau
-        `)
+            .eq(
+                "id",
+                currentUser.id
+            )
 
-        .eq(
-            "id",
-            currentUser.id
-        )
-
-        /*
-           maybeSingle() pa bay erè si
-           pa gen profile.
-        */
-
-        .maybeSingle();
+            .maybeSingle();
 
 
-    if (error) {
+    if(error){
+
+        throw error;
+
+    }
+
+
+    if(!data){
 
         throw new Error(
-            "Impossible de charger votre profil : "
-            + error.message
+            "Profil étudiant introuvable."
         );
 
     }
 
 
-    if (!data) {
-
-        throw new Error(
-            "Aucun profil trouvé pour cet utilisateur."
-        );
-
-    }
+    currentProfile =
+        data;
 
 
-    currentProfile = data;
-
-
-    renderProfile();
-
-
-    return data;
-
-}
-
-/* =========================================================
-   RENDER PROFILE
-========================================================= */
-
-function renderProfile(){
-
-    const name =
-        currentProfile.display_name ||
+    $("studentName").textContent =
+        data.nom_complet ||
+        data.username ||
         currentUser.email ||
         "Étudiant";
 
 
-    document.getElementById(
-        "profileName"
-    ).textContent =
-        name;
-
-
-    document.getElementById(
-        "profileUsername"
-    ).textContent =
-        currentUser.email
-        ? "@" + currentUser.email.split("@")[0]
-        : "Étudiant";
-
-
-    document.getElementById(
-        "profileLevel"
-    ).textContent =
-        normalizeLevel(
-            currentProfile.trading_level
+    const level =
+        formatLevel(
+            data.niveau
         );
 
 
-    document.getElementById(
-        "sideUserName"
-    ).textContent =
-        name;
+    $("currentLevel").textContent =
+        level;
 
 
-    document.getElementById(
-        "sideUserLevel"
-    ).textContent =
-        normalizeLevel(
-            currentProfile.trading_level
-        );
+    $("levelCurrent").textContent =
+        level;
 
 
-    const avatar =
-        document.getElementById("avatar");
-
-
-    if(currentProfile.avatar_url){
-
-        avatar.innerHTML = `
-            <img
-                src="${escapeHTML(currentProfile.avatar_url)}"
-                alt="Avatar"
-                style="
-                    width:100%;
-                    height:100%;
-                    object-fit:cover;
-                    border-radius:50%;
-                "
-            >
-        `;
-
-    }else{
-
-        avatar.textContent =
-            name
-                .trim()
-                .charAt(0)
-                .toUpperCase() || "?";
-
-    }
+    $("levelBadge").textContent =
+        level;
 
 }
 
 
-/* =========================================================
+/* =====================================================
    LOAD COURSES
-========================================================= */
+===================================================== */
 
 async function loadCourses(){
 
@@ -1494,75 +1298,304 @@ async function loadCourses(){
         data,
         error
     } =
-    await supabaseClient
+        await window.supabaseClient
 
-        .from("courses")
+            .from("courses")
 
-        .select(`
-            id,
-            title,
-            description,
-            level,
-            language,
-            is_free,
-            is_published,
-            created_at
-        `)
+            .select(`
+                id,
+                title,
+                description,
+                level,
+                language,
+                is_published,
+                created_at
+            `)
 
-        .eq(
-            "is_published",
-            true
-        )
+            .eq(
+                "is_published",
+                true
+            )
 
-        .order(
-            "created_at",
-            {
-                ascending:true
-            }
-        );
+            .order(
+                "created_at",
+                {
+                    ascending:true
+                }
+            );
 
 
     if(error){
+
         throw error;
+
     }
 
 
-    coursesData =
+    allCourses =
         data || [];
-
-
-    await calculateCourseProgress();
 
 }
 
 
-/* =========================================================
-   CALCULATE COURSE PROGRESS
-========================================================= */
+/* =====================================================
+   LOAD LESSONS
+===================================================== */
 
-async function calculateCourseProgress(){
+async function loadLessons(){
 
-    if(!coursesData.length){
+    const {
+        data,
+        error
+    } =
+        await window.supabaseClient
 
-        renderCourses([]);
+            .from("lessons")
 
-        return;
+            .select(`
+                id,
+                module_id,
+                lesson_number,
+                title,
+                is_published
+            `)
+
+            .eq(
+                "is_published",
+                true
+            );
+
+
+    if(error){
+
+        throw error;
 
     }
 
 
-    const results = [];
+    allLessons =
+        data || [];
+
+}
 
 
-    for(const course of coursesData){
+/* =====================================================
+   LOAD LESSON PROGRESS
+===================================================== */
 
-        /* MODULES */
+async function loadLessonProgress(){
 
-        const {
-            data: modules,
-            error: moduleError
-        } =
-        await supabaseClient
+    const {
+        data,
+        error
+    } =
+        await window.supabaseClient
+
+            .from(
+                "user_lesson_progress"
+            )
+
+            .select(`
+                lesson_id,
+                completed,
+                completed_at
+            `)
+
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    return data || [];
+
+}
+
+
+/* =====================================================
+   LOAD QUIZ ATTEMPTS
+===================================================== */
+
+async function loadQuizAttempts(){
+
+    const {
+        data,
+        error
+    } =
+        await window.supabaseClient
+
+            .from(
+                "user_quiz_attempts"
+            )
+
+            .select(`
+                id,
+                quiz_id,
+                score,
+                total_points,
+                passed,
+                xp_earned,
+                completed_at
+            `)
+
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+
+            .order(
+                "completed_at",
+                {
+                    ascending:false
+                }
+            );
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    allAttempts =
+        data || [];
+
+}
+
+
+/* =====================================================
+   GENERAL AVERAGE
+===================================================== */
+
+function calculateGeneralAverage(){
+
+    const bestByQuiz = {};
+
+
+    allAttempts.forEach(
+        attempt => {
+
+            const quizId =
+                attempt.quiz_id;
+
+
+            const score =
+                Number(
+                    attempt.score
+                );
+
+
+            const total =
+                Number(
+                    attempt.total_points
+                );
+
+
+            if(
+                !quizId ||
+                !Number.isFinite(score) ||
+                !Number.isFinite(total) ||
+                total <= 0
+            ){
+
+                return;
+
+            }
+
+
+            const percentage =
+                (
+                    score /
+                    total
+                ) * 100;
+
+
+            if(
+                bestByQuiz[quizId] === undefined ||
+                percentage >
+                bestByQuiz[quizId]
+            ){
+
+                bestByQuiz[quizId] =
+                    percentage;
+
+            }
+
+        }
+    );
+
+
+    const values =
+        Object.values(
+            bestByQuiz
+        );
+
+
+    if(values.length === 0){
+
+        return 0;
+
+    }
+
+
+    return (
+        values.reduce(
+            (
+                sum,
+                value
+            ) =>
+                sum + value,
+            0
+        ) / values.length
+    );
+
+}
+
+
+/* =====================================================
+   XP
+===================================================== */
+
+function calculateXP(){
+
+    return allAttempts.reduce(
+        (
+            total,
+            attempt
+        ) =>
+            total +
+            (
+                Number(
+                    attempt.xp_earned
+                ) || 0
+            ),
+        0
+    );
+
+}
+
+
+/* =====================================================
+   COURSE LESSON IDS
+===================================================== */
+
+async function getCourseLessonIds(
+    courseId
+){
+
+    const {
+        data:modules,
+        error:moduleError
+    } =
+        await window.supabaseClient
 
             .from("modules")
 
@@ -1570,7 +1603,7 @@ async function calculateCourseProgress(){
 
             .eq(
                 "course_id",
-                course.id
+                courseId
             )
 
             .eq(
@@ -1579,970 +1612,967 @@ async function calculateCourseProgress(){
             );
 
 
-        if(moduleError){
-            console.error(
-                "MODULE ERROR:",
-                moduleError
+    if(moduleError){
+
+        throw moduleError;
+
+    }
+
+
+    const moduleIds =
+        (modules || [])
+            .map(
+                module =>
+                    module.id
             );
-        }
 
 
-        const moduleIds =
-            (modules || [])
-                .map(m => m.id);
+    if(moduleIds.length === 0){
 
-
-        let lessonIds = [];
-
-
-        if(moduleIds.length){
-
-            const {
-                data: lessons,
-                error: lessonError
-            } =
-            await supabaseClient
-
-                .from("lessons")
-
-                .select("id")
-
-                .in(
-                    "module_id",
-                    moduleIds
-                )
-
-                .eq(
-                    "is_published",
-                    true
-                );
-
-
-            if(lessonError){
-
-                console.error(
-                    "LESSON ERROR:",
-                    lessonError
-                );
-
-            }else{
-
-                lessonIds =
-                    (lessons || [])
-                        .map(l => l.id);
-
-            }
-
-        }
-
-
-        const totalLessons =
-            lessonIds.length;
-
-
-        let completedLessons = 0;
-
-
-        /*
-         * IMPORTANT:
-         * user_lesson_progress structure:
-         * id
-         * user_id
-         * lesson_id
-         * completed
-         * completed_at
-         * created_at
-         */
-
-        if(lessonIds.length){
-
-            const {
-                data: progressRows,
-                error: progressError
-            } =
-            await supabaseClient
-
-                .from("user_lesson_progress")
-
-                .select(`
-                    lesson_id,
-                    completed
-                `)
-
-                .eq(
-                    "user_id",
-                    currentUser.id
-                )
-
-                .in(
-                    "lesson_id",
-                    lessonIds
-                );
-
-
-            if(progressError){
-
-                console.error(
-                    "PROGRESS ERROR:",
-                    progressError
-                );
-
-            }else{
-
-                completedLessons =
-                    (progressRows || [])
-                        .filter(
-                            row =>
-                                row.completed === true
-                        )
-                        .length;
-
-            }
-
-        }
-
-
-        const progress =
-            totalLessons > 0
-            ? (
-                completedLessons /
-                totalLessons
-            ) * 100
-            : 0;
-
-
-        results.push({
-
-            ...course,
-
-            totalLessons,
-
-            completedLessons,
-
-            progress
-
-        });
+        return [];
 
     }
 
 
-    renderCourses(results);
+    const {
+        data:lessons,
+        error:lessonError
+    } =
+        await window.supabaseClient
+
+            .from("lessons")
+
+            .select("id")
+
+            .in(
+                "module_id",
+                moduleIds
+            )
+
+            .eq(
+                "is_published",
+                true
+            );
+
+
+    if(lessonError){
+
+        throw lessonError;
+
+    }
+
+
+    return (
+        lessons || []
+    ).map(
+        lesson =>
+            lesson.id
+    );
 
 }
 
 
-/* =========================================================
-   RENDER COURSES
-========================================================= */
+/* =====================================================
+   COURSE PROGRESS
+===================================================== */
 
-function renderCourses(courses){
+async function calculateCourseProgress(
+    courseId,
+    progressRows
+){
 
-    const container =
-        document.getElementById(
-            "coursesContainer"
+    const lessonIds =
+        await getCourseLessonIds(
+            courseId
         );
-
-
-    if(!courses.length){
-
-        container.innerHTML = `
-            <div class="empty">
-                📚 Aucun cours publié pour le moment.
-            </div>
-        `;
-
-        document.getElementById(
-            "coursesSummary"
-        ).textContent =
-            "0 cours";
-
-        updateGeneralProgress([]);
-
-        return;
-
-    }
-
-
-    let completedCourses = 0;
-
-
-    container.innerHTML = "";
-
-
-    courses.forEach(course => {
-
-        const completed =
-            course.totalLessons > 0 &&
-            course.completedLessons >=
-            course.totalLessons;
-
-
-        if(completed){
-            completedCourses++;
-        }
-
-
-        const status =
-            completed
-
-            ? `
-                <span class="status status-success">
-                    ✓ Terminé
-                </span>
-              `
-
-            : `
-                <span class="status status-warning">
-                    En cours
-                </span>
-              `;
-
-
-        const buttonText =
-            completed
-            ? "Voir le cours"
-            : course.completedLessons > 0
-                ? "Continuer"
-                : "Commencer";
-
-
-        const card =
-            document.createElement("div");
-
-
-        card.className =
-            "course-card";
-
-
-        card.innerHTML = `
-
-            <div class="course-title">
-                ${escapeHTML(course.title)}
-            </div>
-
-            <div class="course-level">
-                ${escapeHTML(
-                    normalizeLevel(course.level)
-                )}
-                ${
-                    course.language
-                    ? " · " + escapeHTML(course.language)
-                    : ""
-                }
-            </div>
-
-            <div class="progress-wrap">
-
-                <div class="progress-info">
-
-                    <span>
-                        ${course.completedLessons}
-                        /
-                        ${course.totalLessons}
-                        lessons
-                    </span>
-
-                    <strong>
-                        ${formatPercent(course.progress)}
-                    </strong>
-
-                </div>
-
-                <div class="progress">
-
-                    <div
-                        class="progress-bar"
-                        style="
-                            width:${Math.min(
-                                100,
-                                Math.max(
-                                    0,
-                                    course.progress
-                                )
-                            )}%
-                        ">
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="course-bottom">
-
-                ${status}
-
-                <button
-                    class="btn btn-primary"
-                    onclick="openCourse('${course.id}')">
-
-                    ${buttonText}
-
-                </button>
-
-            </div>
-        `;
-
-
-        container.appendChild(card);
-
-    });
-
-
-    document.getElementById(
-        "coursesSummary"
-    ).textContent =
-        completedCourses +
-        " / " +
-        courses.length +
-        " cours terminés";
-
-
-    updateGeneralProgress(courses);
-
-}
-
-
-/* =========================================================
-   GENERAL PROGRESS
-========================================================= */
-
-function updateGeneralProgress(courses){
-
-    if(!courses.length){
-
-        document.getElementById(
-            "generalProgress"
-        ).textContent =
-            "0%";
-
-        return;
-
-    }
 
 
     const total =
-        courses.reduce(
-            (sum,course) =>
-                sum + Number(course.progress || 0),
-            0
-        );
+        lessonIds.length;
 
 
-    const average =
-        total / courses.length;
+    const completed =
+        lessonIds.filter(
+            lessonId =>
+                progressRows.some(
+                    row =>
+                        row.lesson_id === lessonId &&
+                        row.completed === true
+                )
+        ).length;
 
 
-    document.getElementById(
-        "generalProgress"
-    ).textContent =
-        formatPercent(average);
+    const percentage =
+        total === 0
+            ? 0
+            : (
+                completed /
+                total
+            ) * 100;
+
+
+    return {
+
+        total,
+        completed,
+        percentage,
+        completedAll:
+            total > 0 &&
+            completed === total
+
+    };
 
 }
 
 
-/* =========================================================
-   OPEN COURSE
-========================================================= */
+/* =====================================================
+   QUIZ RESULTS FOR COURSE
+===================================================== */
 
-function openCourse(courseId){
-
-    /*
-     * On envoie l'id du cours.
-     * La page cours pourra le récupérer avec:
-     * new URLSearchParams(location.search).get("course")
-     */
-
-    window.location.href =
-        "cours.html?course=" +
-        encodeURIComponent(courseId);
-
-}
-
-
-/* =========================================================
-   LOAD QUIZ RESULTS
-========================================================= */
-
-async function loadQuizResults(){
-
-    /*
-     * user_quiz_attempts:
-     * id
-     * user_id
-     * quiz_id
-     * score
-     * total_points
-     * passed
-     * xp_earned
-     * completed_at
-     */
+async function getCourseQuizResults(
+    courseId
+){
 
     const {
-        data,
-        error
+        data:quizzes,
+        error:quizError
     } =
-    await supabaseClient
+        await window.supabaseClient
 
-        .from("user_quiz_attempts")
+            .from("quizzes")
 
-        .select(`
-            id,
-            user_id,
-            quiz_id,
-            score,
-            total_points,
-            passed,
-            xp_earned,
-            completed_at
-        `)
+            .select(`
+                id,
+                course_id,
+                lesson_id,
+                passing_score,
+                is_published
+            `)
 
-        .eq(
-            "user_id",
-            currentUser.id
-        )
-
-        .order(
-            "completed_at",
-            {
-                ascending:false
-            }
-        );
-
-
-    if(error){
-        throw error;
-    }
-
-
-    quizzesData =
-        data || [];
-
-
-    renderQuizResults();
-
-    calculateQuizStatistics();
-
-}
-
-
-/* =========================================================
-   RENDER QUIZ RESULTS
-========================================================= */
-
-function renderQuizResults(){
-
-    const body =
-        document.getElementById(
-            "quizTableBody"
-        );
-
-
-    if(!quizzesData.length){
-
-        body.innerHTML = `
-            <tr>
-                <td colspan="5" class="empty">
-                    📝 Aucun quiz complété pour le moment.
-                </td>
-            </tr>
-        `;
-
-        document.getElementById(
-            "quizSummary"
-        ).textContent =
-            "0 tentative";
-
-        return;
-
-    }
-
-
-    body.innerHTML = "";
-
-
-    quizzesData
-        .slice(0,20)
-        .forEach(result => {
-
-            const score =
-                Number(result.score || 0);
-
-
-            const total =
-                Number(
-                    result.total_points || 0
-                );
-
-
-            const percent =
-                total > 0
-                ? (score / total) * 100
-                : 0;
-
-
-            const resultStatus =
-                result.passed === true
-
-                ? `
-                    <span class="status status-success">
-                        ✓ Réussi
-                    </span>
-                  `
-
-                : `
-                    <span class="status status-danger">
-                        ✕ Échoué
-                    </span>
-                  `;
-
-
-            const row =
-                document.createElement("tr");
-
-
-            row.innerHTML = `
-
-                <td>
-                    Quiz #${escapeHTML(result.quiz_id)}
-                </td>
-
-                <td>
-                    ${score} / ${total}
-                </td>
-
-                <td>
-                    <strong>
-                        ${formatPercent(percent)}
-                    </strong>
-                </td>
-
-                <td>
-                    ${resultStatus}
-                </td>
-
-                <td>
-                    ${formatDate(result.completed_at)}
-                </td>
-
-            `;
-
-
-            body.appendChild(row);
-
-        });
-
-
-    document.getElementById(
-        "quizSummary"
-    ).textContent =
-        quizzesData.length +
-        " tentative(s)";
-
-}
-
-
-/* =========================================================
-   QUIZ STATISTICS
-========================================================= */
-
-function calculateQuizStatistics(){
-
-    if(!quizzesData.length){
-
-        document.getElementById(
-            "generalAverage"
-        ).textContent =
-            currentProfile.general_average != null
-            ? formatPercent(
-                currentProfile.general_average
+            .eq(
+                "course_id",
+                courseId
             )
-            : "—";
 
-        return;
-
-    }
-
-
-    /*
-     * IMPORTANT:
-     * La moyenne académique officielle reste
-     * celle calculée par la fonction SQL et stockée
-     * dans profiles.general_average.
-     *
-     * On utilise donc cette valeur lorsqu'elle existe.
-     */
-
-    const storedAverage =
-        Number(
-            currentProfile.general_average
-        );
-
-
-    if(Number.isFinite(storedAverage)){
-
-        document.getElementById(
-            "generalAverage"
-        ).textContent =
-            formatPercent(
-                storedAverage
+            .eq(
+                "is_published",
+                true
             );
 
-    }else{
 
-        /*
-         * Fallback visuel uniquement.
-         * Il ne modifie PAS la base de données.
-         */
+    if(quizError){
 
-        const percentages =
-            quizzesData
-                .map(result => {
-
-                    const score =
-                        Number(result.score || 0);
-
-                    const total =
-                        Number(
-                            result.total_points || 0
-                        );
-
-                    return total > 0
-                        ? (score / total) * 100
-                        : null;
-
-                })
-                .filter(
-                    value =>
-                        value !== null
-                );
-
-
-        if(percentages.length){
-
-            const average =
-                percentages.reduce(
-                    (a,b) => a+b,
-                    0
-                ) / percentages.length;
-
-
-            document.getElementById(
-                "generalAverage"
-            ).textContent =
-                formatPercent(
-                    average
-                );
-
-        }else{
-
-            document.getElementById(
-                "generalAverage"
-            ).textContent =
-                "—";
-
-        }
+        throw quizError;
 
     }
 
 
-    calculateXP();
+    const results = [];
 
-}
 
+    (quizzes || []).forEach(
+        quiz => {
 
-/* =========================================================
-   XP
-========================================================= */
-
-function calculateXP(){
-
-    const profileXP =
-        currentProfile.xp;
-
-
-    /*
-     * profiles n'a pas de colonne xp
-     * dans le schéma que nous avons vérifié.
-     *
-     * On calcule donc uniquement depuis les quiz.
-     */
-
-    const xp =
-        quizzesData.reduce(
-            (sum,result) =>
-                sum +
-                Number(
-                    result.xp_earned || 0
-                ),
-            0
-        );
-
-
-    document.getElementById(
-        "xpValue"
-    ).textContent =
-        xp.toLocaleString("fr-FR");
-
-}
-
-
-/* =========================================================
-   CERTIFICATE
-========================================================= */
-
-function updateCertificate(){
-
-    /*
-     * certificate_available n'est PAS une colonne
-     * de profiles dans le schéma confirmé.
-     *
-     * Pour éviter une erreur SQL, on déduit ici
-     * l'état à partir de general_average >= 70.
-     *
-     * La logique officielle peut ensuite être renforcée
-     * avec une fonction SQL si nécessaire.
-     */
-
-    const average =
-        Number(
-            currentProfile.general_average
-        );
-
-
-    const available =
-        Number.isFinite(average) &&
-        average >= 70;
-
-
-    const status =
-        document.getElementById(
-            "certificateStatus"
-        );
-
-
-    const box =
-        document.getElementById(
-            "certificateBox"
-        );
-
-
-    const button =
-        document.getElementById(
-            "certificateBtn"
-        );
-
-
-    if(available){
-
-        status.textContent =
-            "Disponible";
-
-
-        status.style.color =
-            "#16a34a";
-
-
-        box.classList.remove(
-            "certificate-locked"
-        );
-
-
-        box.innerHTML = `
-
-            <h3>
-                🏆 Votre certificat est disponible
-            </h3>
-
-            <p>
-                Votre moyenne générale est de
-                <strong>
-                    ${formatPercent(average)}
-                </strong>.
-                Vous avez atteint le seuil minimum
-                de 70%.
-            </p>
-
-            <button
-                id="certificateBtn"
-                class="btn btn-success"
-                onclick="openCertificate()">
-
-                🏆 Voir mon certificat
-
-            </button>
-
-        `;
-
-    }else{
-
-        status.textContent =
-            "Verrouillé";
-
-
-        status.style.color =
-            "#dc2626";
-
-
-        box.classList.add(
-            "certificate-locked"
-        );
-
-
-        box.innerHTML = `
-
-            <h3>
-                🔒 Certificat encore verrouillé
-            </h3>
-
-            <p>
-                Votre moyenne générale doit atteindre
-                au minimum <strong>70%</strong>.
-                ${
-                    Number.isFinite(average)
-                    ? "Moyenne actuelle : " +
-                      formatPercent(average) + "."
-                    : "La moyenne n'est pas encore disponible."
-                }
-            </p>
-
-            <button
-                class="btn btn-secondary"
-                disabled>
-
-                🔒 Certificat indisponible
-
-            </button>
-
-        `;
-
-    }
-
-}
-
-
-/* =========================================================
-   OPEN CERTIFICATE
-========================================================= */
-
-function openCertificate(){
-
-    window.location.href =
-        "certificat.html";
-
-}
-
-
-/* =========================================================
-   MOBILE MENU
-========================================================= */
-
-document
-    .getElementById("mobileMenu")
-    .addEventListener(
-        "click",
-        function(){
-
-            document
-                .getElementById("sidebar")
-                .classList
-                .toggle("open");
-
-        }
-    );
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-document
-    .getElementById("logoutBtn")
-    .addEventListener(
-        "click",
-        async function(){
-
-            const {
-                error
-            } =
-            await supabaseClient
-                .auth
-                .signOut();
-
-
-            if(error){
-
-                alert(
-                    "Erreur lors de la déconnexion : " +
-                    error.message
+            const attempts =
+                allAttempts.filter(
+                    attempt =>
+                        attempt.quiz_id === quiz.id
                 );
+
+
+            if(
+                attempts.length === 0
+            ){
+
+                results.push({
+
+                    quiz,
+                    completed:false,
+                    bestScore:0,
+                    passed:false
+
+                });
 
                 return;
 
             }
 
 
-            window.location.href =
-                "login.html";
+            let bestScore = 0;
+
+
+            attempts.forEach(
+                attempt => {
+
+                    const total =
+                        Number(
+                            attempt.total_points
+                        );
+
+
+                    const score =
+                        Number(
+                            attempt.score
+                        );
+
+
+                    if(
+                        Number.isFinite(score) &&
+                        Number.isFinite(total) &&
+                        total > 0
+                    ){
+
+                        const percentage =
+                            (
+                                score /
+                                total
+                            ) * 100;
+
+
+                        if(
+                            percentage >
+                            bestScore
+                        ){
+
+                            bestScore =
+                                percentage;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            results.push({
+
+                quiz,
+                completed:true,
+                bestScore,
+                passed:
+                    bestScore >=
+                    Number(
+                        quiz.passing_score || 70
+                    )
+
+            });
 
         }
     );
 
 
-/* =========================================================
-   START DASHBOARD
-========================================================= */
+    return results;
 
-async function initDashboard(){
-
-    try{
-
-        /* 1. AUTH */
-
-        const authenticated =
-            await loadCurrentUser();
+}
 
 
-        if(!authenticated){
-            return;
+/* =====================================================
+   COMPLETE LEVEL CHECK
+===================================================== */
+
+async function evaluateLevel(
+    level,
+    progressRows
+){
+
+    const normalized =
+        normalizeLevel(
+            level
+        );
+
+
+    const levelCourses =
+        allCourses.filter(
+            course =>
+                normalizeLevel(
+                    course.level
+                ) === normalized
+        );
+
+
+    /*
+       Niveau 1 = 2 cours
+    */
+
+    const selectedCourses =
+        levelCourses.slice(
+            0,
+            2
+        );
+
+
+    if(
+        selectedCourses.length < 2
+    ){
+
+        return {
+
+            valid:false,
+
+            coursesCompleted:0,
+
+            totalCourses:selectedCourses.length,
+
+            average:0
+
+        };
+
+    }
+
+
+    let coursesCompleted = 0;
+
+    const quizPercentages = [];
+
+
+    for(
+        const course
+        of selectedCourses
+    ){
+
+        const progress =
+            await calculateCourseProgress(
+                course.id,
+                progressRows
+            );
+
+
+        const quizzes =
+            await getCourseQuizResults(
+                course.id
+            );
+
+
+        const allQuizzesPassed =
+            quizzes.length > 0 &&
+            quizzes.every(
+                result =>
+                    result.passed
+            );
+
+
+        if(
+            progress.completedAll &&
+            allQuizzesPassed
+        ){
+
+            coursesCompleted++;
+
         }
 
 
-        /* 2. PROFILE */
+        quizzes.forEach(
+            result => {
+
+                if(result.completed){
+
+                    quizPercentages.push(
+                        result.bestScore
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    const average =
+        quizPercentages.length === 0
+            ? 0
+            : quizPercentages.reduce(
+                (
+                    sum,
+                    value
+                ) =>
+                    sum + value,
+                0
+            ) /
+            quizPercentages.length;
+
+
+    return {
+
+        valid:
+            coursesCompleted === 2 &&
+            average >= 70,
+
+        coursesCompleted,
+
+        totalCourses:2,
+
+        average
+
+    };
+
+}
+
+
+/* =====================================================
+   PROMOTION
+===================================================== */
+
+async function promoteIfNecessary(
+    beginnerValid
+){
+
+    const current =
+        normalizeLevel(
+            currentProfile.niveau
+        );
+
+
+    if(
+        current !== "debutant"
+    ){
+
+        return false;
+
+    }
+
+
+    if(!beginnerValid){
+
+        return false;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await window.supabaseClient
+
+            .from("profils")
+
+            .update({
+
+                niveau:
+                    "intermediaire",
+
+                progression:
+                    0,
+
+                lecons_terminees:
+                    0
+
+            })
+
+            .eq(
+                "id",
+                currentUser.id
+            )
+
+            .select()
+            .maybeSingle();
+
+
+    if(error){
+
+        console.error(
+            "PROMOTION ERROR:",
+            error
+        );
+
+        return false;
+
+    }
+
+
+    if(data){
+
+        currentProfile =
+            data;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   DISPLAY COURSE
+===================================================== */
+
+function displayCourse(
+    number,
+    course,
+    progress
+){
+
+    if(!course){
+
+        $("course" + number)
+            .classList.add(
+                "hidden"
+            );
+
+        return;
+
+    }
+
+
+    $("course" + number)
+        .classList.remove(
+            "hidden"
+        );
+
+
+    $("course" + number + "Title")
+        .textContent =
+            course.title;
+
+
+    $("course" + number + "Percent")
+        .textContent =
+            Math.round(
+                progress.percentage
+            ) + "%";
+
+
+    $("course" + number + "Fill")
+        .style.width =
+            Math.min(
+                progress.percentage,
+                100
+            ) + "%";
+
+
+    if(progress.completedAll){
+
+        $("course" + number + "Fill")
+            .classList.add(
+                "completed"
+            );
+
+        $("course" + number + "Status")
+            .textContent =
+                progress.completed +
+                " / " +
+                progress.total +
+                " leçons terminées · Cours terminé ✓";
+
+    }
+    else{
+
+        $("course" + number + "Fill")
+            .classList.remove(
+                "completed"
+            );
+
+        $("course" + number + "Status")
+            .textContent =
+                progress.completed +
+                " / " +
+                progress.total +
+                " leçons terminées";
+
+    }
+
+}
+
+
+/* =====================================================
+   CERTIFICATE
+===================================================== */
+
+function showCertificate(
+    level,
+    evaluation
+){
+
+    if(!evaluation.valid){
+
+        $("certificatePanel")
+            .classList.add(
+                "hidden"
+            );
+
+        return;
+
+    }
+
+
+    $("certificatePanel")
+        .classList.remove(
+            "hidden"
+        );
+
+
+    $("certificateMessage")
+        .textContent =
+            "Félicitations ! Vous avez terminé les 2 cours du niveau " +
+            formatLevel(level) +
+            " avec les conditions requises. " +
+            "Votre moyenne des meilleurs résultats de quiz est de " +
+            evaluation.average.toFixed(2) +
+            "%.";
+
+
+    $("certificateButton")
+        .onclick =
+            function(){
+
+                window.location.href =
+                    "certificat.html?niveau=" +
+                    encodeURIComponent(
+                        formatLevel(level)
+                    );
+
+            };
+
+
+    $("continueButton")
+        .onclick =
+            function(){
+
+                window.location.href =
+                    "mes_cours.html";
+
+            };
+
+}
+
+
+/* =====================================================
+   DISPLAY LEVEL
+===================================================== */
+
+function displayLevelStatus(){
+
+    const level =
+        normalizeLevel(
+            currentProfile.niveau
+        );
+
+
+    const formatted =
+        formatLevel(
+            currentProfile.niveau
+        );
+
+
+    $("levelCurrent")
+        .textContent =
+            formatted;
+
+
+    $("levelTitle")
+        .textContent =
+            "Vous êtes actuellement au niveau " +
+            formatted;
+
+
+    if(level === "debutant"){
+
+        $("levelDescription")
+            .textContent =
+                "Terminez les deux cours Débutant et réussissez les quiz finaux avec au moins 70 % pour valider ce niveau.";
+
+    }
+    else if(level === "intermediaire"){
+
+        $("levelDescription")
+            .textContent =
+                "Votre niveau Débutant est validé. Vous pouvez maintenant poursuivre la formation Intermédiaire.";
+
+    }
+    else if(level === "professionnel"){
+
+        $("levelDescription")
+            .textContent =
+                "Vous avez atteint le niveau Professionnel de Trading Academy AI.";
+
+    }
+    else if(level === "expert"){
+
+        $("levelDescription")
+            .textContent =
+                "Vous avez atteint le niveau Expert de Trading Academy AI.";
+
+    }
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+async function initializeDashboard(){
+
+    hideMessages();
+
+
+    try{
+
+        /*
+         * Vérification du client unique.
+         */
+
+        if(
+            !window.supabaseClient
+        ){
+
+            throw new Error(
+                "Supabase Client introuvable. Vérifiez supabase.js."
+            );
+
+        }
+
+
+        /*
+         * 1 — AUTH
+         */
+
+        currentUser =
+            await getCurrentUser();
+
+
+        if(!currentUser){
+
+            return;
+
+        }
+
+
+        /*
+         * 2 — PROFILE
+         */
 
         await loadProfile();
 
 
-        /* 3. COURSES */
+        /*
+         * 3 — COURSES
+         */
 
         await loadCourses();
 
 
-        /* 4. QUIZ */
+        /*
+         * 4 — LESSONS
+         */
 
-        await loadQuizResults();
-
-
-        /* 5. CERTIFICATE */
-
-        updateCertificate();
+        await loadLessons();
 
 
-        /* 6. SHOW APP */
+        /*
+         * 5 — PROGRESS
+         */
 
-        document.getElementById(
-            "loadingScreen"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "app"
-        ).style.display =
-            "block";
+        const progressRows =
+            await loadLessonProgress();
 
 
-    }catch(error){
+        /*
+         * 6 — QUIZ ATTEMPTS
+         */
+
+        await loadQuizAttempts();
+
+
+        /*
+         * 7 — STATS
+         */
+
+        const average =
+            calculateGeneralAverage();
+
+
+        const xp =
+            calculateXP();
+
+
+        const totalCompleted =
+            progressRows.filter(
+                row =>
+                    row.completed === true
+            ).length;
+
+
+        $("generalAverage")
+            .textContent =
+                average.toFixed(2) +
+                "%";
+
+
+        $("xpTotal")
+            .textContent =
+                xp;
+
+
+        $("lessonsCompleted")
+            .textContent =
+                totalCompleted;
+
+
+        /*
+         * 8 — CHECK BEGINNER
+         */
+
+        const beginnerEvaluation =
+            await evaluateLevel(
+                "debutant",
+                progressRows
+            );
+
+
+        /*
+         * 9 — CERTIFICATE NIVEAU 1
+         */
+
+        showCertificate(
+            "debutant",
+            beginnerEvaluation
+        );
+
+
+        /*
+         * 10 — AUTO PROMOTION
+         *
+         * Seulement si le profil est
+         * encore débutant.
+         */
+
+        const promoted =
+            await promoteIfNecessary(
+                beginnerEvaluation.valid
+            );
+
+
+        if(promoted){
+
+            showSuccess(
+                "Félicitations ! Votre Niveau Débutant est validé. Vous passez maintenant au niveau Intermédiaire."
+            );
+
+
+            /*
+             * Recharge le profil
+             * après promotion.
+             */
+
+            await loadProfile();
+
+        }
+
+
+        /*
+         * 11 — LEVEL DISPLAY
+         */
+
+        displayLevelStatus();
+
+
+        /*
+         * 12 — COURSES OF CURRENT LEVEL
+         */
+
+        const currentLevel =
+            normalizeLevel(
+                currentProfile.niveau
+            );
+
+
+        const currentCourses =
+            allCourses.filter(
+                course =>
+                    normalizeLevel(
+                        course.level
+                    ) === currentLevel
+            );
+
+
+        const selectedCourses =
+            currentCourses.slice(
+                0,
+                2
+            );
+
+
+        /*
+         * 13 — DISPLAY COURSE 1
+         */
+
+        if(selectedCourses[0]){
+
+            const progress1 =
+                await calculateCourseProgress(
+                    selectedCourses[0].id,
+                    progressRows
+                );
+
+
+            displayCourse(
+                1,
+                selectedCourses[0],
+                progress1
+            );
+
+        }
+        else{
+
+            $("course1")
+                .classList.add(
+                    "hidden"
+                );
+
+        }
+
+
+        /*
+         * 14 — DISPLAY COURSE 2
+         */
+
+        if(selectedCourses[1]){
+
+            const progress2 =
+                await calculateCourseProgress(
+                    selectedCourses[1].id,
+                    progressRows
+                );
+
+
+            displayCourse(
+                2,
+                selectedCourses[1],
+                progress2
+            );
+
+        }
+        else{
+
+            $("course2")
+                .classList.add(
+                    "hidden"
+                );
+
+        }
+
+
+        /*
+         * 15 — SHOW APPLICATION
+         */
+
+        $("loading")
+            .classList.add(
+                "hidden"
+            );
+
+
+        $("app")
+            .classList.remove(
+                "hidden"
+            );
+
+    }
+    catch(error){
 
         console.error(
             "DASHBOARD ERROR:",
@@ -2550,21 +2580,24 @@ async function initDashboard(){
         );
 
 
-        document.getElementById(
-            "loadingScreen"
-        ).style.display =
-            "none";
+        $("loading")
+            .classList.add(
+                "hidden"
+            );
 
 
-        document.getElementById(
-            "app"
-        ).style.display =
-            "block";
+        $("app")
+            .classList.remove(
+                "hidden"
+            );
 
 
         showError(
-            error.message ||
-            "Impossible de charger le dashboard."
+            "Impossible de charger le dashboard : " +
+            (
+                error.message ||
+                "Erreur inconnue."
+            )
         );
 
     }
@@ -2572,13 +2605,44 @@ async function initDashboard(){
 }
 
 
-/* =========================================================
-   START
-========================================================= */
+/* =====================================================
+   LOGOUT
+===================================================== */
 
-initDashboard();
+$("logout")
+    .addEventListener(
+        "click",
+        async function(){
+
+            try{
+
+                await window.supabaseClient
+                    .auth
+                    .signOut();
+
+            }
+            finally{
+
+                window.location.href =
+                    "login.html";
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeDashboard
+);
 
 </script>
+
 
 </body>
 </html>
