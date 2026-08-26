@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -33,27 +32,91 @@ body{
     color:var(--text);
 }
 
-button{
-    font-family:inherit;
+/* ==============================
+   HEADER
+============================== */
+
+header{
+    background:var(--dark);
+    color:white;
+    padding:20px;
 }
 
-.loading-screen{
-    position:fixed;
-    inset:0;
-    background:var(--bg);
+.header-inner{
+    max-width:1200px;
+    margin:auto;
     display:flex;
     align-items:center;
-    justify-content:center;
-    z-index:9999;
+    justify-content:space-between;
+    gap:15px;
 }
 
-.loading-box{
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.header-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.header-btn{
+    border:0;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    background:#1e293b;
+    color:white;
+}
+
+.header-btn.primary{
+    background:var(--primary);
+}
+
+.header-btn:hover{
+    opacity:.9;
+}
+
+/* ==============================
+   MAIN
+============================== */
+
+.container{
+    max-width:1200px;
+    margin:30px auto;
+    padding:0 18px 80px;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+.page-title h1{
+    margin:0;
+    font-size:28px;
+}
+
+.page-title p{
+    color:var(--muted);
+    margin:7px 0 0;
+}
+
+/* ==============================
+   LOADING
+============================== */
+
+.loading{
     background:white;
-    width:min(90%,380px);
-    padding:30px;
-    border-radius:16px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:45px 20px;
     text-align:center;
-    box-shadow:0 10px 35px rgba(15,23,42,.10);
 }
 
 .spinner{
@@ -72,135 +135,105 @@ button{
     }
 }
 
-.app{
+/* ==============================
+   ERROR
+============================== */
+
+.error-box{
     display:none;
-    min-height:100vh;
+    background:#fee2e2;
+    border:1px solid #fecaca;
+    color:#991b1b;
+    border-radius:14px;
+    padding:22px;
+    text-align:center;
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
-
-header{
-    background:var(--dark);
-    color:white;
-    padding:16px 20px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
-
-.header-inner{
-    max-width:1250px;
-    margin:auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-}
-
-.logo{
-    font-size:20px;
-    font-weight:800;
-}
-
-.logo span{
-    color:#3b82f6;
-}
-
-.header-actions{
-    display:flex;
-    gap:8px;
-}
-
-.header-btn{
-    border:0;
-    padding:9px 13px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.back-btn{
-    background:#1e293b;
-    color:white;
-}
-
-.dashboard-btn{
-    background:var(--primary);
-    color:white;
-}
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.container{
-    max-width:1250px;
-    margin:auto;
-    padding:25px 18px 70px;
-}
-
-.page-title{
-    margin-bottom:22px;
-}
-
-.page-title h1{
-    margin:0;
-    font-size:28px;
-}
-
-.page-title p{
-    color:var(--muted);
-    margin:7px 0 0;
-}
-
-/* =========================================================
+/* ==============================
    STUDENT INFO
-========================================================= */
+============================== */
 
-.student-info{
+.student-card{
     background:white;
     border:1px solid var(--border);
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:22px;
+    border-radius:15px;
+    padding:22px;
+    margin-bottom:25px;
 }
 
-.student-info-grid{
+.student-card h2{
+    margin:0 0 15px;
+    font-size:19px;
+}
+
+.student-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:12px;
 }
 
-.info-item{
+.info{
     background:#f8fafc;
     border-radius:10px;
-    padding:13px;
+    padding:14px;
 }
 
 .info-label{
     color:var(--muted);
     font-size:11px;
-    margin-bottom:5px;
+    margin-bottom:6px;
 }
 
 .info-value{
     font-weight:bold;
-    font-size:14px;
+    font-size:15px;
 }
 
-/* =========================================================
+/* ==============================
+   CERTIFICATE STATUS
+============================== */
+
+.status-box{
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:25px;
+}
+
+.status-success{
+    background:#dcfce7;
+    border:1px solid #bbf7d0;
+    color:#166534;
+}
+
+.status-locked{
+    background:#fee2e2;
+    border:1px solid #fecaca;
+    color:#991b1b;
+}
+
+.status-box h2{
+    margin:0 0 8px;
+}
+
+.status-box p{
+    margin:5px 0;
+    line-height:1.6;
+}
+
+/* ==============================
    MODELS
-========================================================= */
+============================== */
+
+.models-section{
+    display:none;
+}
 
 .models-title{
-    margin-bottom:14px;
+    margin-bottom:18px;
 }
 
 .models-title h2{
     margin:0;
-    font-size:19px;
 }
 
 .models-title p{
@@ -208,12 +241,15 @@ header{
     font-size:13px;
 }
 
-.models{
+.models-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:18px;
-    margin-bottom:25px;
 }
+
+/* ==============================
+   MODEL CARD
+============================== */
 
 .model-card{
     background:white;
@@ -225,7 +261,7 @@ header{
 }
 
 .model-card:hover{
-    border-color:var(--primary);
+    border-color:#93c5fd;
     transform:translateY(-2px);
 }
 
@@ -234,55 +270,178 @@ header{
     box-shadow:0 0 0 3px rgba(37,99,235,.10);
 }
 
-.model-preview{
-    height:170px;
-    border-radius:9px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    overflow:hidden;
-}
-
 .model-name{
-    padding:11px 5px 4px;
-    text-align:center;
     font-weight:bold;
-    font-size:13px;
+    margin:8px 5px;
 }
 
-/* =========================================================
-   PREVIEW CERTIFICATE
-========================================================= */
+/* ==============================
+   CERTIFICATE PREVIEW
+============================== */
 
-.preview-section{
+.certificate-preview{
+    aspect-ratio:1.414 / 1;
     background:white;
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:20px;
+    position:relative;
+    overflow:hidden;
+    padding:25px;
+    text-align:center;
 }
 
-.preview-header{
+/* MODEL 1 */
+
+.model-one{
+    border:12px solid #0f172a;
+    outline:3px solid #c9a227;
+    outline-offset:-19px;
+}
+
+.model-one .cert-accent{
+    color:#c9a227;
+}
+
+/* MODEL 2 */
+
+.model-two{
+    border:10px solid #2563eb;
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #eff6ff
+        );
+}
+
+.model-two .cert-accent{
+    color:#2563eb;
+}
+
+/* MODEL 3 */
+
+.model-three{
+    border:10px solid #c9a227;
+    background:
+        linear-gradient(
+            135deg,
+            #fffdf5,
+            #ffffff
+        );
+}
+
+.model-three .cert-accent{
+    color:#8b6b12;
+}
+
+/* certificate content */
+
+.cert-small{
+    font-size:9px;
+    letter-spacing:2px;
+    color:#64748b;
+    margin-top:15px;
+}
+
+.cert-brand{
+    font-size:17px;
+    font-weight:800;
+    margin-top:10px;
+}
+
+.cert-title{
+    font-family:Georgia,serif;
+    font-size:25px;
+    margin-top:18px;
+    font-weight:bold;
+}
+
+.cert-subtitle{
+    font-size:10px;
+    color:#64748b;
+    margin-top:5px;
+}
+
+.cert-student{
+    font-family:Georgia,serif;
+    font-size:21px;
+    font-weight:bold;
+    margin:18px 0 5px;
+}
+
+.cert-level{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.cert-description{
+    font-size:9px;
+    line-height:1.5;
+    color:#475569;
+    margin:14px auto;
+    max-width:85%;
+}
+
+.cert-score{
+    font-size:11px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.cert-date{
+    font-size:9px;
+    color:#64748b;
+    margin-top:12px;
+}
+
+.cert-signatures{
+    position:absolute;
+    left:35px;
+    right:35px;
+    bottom:25px;
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    margin-bottom:18px;
+    gap:30px;
 }
 
-.preview-header h2{
-    margin:0;
-    font-size:19px;
+.signature{
+    width:40%;
+    border-top:1px solid #64748b;
+    padding-top:5px;
+    font-size:8px;
+    color:#475569;
+}
+
+/* ==============================
+   DOWNLOAD
+============================== */
+
+.download-section{
+    display:none;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:22px;
+    margin-top:25px;
+    text-align:center;
+}
+
+.download-section h2{
+    margin:0 0 8px;
+}
+
+.download-section p{
+    color:var(--muted);
+    font-size:13px;
 }
 
 .download-btn{
     border:0;
     background:var(--success);
     color:white;
-    padding:11px 16px;
-    border-radius:8px;
+    padding:13px 22px;
+    border-radius:9px;
     cursor:pointer;
     font-weight:bold;
+    font-size:14px;
 }
 
 .download-btn:hover{
@@ -290,304 +449,21 @@ header{
 }
 
 .download-btn:disabled{
-    opacity:.55;
+    opacity:.6;
     cursor:not-allowed;
 }
 
-/* =========================================================
-   CERTIFICATE PAPER
-========================================================= */
-
-.certificate-wrapper{
-    width:100%;
-    overflow:auto;
-    padding:20px 0;
-}
-
-.certificate{
-    width:1000px;
-    min-height:707px;
-    margin:auto;
-    position:relative;
-    padding:55px;
-    background:white;
-}
-
-/* CLASSIQUE */
-
-.certificate.classic{
-    border:18px solid #172033;
-    outline:3px solid #c9a227;
-    outline-offset:-30px;
-    text-align:center;
-}
-
-.classic .certificate-inner{
-    border:1px solid #d4af37;
-    height:100%;
-    min-height:575px;
-    padding:65px 50px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-}
-
-.classic .academy{
-    font-size:20px;
-    font-weight:bold;
-    color:#172033;
-    letter-spacing:2px;
-}
-
-.classic .certificate-title{
-    font-family:Georgia,serif;
-    font-size:43px;
-    color:#172033;
-    margin:20px 0 5px;
-}
-
-.classic .subtitle{
-    color:#64748b;
-    font-size:14px;
-}
-
-.classic .student-name{
-    font-family:Georgia,serif;
-    font-size:38px;
-    color:#1d4ed8;
-    margin:22px 0 8px;
-}
-
-.classic .level{
-    font-size:17px;
-    font-weight:bold;
-}
-
-.classic .average{
-    margin-top:12px;
-    color:#475569;
-}
-
-.classic .footer{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    margin-top:50px;
-    font-size:12px;
-    color:#475569;
-}
-
-.classic .seal{
-    position:absolute;
-    right:70px;
-    bottom:55px;
-    width:75px;
-    height:75px;
-    border:3px solid #d4af37;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:#9a7610;
-    font-size:10px;
-    font-weight:bold;
-}
-
-/* ELITE */
-
-.certificate.elite{
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    border:12px solid #2563eb;
-}
-
-.elite .certificate-inner{
-    min-height:575px;
-    border:2px solid #60a5fa;
-    padding:65px 50px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-}
-
-.elite .academy{
-    color:#93c5fd;
-    letter-spacing:4px;
-    font-size:15px;
-    font-weight:bold;
-}
-
-.elite .certificate-title{
-    font-family:Georgia,serif;
-    font-size:42px;
-    color:white;
-    margin:22px 0 8px;
-}
-
-.elite .subtitle{
-    color:#cbd5e1;
-}
-
-.elite .student-name{
-    font-family:Georgia,serif;
-    font-size:37px;
-    color:#60a5fa;
-    margin:24px 0 8px;
-}
-
-.elite .level{
-    font-size:18px;
-    font-weight:bold;
-}
-
-.elite .average{
-    color:#cbd5e1;
-    margin-top:12px;
-}
-
-.elite .footer{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    margin-top:50px;
-    color:#cbd5e1;
-    font-size:12px;
-}
-
-.elite .seal{
-    position:absolute;
-    right:65px;
-    bottom:48px;
-    width:78px;
-    height:78px;
-    border:3px solid #60a5fa;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:#93c5fd;
-    font-size:10px;
-    font-weight:bold;
-}
-
-/* PREMIUM */
-
-.certificate.premium{
-    background:#fffdf5;
-    text-align:center;
-    border:12px solid #d4af37;
-}
-
-.premium .certificate-inner{
-    min-height:575px;
-    border:3px double #c9a227;
-    padding:60px 50px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-}
-
-.premium .academy{
-    font-size:19px;
-    letter-spacing:3px;
-    font-weight:bold;
-    color:#6b5410;
-}
-
-.premium .certificate-title{
-    font-family:Georgia,serif;
-    font-size:43px;
-    color:#4b3a0b;
-    margin:20px 0 5px;
-}
-
-.premium .subtitle{
-    color:#786d52;
-}
-
-.premium .student-name{
-    font-family:Georgia,serif;
-    font-size:39px;
-    color:#9a7610;
-    margin:23px 0 8px;
-}
-
-.premium .level{
-    font-size:18px;
-    font-weight:bold;
-    color:#4b3a0b;
-}
-
-.premium .average{
-    margin-top:12px;
-    color:#6b5c3c;
-}
-
-.premium .footer{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    margin-top:50px;
-    color:#6b5c3c;
-    font-size:12px;
-}
-
-.premium .seal{
-    position:absolute;
-    right:65px;
-    bottom:48px;
-    width:80px;
-    height:80px;
-    border:3px solid #c9a227;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:#9a7610;
-    font-size:10px;
-    font-weight:bold;
-}
-
-/* =========================================================
-   LOCKED
-========================================================= */
-
-.locked{
-    background:white;
-    border:1px solid #fecaca;
-    color:#991b1b;
-    border-radius:14px;
-    padding:25px;
-    text-align:center;
-}
-
-.locked h2{
-    margin-top:0;
-}
-
-.locked p{
-    color:#64748b;
-    line-height:1.6;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* ==============================
+   MOBILE
+============================== */
 
 @media(max-width:900px){
 
-    .student-info-grid{
+    .student-grid{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .models{
+    .models-grid{
         grid-template-columns:1fr;
     }
 
@@ -595,12 +471,16 @@ header{
 
 @media(max-width:600px){
 
-    .header-inner{
-        flex-direction:column;
-        align-items:flex-start;
+    header{
+        padding:15px;
     }
 
-    .header-actions{
+    .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .header-buttons{
         width:100%;
     }
 
@@ -608,57 +488,46 @@ header{
         flex:1;
     }
 
+    .container{
+        margin-top:20px;
+    }
+
     .page-title h1{
         font-size:23px;
     }
 
-    .student-info-grid{
-        grid-template-columns:1fr;
+    .student-grid{
+        grid-template-columns:1fr 1fr;
     }
 
-    .preview-header{
-        flex-direction:column;
-        align-items:flex-start;
+    .certificate-preview{
+        padding:15px;
+    }
+
+    .cert-title{
+        font-size:20px;
+    }
+
+    .cert-student{
+        font-size:17px;
+    }
+
+    .cert-brand{
+        font-size:13px;
+    }
+
+    .cert-signatures{
+        left:20px;
+        right:20px;
+        bottom:15px;
     }
 
 }
 
 </style>
-
 </head>
 
 <body>
-
-
-<!-- =======================================================
-     LOADING
-======================================================= -->
-
-<div id="loadingScreen" class="loading-screen">
-
-    <div class="loading-box">
-
-        <div class="spinner"></div>
-
-        <strong>
-            Vérification de votre certificat...
-        </strong>
-
-        <p style="color:#64748b;font-size:13px;">
-            Chargement de vos informations académiques.
-        </p>
-
-    </div>
-
-</div>
-
-
-<!-- =======================================================
-     APP
-======================================================= -->
-
-<div id="app" class="app">
-
 
 <header>
 
@@ -668,18 +537,18 @@ header{
             Trading Academy <span>AI</span>
         </div>
 
-        <div class="header-actions">
+        <div class="header-buttons">
 
             <button
-                class="header-btn back-btn"
-                onclick="history.back()">
+                class="header-btn"
+                onclick="window.location.href='dashboard.html'">
 
                 ← Retour
 
             </button>
 
             <button
-                class="header-btn dashboard-btn"
+                class="header-btn primary"
                 onclick="window.location.href='dashboard.html'">
 
                 Dashboard
@@ -695,373 +564,112 @@ header{
 
 <main class="container">
 
-
     <section class="page-title">
 
         <h1>
-            🏆 Mon Certificat
+            Certificat de réussite
         </h1>
 
         <p>
-            Sélectionnez le modèle de certificat que vous préférez,
-            puis téléchargez votre certificat officiel en PDF.
+            Sélectionnez votre modèle de certificat et
+            téléchargez votre certificat officiel en PDF.
         </p>
 
     </section>
 
 
-    <!-- ===================================================
-         STUDENT INFORMATION
-    ==================================================== -->
+    <!-- LOADING -->
 
-    <section class="student-info">
+    <div id="loading" class="loading">
 
-        <div class="student-info-grid">
+        <div class="spinner"></div>
 
-            <div class="info-item">
+        <strong>
+            Vérification de votre certification...
+        </strong>
 
-                <div class="info-label">
-                    Étudiant
-                </div>
+        <p style="color:#64748b;font-size:13px;">
+            Vérification de votre profil et de votre progression.
+        </p>
 
-                <div
-                    id="studentName"
-                    class="info-value">
-
-                    —
-
-                </div>
-
-            </div>
+    </div>
 
 
-            <div class="info-item">
+    <!-- ERROR -->
 
-                <div class="info-label">
-                    Niveau validé
-                </div>
-
-                <div
-                    id="studentLevel"
-                    class="info-value">
-
-                    —
-
-                </div>
-
-            </div>
+    <div id="errorBox" class="error-box"></div>
 
 
-            <div class="info-item">
+    <!-- CONTENT -->
 
-                <div class="info-label">
-                    Moyenne générale
-                </div>
-
-                <div
-                    id="studentAverage"
-                    class="info-value">
-
-                    —
-
-                </div>
-
-            </div>
+    <div id="certificateContent" style="display:none;">
 
 
-            <div class="info-item">
+        <!-- STUDENT -->
 
-                <div class="info-label">
-                    Date de délivrance
-                </div>
-
-                <div
-                    id="certificateDate"
-                    class="info-value">
-
-                    —
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         MODELS
-    ==================================================== -->
-
-    <section id="certificateArea">
-
-
-        <div class="models-title">
+        <section class="student-card">
 
             <h2>
-                Choisissez votre modèle
+                👤 Informations de l'étudiant
             </h2>
 
-            <p>
-                Cliquez sur un modèle pour le prévisualiser.
-            </p>
+            <div class="student-grid">
 
-        </div>
+                <div class="info">
 
+                    <div class="info-label">
+                        Étudiant
+                    </div>
 
-        <div class="models">
-
-
-            <div
-                id="modelClassic"
-                class="model-card selected"
-                onclick="selectTemplate('classic')">
-
-                <div
-                    class="model-preview"
-                    style="
-                        background:#172033;
-                        color:white;
-                        border:4px solid #d4af37;
-                    ">
-
-                    <div>
-
-                        <div style="
-                            font-size:11px;
-                            letter-spacing:2px;
-                        ">
-                            TRADING ACADEMY AI
-                        </div>
-
-                        <div style="
-                            font-family:Georgia,serif;
-                            font-size:25px;
-                            margin:10px 0;
-                        ">
-                            CERTIFICAT
-                        </div>
-
-                        <div style="
-                            font-size:13px;
-                            color:#93c5fd;
-                        ">
-                            DE RÉUSSITE
-                        </div>
-
+                    <div
+                        id="studentName"
+                        class="info-value">
+                        —
                     </div>
 
                 </div>
 
-                <div class="model-name">
-                    Modèle Classique
-                </div>
 
-            </div>
+                <div class="info">
 
+                    <div class="info-label">
+                        Niveau validé
+                    </div>
 
-            <div
-                id="modelElite"
-                class="model-card"
-                onclick="selectTemplate('elite')">
-
-                <div
-                    class="model-preview"
-                    style="
-                        background:#0f172a;
-                        color:white;
-                        border:4px solid #2563eb;
-                    ">
-
-                    <div>
-
-                        <div style="
-                            color:#93c5fd;
-                            letter-spacing:2px;
-                            font-size:10px;
-                        ">
-                            TRADING ACADEMY AI
-                        </div>
-
-                        <div style="
-                            font-family:Georgia,serif;
-                            font-size:25px;
-                            margin:10px 0;
-                        ">
-                            CERTIFICAT
-                        </div>
-
-                        <div style="
-                            color:#60a5fa;
-                            font-size:12px;
-                        ">
-                            EXCELLENCE
-                        </div>
-
+                    <div
+                        id="validatedLevel"
+                        class="info-value">
+                        —
                     </div>
 
                 </div>
 
-                <div class="model-name">
-                    Modèle Élite
-                </div>
 
-            </div>
+                <div class="info">
 
+                    <div class="info-label">
+                        Moyenne générale
+                    </div>
 
-            <div
-                id="modelPremium"
-                class="model-card"
-                onclick="selectTemplate('premium')">
-
-                <div
-                    class="model-preview"
-                    style="
-                        background:#fffdf5;
-                        color:#6b5410;
-                        border:4px solid #d4af37;
-                    ">
-
-                    <div>
-
-                        <div style="
-                            letter-spacing:2px;
-                            font-size:10px;
-                        ">
-                            TRADING ACADEMY AI
-                        </div>
-
-                        <div style="
-                            font-family:Georgia,serif;
-                            font-size:25px;
-                            margin:10px 0;
-                        ">
-                            CERTIFICAT
-                        </div>
-
-                        <div style="
-                            color:#9a7610;
-                            font-size:12px;
-                        ">
-                            PREMIUM
-                        </div>
-
+                    <div
+                        id="generalAverage"
+                        class="info-value">
+                        —
                     </div>
 
                 </div>
 
-                <div class="model-name">
-                    Modèle Premium
-                </div>
 
-            </div>
+                <div class="info">
 
+                    <div class="info-label">
+                        Date de délivrance
+                    </div>
 
-        </div>
-
-
-        <!-- =================================================
-             PREVIEW
-        ================================================== -->
-
-        <section class="preview-section">
-
-            <div class="preview-header">
-
-                <h2>
-                    Aperçu du certificat
-                </h2>
-
-                <button
-                    id="downloadBtn"
-                    class="download-btn"
-                    onclick="downloadCertificate()">
-
-                    ⬇ Télécharger en PDF
-
-                </button>
-
-            </div>
-
-
-            <div class="certificate-wrapper">
-
-                <div
-                    id="certificate"
-                    class="certificate classic">
-
-                    <div class="certificate-inner">
-
-                        <div class="academy">
-                            TRADING ACADEMY AI
-                        </div>
-
-                        <div class="certificate-title">
-                            CERTIFICAT
-                        </div>
-
-                        <div class="subtitle">
-                            DE RÉUSSITE ACADÉMIQUE
-                        </div>
-
-                        <div
-                            id="certificateStudent"
-                            class="student-name">
-
-                            Étudiant
-
-                        </div>
-
-                        <div class="subtitle">
-                            a terminé avec succès le niveau
-                        </div>
-
-                        <div
-                            id="certificateLevel"
-                            class="level">
-
-                            Niveau
-
-                        </div>
-
-                        <div
-                            id="certificateAverage"
-                            class="average">
-
-                            Moyenne générale : —
-
-                        </div>
-
-
-                        <div class="footer">
-
-                            <div>
-
-                                Date :
-                                <span id="certificateDateBottom">
-                                    —
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                Trading Academy AI
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="seal">
-
-                            TRADING<br>
-                            ACADEMY<br>
-                            AI
-
-                        </div>
-
+                    <div
+                        id="issueDate"
+                        class="info-value">
+                        —
                     </div>
 
                 </div>
@@ -1070,52 +678,324 @@ header{
 
         </section>
 
-    </section>
+
+        <!-- STATUS -->
+
+        <section
+            id="statusBox"
+            class="status-box">
+
+        </section>
 
 
-    <!-- ===================================================
-         LOCKED AREA
-    ==================================================== -->
+        <!-- MODELS -->
 
-    <section
-        id="lockedArea"
-        class="locked"
-        style="display:none;">
+        <section
+            id="modelsSection"
+            class="models-section">
 
-        <h2>
-            🔒 Certificat non disponible
-        </h2>
+            <div class="models-title">
 
-        <p id="lockedMessage">
-            Vous devez terminer les conditions académiques
-            avant de pouvoir obtenir votre certificat.
-        </p>
+                <h2>
+                    🎨 Choisissez votre modèle
+                </h2>
 
-        <button
-            class="header-btn dashboard-btn"
-            onclick="window.location.href='dashboard.html'">
+                <p>
+                    Cliquez sur le certificat que vous préférez.
+                </p>
 
-            ← Retour au dashboard
+            </div>
 
-        </button>
 
-    </section>
+            <div class="models-grid">
 
+
+                <!-- MODEL 1 -->
+
+                <div
+                    class="model-card selected"
+                    data-model="1"
+                    onclick="selectModel(1)">
+
+                    <div
+                        id="certificate1"
+                        class="certificate-preview model-one">
+
+                        <div class="cert-small">
+                            TRADING ACADEMY AI
+                        </div>
+
+                        <div class="cert-brand cert-accent">
+                            TRADING ACADEMY AI
+                        </div>
+
+                        <div class="cert-title">
+                            CERTIFICAT
+                        </div>
+
+                        <div class="cert-subtitle">
+                            DE RÉUSSITE ACADÉMIQUE
+                        </div>
+
+                        <div
+                            class="cert-student"
+                            data-student>
+                            Étudiant
+                        </div>
+
+                        <div
+                            class="cert-level cert-accent"
+                            data-level>
+                            Niveau Débutant
+                        </div>
+
+                        <div class="cert-description">
+                            Ce certificat atteste que l'étudiant
+                            a complété avec succès les formations
+                            requises du niveau indiqué.
+                        </div>
+
+                        <div class="cert-score">
+                            Moyenne générale :
+                            <span data-score>
+                                —
+                            </span>
+                        </div>
+
+                        <div
+                            class="cert-date"
+                            data-date>
+                            —
+                        </div>
+
+                        <div class="cert-signatures">
+
+                            <div class="signature">
+                                Direction Académique
+                            </div>
+
+                            <div class="signature">
+                                Trading Academy AI
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="model-name">
+                        Modèle Classique
+                    </div>
+
+                </div>
+
+
+                <!-- MODEL 2 -->
+
+                <div
+                    class="model-card"
+                    data-model="2"
+                    onclick="selectModel(2)">
+
+                    <div
+                        id="certificate2"
+                        class="certificate-preview model-two">
+
+                        <div class="cert-small">
+                            TRADING ACADEMY AI
+                        </div>
+
+                        <div class="cert-brand cert-accent">
+                            TRADING ACADEMY AI
+                        </div>
+
+                        <div class="cert-title">
+                            CERTIFICAT
+                        </div>
+
+                        <div class="cert-subtitle">
+                            ACHIEVEMENT CERTIFICATE
+                        </div>
+
+                        <div
+                            class="cert-student"
+                            data-student>
+                            Étudiant
+                        </div>
+
+                        <div
+                            class="cert-level cert-accent"
+                            data-level>
+                            Niveau Débutant
+                        </div>
+
+                        <div class="cert-description">
+                            Certification officielle de réussite
+                            du parcours académique Trading Academy AI.
+                        </div>
+
+                        <div class="cert-score">
+                            Score académique :
+                            <span data-score>
+                                —
+                            </span>
+                        </div>
+
+                        <div
+                            class="cert-date"
+                            data-date>
+                            —
+                        </div>
+
+                        <div class="cert-signatures">
+
+                            <div class="signature">
+                                Direction
+                            </div>
+
+                            <div class="signature">
+                                Trading Academy AI
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="model-name">
+                        Modèle Moderne
+                    </div>
+
+                </div>
+
+
+                <!-- MODEL 3 -->
+
+                <div
+                    class="model-card"
+                    data-model="3"
+                    onclick="selectModel(3)">
+
+                    <div
+                        id="certificate3"
+                        class="certificate-preview model-three">
+
+                        <div class="cert-small">
+                            TRADING ACADEMY AI
+                        </div>
+
+                        <div class="cert-brand cert-accent">
+                            TRADING ACADEMY AI
+                        </div>
+
+                        <div class="cert-title">
+                            CERTIFICAT
+                        </div>
+
+                        <div class="cert-subtitle">
+                            CERTIFICATION PROFESSIONNELLE
+                        </div>
+
+                        <div
+                            class="cert-student"
+                            data-student>
+                            Étudiant
+                        </div>
+
+                        <div
+                            class="cert-level cert-accent"
+                            data-level>
+                            Niveau Débutant
+                        </div>
+
+                        <div class="cert-description">
+                            Décerné pour la réussite complète
+                            des exigences académiques du niveau.
+                        </div>
+
+                        <div class="cert-score">
+                            Moyenne :
+                            <span data-score>
+                                —
+                            </span>
+                        </div>
+
+                        <div
+                            class="cert-date"
+                            data-date>
+                            —
+                        </div>
+
+                        <div class="cert-signatures">
+
+                            <div class="signature">
+                                Directeur Académique
+                            </div>
+
+                            <div class="signature">
+                                Trading Academy AI
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="model-name">
+                        Modèle Premium
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- DOWNLOAD -->
+
+        <section
+            id="downloadSection"
+            class="download-section">
+
+            <h2>
+                📄 Télécharger votre certificat
+            </h2>
+
+            <p>
+                Le modèle sélectionné sera généré en format PDF.
+            </p>
+
+            <button
+                id="downloadBtn"
+                class="download-btn"
+                onclick="downloadCertificate()">
+
+                ⬇ Télécharger le certificat PDF
+
+            </button>
+
+        </section>
+
+    </div>
 
 </main>
 
-</div>
+
+<!-- PDF LIBRARY -->
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+</script>
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
 
 
-<!-- =======================================================
-     LIBRARIES
-======================================================= -->
+<!-- SUPABASE -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="https://unpkg.com/html2canvas@latest/dist/html2canvas.min.js"></script>
-
-<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
 
 
 <script>
@@ -1130,16 +1010,6 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
 
-
-if(!window.supabase){
-
-    throw new Error(
-        "Supabase SDK introuvable."
-    );
-
-}
-
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -1152,14 +1022,9 @@ const supabaseClient =
 ========================================================= */
 
 let currentUser = null;
-
 let currentProfile = null;
-
-let currentAttempts = [];
-
-let currentCourses = [];
-
-let selectedTemplate = "classic";
+let selectedModel = 1;
+let validatedLevel = null;
 
 
 /* =========================================================
@@ -1185,53 +1050,47 @@ function normalizeLevel(level){
             .trim()
             .toLowerCase();
 
-
     if(
-        value === "expert"
+        value === "beginner" ||
+        value === "débutant" ||
+        value === "debutant"
     ){
-
-        return "Expert";
-
+        return "Débutant";
     }
-
 
     if(
         value === "intermediate" ||
         value === "intermédiaire" ||
         value === "intermediaire"
     ){
-
         return "Intermédiaire";
-
     }
-
 
     if(
         value === "professional_analyste" ||
         value === "professionnel_analyste"
     ){
-
         return "Professionnel Analyste";
-
     }
 
+    if(value === "expert"){
+        return "Expert";
+    }
 
-    return "Débutant";
-
+    return level || "Débutant";
 }
 
 
 function formatDate(date){
 
-    return new Date(date)
-        .toLocaleDateString(
-            "fr-FR",
-            {
-                day:"2-digit",
-                month:"long",
-                year:"numeric"
-            }
-        );
+    return new Date(date).toLocaleDateString(
+        "fr-FR",
+        {
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+        }
+    );
 
 }
 
@@ -1252,16 +1111,11 @@ async function loadUser(){
 
 
     if(error){
-
         throw error;
-
     }
 
 
-    if(
-        !data ||
-        !data.user
-    ){
+    if(!data || !data.user){
 
         window.location.href =
             "login.html";
@@ -1282,20 +1136,12 @@ async function loadUser(){
 
 /* =========================================================
    PROFILE
+   IMPORTANT:
+   TABLE = profiles
+   COLUMN = user_id
 ========================================================= */
 
 async function loadProfile(){
-
-    /*
-       IMPORTANT:
-
-       On utilise la structure que le dashboard
-       utilise actuellement :
-
-       profils.user_id
-       profils.display_name
-       profils.trading_level
-    */
 
     const {
         data,
@@ -1303,13 +1149,16 @@ async function loadProfile(){
     } =
     await supabaseClient
 
-        .from("profils")
+        .from("profiles")
 
         .select(`
             id,
             user_id,
             display_name,
-            trading_level
+            trading_level,
+            course_1_score,
+            course_2_score,
+            general_average
         `)
 
         .eq(
@@ -1333,7 +1182,7 @@ async function loadProfile(){
     if(!data){
 
         throw new Error(
-            "Profil étudiant introuvable."
+            "Profil étudiant introuvable dans profiles."
         );
 
     }
@@ -1342,172 +1191,164 @@ async function loadProfile(){
     currentProfile =
         data;
 
-
-    return data;
-
 }
 
 
 /* =========================================================
-   LOAD QUIZ ATTEMPTS
+   COURSE COMPLETION
 ========================================================= */
 
-async function loadQuizAttempts(){
+async function getCourseProgress(courseId){
 
     const {
-        data,
-        error
+        data:modules,
+        error:moduleError
     } =
     await supabaseClient
 
-        .from("user_quiz_attempts")
+        .from("modules")
+
+        .select("id")
+
+        .eq(
+            "course_id",
+            courseId
+        )
+
+        .eq(
+            "is_published",
+            true
+        );
+
+
+    if(moduleError){
+        throw moduleError;
+    }
+
+
+    const moduleIds =
+        (modules || [])
+            .map(module => module.id);
+
+
+    if(!moduleIds.length){
+
+        return {
+            total:0,
+            completed:0
+        };
+
+    }
+
+
+    const {
+        data:lessons,
+        error:lessonError
+    } =
+    await supabaseClient
+
+        .from("lessons")
+
+        .select("id")
+
+        .in(
+            "module_id",
+            moduleIds
+        )
+
+        .eq(
+            "is_published",
+            true
+        );
+
+
+    if(lessonError){
+        throw lessonError;
+    }
+
+
+    const lessonIds =
+        (lessons || [])
+            .map(lesson => lesson.id);
+
+
+    if(!lessonIds.length){
+
+        return {
+            total:0,
+            completed:0
+        };
+
+    }
+
+
+    const {
+        data:progress,
+        error:progressError
+    } =
+    await supabaseClient
+
+        .from("user_lesson_progress")
 
         .select(`
-            id,
-            quiz_id,
-            score,
-            total_points,
-            passed,
-            xp_earned,
-            completed_at
+            lesson_id,
+            completed
         `)
 
         .eq(
             "user_id",
             currentUser.id
+        )
+
+        .in(
+            "lesson_id",
+            lessonIds
         );
 
 
-    if(error){
-
-        throw new Error(
-            "Erreur résultats quiz : " +
-            error.message
-        );
-
+    if(progressError){
+        throw progressError;
     }
 
 
-    currentAttempts =
-        data || [];
+    const completed =
+        (progress || [])
+            .filter(
+                row =>
+                    row.completed === true
+            )
+            .length;
 
 
-    return currentAttempts;
+    return {
+
+        total:
+            lessonIds.length,
+
+        completed:
+            completed
+
+    };
 
 }
 
 
 /* =========================================================
-   CALCULATE AVERAGE
+   FIND VALIDATED LEVEL
 ========================================================= */
 
-function calculateGeneralAverage(){
-
-    if(!currentAttempts.length){
-
-        return 0;
-
-    }
-
+async function findValidatedLevel(){
 
     /*
-       IMPORTANT:
+       On ne dépend PAS uniquement de
+       profiles.trading_level.
 
-       On prend le meilleur résultat
-       pour chaque quiz.
-
-       Cela évite qu'une mauvaise tentative
-       fasse artificiellement baisser
-       la moyenne si l'étudiant a ensuite
-       amélioré son résultat.
+       On vérifie les niveaux disponibles
+       et leurs cours publiés.
     */
 
-    const bestByQuiz = {};
-
-
-    currentAttempts.forEach(
-        attempt => {
-
-            const quizId =
-                attempt.quiz_id;
-
-
-            const score =
-                Number(
-                    attempt.score
-                );
-
-
-            const total =
-                Number(
-                    attempt.total_points
-                );
-
-
-            if(
-                !quizId ||
-                !Number.isFinite(score) ||
-                !Number.isFinite(total) ||
-                total <= 0
-            ){
-
-                return;
-
-            }
-
-
-            const percentage =
-                (
-                    score /
-                    total
-                ) * 100;
-
-
-            if(
-                bestByQuiz[quizId] === undefined ||
-                percentage >
-                bestByQuiz[quizId]
-            ){
-
-                bestByQuiz[quizId] =
-                    percentage;
-
-            }
-
-        }
-    );
-
-
-    const values =
-        Object.values(
-            bestByQuiz
-        );
-
-
-    if(!values.length){
-
-        return 0;
-
-    }
-
-
-    return values.reduce(
-        (sum,value) =>
-            sum + value,
-        0
-    ) / values.length;
-
-}
-
-
-/* =========================================================
-   LOAD COURSES + LESSON PROGRESS
-========================================================= */
-
-async function loadCourses(){
-
     const {
-        data,
+        data:courses,
         error
     } =
     await supabaseClient
@@ -1518,7 +1359,8 @@ async function loadCourses(){
             id,
             title,
             level,
-            is_published
+            is_published,
+            created_at
         `)
 
         .eq(
@@ -1535,312 +1377,151 @@ async function loadCourses(){
 
 
     if(error){
+        throw error;
+    }
 
-        throw new Error(
-            "Erreur cours : " +
-            error.message
-        );
+
+    if(!courses || !courses.length){
+
+        return null;
 
     }
 
 
-    currentCourses =
-        data || [];
+    const levelGroups = {};
 
 
-    return currentCourses;
+    courses.forEach(course => {
 
-}
+        const key =
+            normalizeLevel(
+                course.level
+            );
 
 
-/* =========================================================
-   VERIFY LEVEL COMPLETION
-========================================================= */
+        if(!levelGroups[key]){
+            levelGroups[key] = [];
+        }
 
-async function verifyLevelCompletion(){
 
-    const currentLevel =
-        normalizeLevel(
-            currentProfile.trading_level
-        );
+        levelGroups[key].push(course);
+
+    });
 
 
     /*
-       On ne vérifie que les deux cours
-       du niveau actuel.
+       On teste chaque niveau.
+
+       Un niveau est validé si:
+       - il possède au moins 2 cours publiés
+       - les 2 cours sont terminés
+       - moyenne générale >= 70
     */
 
-    const levelCourses =
-        currentCourses.filter(
-            course =>
-                normalizeLevel(
-                    course.level
-                ) === currentLevel
-        );
+    const priority = [
+        "Expert",
+        "Professionnel Analyste",
+        "Intermédiaire",
+        "Débutant"
+    ];
 
 
-    /*
-       Le système demande 2 cours
-       pour valider un niveau.
-    */
+    for(const level of priority){
 
-    const selectedCourses =
-        levelCourses.slice(
-            0,
-            2
-        );
+        const levelCourses =
+            levelGroups[level] || [];
 
 
-    if(
-        selectedCourses.length < 2
-    ){
-
-        return {
-
-            completed:false,
-
-            reason:
-                "Les deux cours requis pour ce niveau ne sont pas encore disponibles."
-
-        };
-
-    }
-
-
-    let completedCourses = 0;
-
-
-    for(
-        const course
-        of selectedCourses
-    ){
-
-        const {
-            data:modules,
-            error:moduleError
-        } =
-        await supabaseClient
-
-            .from("modules")
-
-            .select("id")
-
-            .eq(
-                "course_id",
-                course.id
-            )
-
-            .eq(
-                "is_published",
-                true
-            );
-
-
-        if(moduleError){
-
-            throw moduleError;
-
+        if(levelCourses.length < 2){
+            continue;
         }
 
 
-        const moduleIds =
-            (modules || [])
-                .map(
-                    module =>
-                        module.id
+        const firstTwo =
+            levelCourses.slice(0,2);
+
+
+        let completedCourses = 0;
+
+
+        for(
+            const course
+            of firstTwo
+        ){
+
+            const progress =
+                await getCourseProgress(
+                    course.id
                 );
 
 
-        if(!moduleIds.length){
+            if(
+                progress.total > 0 &&
+                progress.completed >=
+                progress.total
+            ){
 
-            continue;
+                completedCourses++;
+
+            }
 
         }
 
 
-        const {
-            data:lessons,
-            error:lessonError
-        } =
-        await supabaseClient
-
-            .from("lessons")
-
-            .select("id")
-
-            .in(
-                "module_id",
-                moduleIds
-            )
-
-            .eq(
-                "is_published",
-                true
+        const average =
+            Number(
+                currentProfile.general_average
             );
-
-
-        if(lessonError){
-
-            throw lessonError;
-
-        }
-
-
-        const lessonIds =
-            (lessons || [])
-                .map(
-                    lesson =>
-                        lesson.id
-                );
-
-
-        if(!lessonIds.length){
-
-            continue;
-
-        }
-
-
-        const {
-            data:progressRows,
-            error:progressError
-        } =
-        await supabaseClient
-
-            .from("user_lesson_progress")
-
-            .select(`
-                lesson_id,
-                completed
-            `)
-
-            .eq(
-                "user_id",
-                currentUser.id
-            )
-
-            .in(
-                "lesson_id",
-                lessonIds
-            );
-
-
-        if(progressError){
-
-            throw progressError;
-
-        }
-
-
-        const completed =
-            (progressRows || [])
-                .filter(
-                    row =>
-                        row.completed === true
-                )
-                .length;
 
 
         if(
-            completed >=
-            lessonIds.length
+            completedCourses >= 2 &&
+            Number.isFinite(average) &&
+            average >= 70
         ){
 
-            completedCourses++;
+            return {
+
+                level:level,
+
+                average:average,
+
+                coursesCompleted:
+                    completedCourses
+
+            };
 
         }
 
     }
 
 
-    return {
-
-        completed:
-            completedCourses >= 2,
-
-        completedCourses,
-
-        requiredCourses:2,
-
-        level:currentLevel
-
-    };
+    return null;
 
 }
 
 
 /* =========================================================
-   SELECT TEMPLATE
+   UPDATE CERTIFICATE INFORMATION
 ========================================================= */
 
-function selectTemplate(template){
-
-    selectedTemplate =
-        template;
-
-
-    const certificate =
-        document.getElementById(
-            "certificate"
-        );
-
-
-    certificate.classList.remove(
-        "classic",
-        "elite",
-        "premium"
-    );
-
-
-    certificate.classList.add(
-        template
-    );
-
-
-    document
-        .querySelectorAll(
-            ".model-card"
-        )
-        .forEach(
-            card =>
-                card.classList.remove(
-                    "selected"
-                )
-        );
-
-
-    const selectedCard =
-        document.getElementById(
-            "model" +
-            template.charAt(0).toUpperCase() +
-            template.slice(1)
-        );
-
-
-    if(selectedCard){
-
-        selectedCard.classList.add(
-            "selected"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   DISPLAY CERTIFICATE
-========================================================= */
-
-function displayCertificate(
-    average,
-    level
-){
+function fillCertificateData(){
 
     const name =
         currentProfile.display_name ||
+        currentUser.user_metadata?.full_name ||
         currentUser.email ||
         "Étudiant";
+
+
+    const average =
+        Number(
+            currentProfile.general_average
+        );
+
+
+    const level =
+        validatedLevel.level;
 
 
     const date =
@@ -1856,47 +1537,101 @@ function displayCertificate(
 
 
     document.getElementById(
-        "studentLevel"
+        "validatedLevel"
     ).textContent =
         level;
 
 
     document.getElementById(
-        "studentAverage"
+        "generalAverage"
     ).textContent =
         average.toFixed(2) + "%";
 
 
     document.getElementById(
-        "certificateDate"
+        "issueDate"
     ).textContent =
         date;
 
 
-    document.getElementById(
-        "certificateStudent"
-    ).textContent =
-        name;
+    /*
+       Remplir les 3 modèles
+    */
+
+    document
+        .querySelectorAll("[data-student]")
+        .forEach(
+            element =>
+                element.textContent =
+                    name
+        );
 
 
-    document.getElementById(
-        "certificateLevel"
-    ).textContent =
-        level;
+    document
+        .querySelectorAll("[data-level]")
+        .forEach(
+            element =>
+                element.textContent =
+                    "Niveau " + level
+        );
 
 
-    document.getElementById(
-        "certificateAverage"
-    ).textContent =
-        "Moyenne générale : " +
-        average.toFixed(2) +
-        "%";
+    document
+        .querySelectorAll("[data-score]")
+        .forEach(
+            element =>
+                element.textContent =
+                    average.toFixed(2) + "%"
+        );
 
 
-    document.getElementById(
-        "certificateDateBottom"
-    ).textContent =
-        date;
+    document
+        .querySelectorAll("[data-date]")
+        .forEach(
+            element =>
+                element.textContent =
+                    "Délivré le " + date
+        );
+
+}
+
+
+/* =========================================================
+   SELECT MODEL
+========================================================= */
+
+function selectModel(model){
+
+    selectedModel =
+        model;
+
+
+    document
+        .querySelectorAll(".model-card")
+        .forEach(card => {
+
+            card.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    const selected =
+        document.querySelector(
+            '.model-card[data-model="' +
+            model +
+            '"]'
+        );
+
+
+    if(selected){
+
+        selected.classList.add(
+            "selected"
+        );
+
+    }
 
 }
 
@@ -1915,17 +1650,15 @@ async function downloadCertificate(){
 
     const certificate =
         document.getElementById(
-            "certificate"
+            "certificate" +
+            selectedModel
         );
 
 
-    if(
-        !window.html2canvas ||
-        !window.jspdf
-    ){
+    if(!certificate){
 
         alert(
-            "Les bibliothèques PDF ne sont pas encore chargées. Rechargez la page."
+            "Modèle de certificat introuvable."
         );
 
         return;
@@ -1936,17 +1669,11 @@ async function downloadCertificate(){
     button.disabled =
         true;
 
-
     button.textContent =
         "⏳ Génération du PDF...";
 
 
     try{
-
-        /*
-           html2canvas construit une représentation
-           du certificat dans le navigateur.
-        */
 
         const canvas =
             await html2canvas(
@@ -1954,15 +1681,14 @@ async function downloadCertificate(){
                 {
                     scale:2,
                     useCORS:true,
-                    backgroundColor:null
+                    backgroundColor:"#ffffff"
                 }
             );
 
 
-        const imageData =
+        const image =
             canvas.toDataURL(
-                "image/jpeg",
-                0.95
+                "image/png"
             );
 
 
@@ -1973,13 +1699,11 @@ async function downloadCertificate(){
 
 
         const pdf =
-            new jsPDF(
-                {
-                    orientation:"landscape",
-                    unit:"mm",
-                    format:"a4"
-                }
-            );
+            new jsPDF({
+                orientation:"landscape",
+                unit:"mm",
+                format:"a4"
+            });
 
 
         const pageWidth =
@@ -1990,75 +1714,24 @@ async function downloadCertificate(){
             pdf.internal.pageSize.getHeight();
 
 
-        const imageRatio =
-            canvas.width /
-            canvas.height;
-
-
-        let imageWidth =
-            pageWidth;
-
-
-        let imageHeight =
-            imageWidth /
-            imageRatio;
-
-
-        if(
-            imageHeight >
-            pageHeight
-        ){
-
-            imageHeight =
-                pageHeight;
-
-            imageWidth =
-                imageHeight *
-                imageRatio;
-
-        }
-
-
-        const x =
-            (
-                pageWidth -
-                imageWidth
-            ) / 2;
-
-
-        const y =
-            (
-                pageHeight -
-                imageHeight
-            ) / 2;
+        const margin =
+            8;
 
 
         pdf.addImage(
-            imageData,
-            "JPEG",
-            x,
-            y,
-            imageWidth,
-            imageHeight,
-            undefined,
-            "FAST"
+            image,
+            "PNG",
+            margin,
+            margin,
+            pageWidth - margin * 2,
+            pageHeight - margin * 2
         );
 
 
         const safeName =
             (
                 currentProfile.display_name ||
-                "Etudiant"
-            )
-            .replace(
-                /[^a-zA-Z0-9À-ÿ_-]/g,
-                "_"
-            );
-
-
-        const safeLevel =
-            normalizeLevel(
-                currentProfile.trading_level
+                "etudiant"
             )
             .replace(
                 /[^a-zA-Z0-9À-ÿ_-]/g,
@@ -2067,12 +1740,11 @@ async function downloadCertificate(){
 
 
         pdf.save(
-            "Certificat_" +
+            "Certificat_Trading_Academy_AI_" +
             safeName +
-            "_" +
-            safeLevel +
             ".pdf"
         );
+
 
     }
     catch(error){
@@ -2095,7 +1767,7 @@ async function downloadCertificate(){
             false;
 
         button.textContent =
-            "⬇ Télécharger en PDF";
+            "⬇ Télécharger le certificat PDF";
 
     }
 
@@ -2106,7 +1778,7 @@ async function downloadCertificate(){
    INITIALIZE
 ========================================================= */
 
-async function initCertificate(){
+async function initialize(){
 
     try{
 
@@ -2115,101 +1787,83 @@ async function initCertificate(){
 
 
         if(!authenticated){
-
             return;
-
         }
 
 
         await loadProfile();
 
 
-        await loadQuizAttempts();
+        validatedLevel =
+            await findValidatedLevel();
 
 
-        const average =
-            calculateGeneralAverage();
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
 
 
-        await loadCourses();
+        document.getElementById(
+            "certificateContent"
+        ).style.display =
+            "block";
 
 
-        const completion =
-            await verifyLevelCompletion();
+        if(!validatedLevel){
 
-
-        /*
-           CONDITIONS OFFICIELLES
-
-           1. Deux cours terminés
-           2. Moyenne >= 70%
-        */
-
-        if(
-            !completion.completed ||
-            average < 70
-        ){
-
-            document.getElementById(
-                "loadingScreen"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "app"
-            ).style.display =
-                "block";
-
-
-            document.getElementById(
-                "certificateArea"
-            ).style.display =
-                "none";
-
-
-            const locked =
+            const box =
                 document.getElementById(
-                    "lockedArea"
+                    "statusBox"
                 );
 
 
-            locked.style.display =
-                "block";
+            box.className =
+                "status-box status-locked";
 
 
-            let reason =
-                "";
+            box.innerHTML = `
 
+                <h2>
+                    🔒 Certificat non disponible
+                </h2>
 
-            if(
-                !completion.completed
-            ){
+                <p>
+                    Vous devez terminer les deux cours
+                    du niveau et obtenir une moyenne
+                    générale d'au moins <strong>70%</strong>.
+                </p>
 
-                reason +=
-                    "Vous devez terminer les deux cours du niveau " +
-                    completion.level +
-                    ". ";
+                <p>
+                    Moyenne actuelle :
+                    <strong>
+                        ${
+                            Number.isFinite(
+                                Number(
+                                    currentProfile.general_average
+                                )
+                            )
+                            ?
+                            Number(
+                                currentProfile.general_average
+                            ).toFixed(2) + "%"
+                            :
+                            "Non disponible"
+                        }
+                    </strong>
+                </p>
 
-            }
+                <br>
 
+                <button
+                    class="header-btn primary"
+                    onclick="window.location.href='dashboard.html'">
 
-            if(
-                average < 70
-            ){
+                    ← Retour au dashboard
 
-                reason +=
-                    "Votre moyenne actuelle est de " +
-                    average.toFixed(2) +
-                    "%. Le minimum requis est de 70%.";
+                </button>
 
-            }
-
-
-            document.getElementById(
-                "lockedMessage"
-            ).textContent =
-                reason;
+            `;
 
 
             return;
@@ -2218,30 +1872,60 @@ async function initCertificate(){
 
 
         /*
-           Tout est validé.
+           CERTIFICAT VALIDÉ
         */
 
-        displayCertificate(
-            average,
-            completion.level
-        );
+        const statusBox =
+            document.getElementById(
+                "statusBox"
+            );
 
 
-        selectTemplate(
-            "classic"
-        );
+        statusBox.className =
+            "status-box status-success";
+
+
+        statusBox.innerHTML = `
+
+            <h2>
+                🏆 Félicitations !
+            </h2>
+
+            <p>
+                Vous avez validé le niveau
+                <strong>
+                    ${escapeHTML(
+                        validatedLevel.level
+                    )}
+                </strong>
+                avec une moyenne générale de
+                <strong>
+                    ${validatedLevel.average.toFixed(2)}%
+                </strong>.
+            </p>
+
+            <p>
+                Votre certificat de réussite est maintenant disponible.
+                Sélectionnez votre modèle préféré ci-dessous.
+            </p>
+
+        `;
+
+
+        fillCertificateData();
 
 
         document.getElementById(
-            "loadingScreen"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "app"
+            "modelsSection"
         ).style.display =
             "block";
+
+
+        document.getElementById(
+            "downloadSection"
+        ).style.display =
+            "block";
+
 
     }
     catch(error){
@@ -2253,49 +1937,63 @@ async function initCertificate(){
 
 
         document.getElementById(
-            "loadingScreen"
+            "loading"
         ).style.display =
             "none";
 
 
         document.getElementById(
-            "app"
+            "certificateContent"
         ).style.display =
             "block";
 
 
-        document.getElementById(
-            "certificateArea"
-        ).style.display =
-            "none";
-
-
-        const locked =
+        const box =
             document.getElementById(
-                "lockedArea"
+                "statusBox"
             );
 
 
-        locked.style.display =
-            "block";
+        box.className =
+            "status-box status-locked";
 
 
-        document.getElementById(
-            "lockedMessage"
-        ).textContent =
-            error.message ||
-            "Impossible de charger le certificat.";
+        box.innerHTML = `
+
+            <h2>
+                🔒 Certificat non disponible
+            </h2>
+
+            <p>
+                Erreur lors de la vérification
+                de votre certification.
+            </p>
+
+            <p>
+                ${escapeHTML(
+                    error.message ||
+                    "Erreur inconnue."
+                )}
+            </p>
+
+            <br>
+
+            <button
+                class="header-btn primary"
+                onclick="window.location.href='dashboard.html'">
+
+                ← Retour au dashboard
+
+            </button>
+
+        `;
 
     }
 
 }
 
 
-/* =========================================================
-   START
-========================================================= */
-
-initCertificate();
+initialize();
 
 </script>
 
