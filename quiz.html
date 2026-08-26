@@ -476,10 +476,10 @@ function getQuizId() {
             window.location.search
         );
 
-    return params.get("quiz_id");
+    // L ap chache swa quiz_id swa course_id nan URL la
+    return params.get("quiz_id") || params.get("course_id");
 
 }
-
 
 /* ==========================================
    INIT QUIZ
