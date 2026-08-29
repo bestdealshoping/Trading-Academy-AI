@@ -2,10 +2,16 @@
 <html lang="ht">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Trading Academy AI</title>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Mes Cours | Trading Academy AI</title>
+
 
 <style>
 
@@ -19,6 +25,11 @@ body{
     background:#f4f7fb;
     color:#172033;
 }
+
+
+/* ================================
+   HEADER
+================================ */
 
 header{
     background:#0f172a;
@@ -50,36 +61,70 @@ header{
 .header-actions{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:8px;
 }
 
-.language-select{
-    border:1px solid #475569;
-    background:#1e293b;
-    color:white;
-    padding:9px 10px;
-    border-radius:8px;
-    cursor:pointer;
-    outline:none;
-}
-
-.language-select option{
-    color:#172033;
-    background:white;
-}
-
-.back-btn{
+.back-btn,
+.language-btn{
     border:0;
     background:#1e293b;
     color:white;
-    padding:9px 14px;
+    padding:9px 12px;
     border-radius:8px;
     cursor:pointer;
 }
 
-.back-btn:hover{
-    background:#334155;
+.language-btn{
+    font-weight:bold;
 }
+
+.language-btn:hover,
+.back-btn:hover{
+    background:#2563eb;
+}
+
+
+/* ================================
+   LANGUAGE MENU
+================================ */
+
+.language-menu{
+    position:absolute;
+    right:20px;
+    top:70px;
+    background:white;
+    color:#172033;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+    overflow:hidden;
+    display:none;
+    min-width:160px;
+}
+
+.language-menu button{
+    width:100%;
+    border:0;
+    background:white;
+    padding:12px 15px;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.language-menu button:hover{
+    background:#eff6ff;
+}
+
+.language-menu button.active{
+    background:#dbeafe;
+    color:#1d4ed8;
+    font-weight:bold;
+}
+
+
+/* ================================
+   CONTAINER
+================================ */
 
 .container{
     max-width:1100px;
@@ -101,6 +146,11 @@ header{
     margin-top:7px;
 }
 
+
+/* ================================
+   STATES
+================================ */
+
 .loading,
 .error,
 .empty{
@@ -116,6 +166,11 @@ header{
     background:#fef2f2;
     border-color:#fecaca;
 }
+
+
+/* ================================
+   COURSE
+================================ */
 
 .course-card{
     background:white;
@@ -136,10 +191,22 @@ header{
     font-size:21px;
 }
 
+.course-description{
+    color:#64748b;
+    font-size:13px;
+    line-height:1.6;
+    margin-bottom:10px;
+}
+
 .course-meta{
     color:#64748b;
     font-size:13px;
 }
+
+
+/* ================================
+   PROGRESS
+================================ */
 
 .progress-box{
     margin-top:16px;
@@ -170,6 +237,11 @@ header{
     background:#16a34a;
 }
 
+
+/* ================================
+   MODULE
+================================ */
+
 .module{
     padding:20px 22px;
     border-bottom:1px solid #f1f5f9;
@@ -180,10 +252,6 @@ header{
 }
 
 .module-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
     margin-bottom:14px;
 }
 
@@ -192,11 +260,23 @@ header{
     font-size:16px;
 }
 
+.module-description{
+    color:#64748b;
+    font-size:12px;
+    margin-top:7px;
+    line-height:1.5;
+}
+
 .module-number{
     color:#2563eb;
     font-size:12px;
     font-weight:bold;
 }
+
+
+/* ================================
+   LESSON
+================================ */
 
 .lesson{
     display:flex;
@@ -227,6 +307,7 @@ header{
     align-items:center;
     justify-content:center;
     background:#e0ecff;
+    flex-shrink:0;
 }
 
 .lesson.completed .lesson-icon{
@@ -238,9 +319,17 @@ header{
     font-weight:600;
 }
 
+.lesson-description{
+    color:#64748b;
+    font-size:11px;
+    margin-top:4px;
+    line-height:1.4;
+}
+
 .lesson-status{
     font-size:11px;
     color:#64748b;
+    margin-top:4px;
 }
 
 .lesson.completed .lesson-status{
@@ -255,11 +344,17 @@ header{
     background:#2563eb;
     color:white;
     font-size:12px;
+    flex-shrink:0;
 }
 
 .lesson-btn:hover{
     background:#1d4ed8;
 }
+
+
+/* ================================
+   QUIZ
+================================ */
 
 .quiz-box{
     margin:20px 22px 22px;
@@ -277,6 +372,7 @@ header{
     margin:0 0 14px;
     color:#475569;
     font-size:13px;
+    line-height:1.5;
 }
 
 .quiz-btn{
@@ -307,14 +403,33 @@ header{
     font-weight:bold;
 }
 
+
+/* ================================
+   LANGUAGE INFO
+================================ */
+
+.language-info{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    padding:6px 10px;
+    background:#dbeafe;
+    color:#1d4ed8;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
 @media(max-width:600px){
 
-    .header{
-        padding:14px 12px;
-    }
-
     .header-inner{
-        gap:8px;
+        flex-direction:row;
     }
 
     .logo{
@@ -325,13 +440,8 @@ header{
         gap:5px;
     }
 
-    .language-select{
-        padding:8px 5px;
-        font-size:11px;
-        max-width:90px;
-    }
-
-    .back-btn{
+    .back-btn,
+    .language-btn{
         padding:8px 9px;
         font-size:11px;
     }
@@ -346,7 +456,14 @@ header{
 
     .lesson-btn{
         padding:7px 9px;
-        white-space:nowrap;
+    }
+
+    .lesson-title{
+        font-size:13px;
+    }
+
+    .language-menu{
+        right:10px;
     }
 
 }
@@ -359,92 +476,131 @@ header{
 <body>
 
 
+<!-- =========================================
+     HEADER
+========================================= -->
+
 <header>
 
-    <div class="header-inner">
-
-        <div class="logo">
-            Trading Academy <span>AI</span>
-        </div>
+<div class="header-inner">
 
 
-        <div class="header-actions">
-
-            <!-- LANGUAGE -->
-
-            <select
-                id="languageSelect"
-                class="language-select"
-                aria-label="Language">
-
-                <option value="ht">
-                    🇭🇹 Kreyòl
-                </option>
-
-                <option value="fr">
-                    🇫🇷 Français
-                </option>
-
-                <option value="en">
-                    🇬🇧 English
-                </option>
-
-            </select>
+    <div class="logo">
+        Trading Academy <span>AI</span>
+    </div>
 
 
-            <!-- BACK -->
+    <div class="header-actions">
 
-            <button
-                id="backButton"
-                class="back-btn"
-                onclick="window.location.href='dashboard.html'">
 
-                ← Dashboard
+        <button
+            class="language-btn"
+            id="languageButton"
+            onclick="toggleLanguageMenu()">
 
-            </button>
+            🌐 HT
 
-        </div>
+        </button>
+
+
+        <button
+            class="back-btn"
+            onclick="window.location.href='dashboard.html'">
+
+            ← <span data-i18n="dashboard">Dashboard</span>
+
+        </button>
+
 
     </div>
+
+
+</div>
+
+
+<!-- LANGUAGE MENU -->
+
+<div
+    id="languageMenu"
+    class="language-menu">
+
+    <button
+        id="lang-ht"
+        onclick="changeLanguage('ht')">
+
+        🇭🇹 Kreyòl Ayisyen
+
+    </button>
+
+    <button
+        id="lang-fr"
+        onclick="changeLanguage('fr')">
+
+        🇫🇷 Français
+
+    </button>
+
+    <button
+        id="lang-en"
+        onclick="changeLanguage('en')">
+
+        🇺🇸 English
+
+    </button>
+
+</div>
 
 </header>
 
 
 
+<!-- =========================================
+     MAIN
+========================================= -->
+
 <main class="container">
 
 
-    <section class="page-title">
-
-        <h1 id="pageTitle">
-            Mes Cours
-        </h1>
-
-        <p id="pageDescription">
-            Suivez vos cours, complétez les leçons et débloquez vos quiz.
-        </p>
-
-    </section>
+<section class="page-title">
 
 
-    <div id="content">
+    <h1 data-i18n="myCourses">
+        Mes Cours
+    </h1>
 
-        <div class="loading">
 
-            <span id="loadingText">
-                Chargement de vos cours...
-            </span>
+    <p data-i18n="coursesSubtitle">
 
-        </div>
+        Suivez vos cours, complétez les leçons
+        et débloquez vos quiz.
+
+    </p>
+
+
+</section>
+
+
+
+<div id="content">
+
+    <div class="loading">
+
+        <span data-i18n="loading">
+            Chargement de vos cours...
+        </span>
 
     </div>
+
+</div>
 
 
 </main>
 
 
 
-<!-- SUPABASE -->
+<!-- =========================================
+     SUPABASE
+========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -459,17 +615,14 @@ header{
 const COURSE_SUPABASE_URL =
 "https://jmkwekgpsogbdpkjqqyx.supabase.co";
 
-
 const COURSE_SUPABASE_KEY =
 "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
-
 
 const courseClient =
 window.supabase.createClient(
     COURSE_SUPABASE_URL,
     COURSE_SUPABASE_KEY
 );
-
 
 
 /* =========================================================
@@ -480,17 +633,23 @@ const translations = {
 
     ht: {
 
-        pageTitle:
+        dashboard:
+            "Dashboard",
+
+        myCourses:
             "Kou mwen yo",
 
-        pageDescription:
-            "Swiv kou ou yo, fini leson yo epi debloke quiz ou yo.",
+        coursesSubtitle:
+            "Swiv kou ou yo, fini ak leson yo epi debloke egzamen yo.",
 
         loading:
             "Ap chaje kou ou yo...",
 
-        dashboard:
-            "← Dashboard",
+        noCourses:
+            "Pa gen kou ki disponib pou moman an.",
+
+        impossible:
+            "Li pa posib pou chaje kou yo.",
 
         level:
             "Nivo",
@@ -504,67 +663,73 @@ const translations = {
         lessons:
             "leson",
 
-        lessonFinished:
-            "Leson fini",
+        lessonsCompleted:
+            "leson fini",
 
-        lessonToFinish:
-            "Pou fini",
-
-        review:
-            "Revize",
+        module:
+            "MODIL",
 
         start:
             "Kòmanse",
 
-        noCourses:
-            "📚 Pa gen okenn kou ki disponib pou moman an.",
+        review:
+            "Revize",
+
+        lessonFinished:
+            "Leson fini",
+
+        lessonToDo:
+            "Pou fini",
 
         noModules:
-            "Pa gen okenn modil ki disponib.",
+            "Pa gen modil ki disponib.",
 
-        quizTitle:
-            "🧠 Quiz kou a",
+        quiz:
+            "Quiz kou a",
 
         quizUnlocked:
-            "✓ Tout leson yo fini. Quiz la disponib kounya.",
+            "Tout leson yo fini. Quiz la disponib kounya.",
 
         startQuiz:
-            "🎯 Kòmanse quiz",
+            "Kòmanse quiz la",
 
         quizLocked:
-            "🔒 Quiz la bloke.",
+            "Quiz la bloke.",
 
         quizRequirement:
-            "Ou dwe fini tout leson ki nan kou sa a anvan ou ka pase quiz la.",
+            "Ou dwe fini tout leson ki nan kou sa a anvan ou ka pran quiz la.",
 
-        lockedButton:
-            "🔒 Quiz bloke",
+        quizNotFound:
+            "Quiz final la pa jwenn oswa li poko pibliye pou kou sa a.",
 
-        finished:
-            "✓ Fini",
+        quizError:
+            "Li pa posib pou ouvri quiz la.",
 
-        error:
-            "❌ Li pa posib pou chaje kou yo.",
-
-        module:
-            "MODIL"
+        languageLabel:
+            "Lang aktyèl"
 
     },
 
 
     fr: {
 
-        pageTitle:
+        dashboard:
+            "Dashboard",
+
+        myCourses:
             "Mes Cours",
 
-        pageDescription:
+        coursesSubtitle:
             "Suivez vos cours, complétez les leçons et débloquez vos quiz.",
 
         loading:
             "Chargement de vos cours...",
 
-        dashboard:
-            "← Dashboard",
+        noCourses:
+            "Aucun cours disponible pour le moment.",
+
+        impossible:
+            "Impossible de charger les cours.",
 
         level:
             "Niveau",
@@ -578,67 +743,73 @@ const translations = {
         lessons:
             "leçons",
 
-        lessonFinished:
-            "Leçon terminée",
+        lessonsCompleted:
+            "leçons terminées",
 
-        lessonToFinish:
-            "À terminer",
-
-        review:
-            "Revoir",
+        module:
+            "MODULE",
 
         start:
             "Commencer",
 
-        noCourses:
-            "📚 Aucun cours disponible pour le moment.",
+        review:
+            "Revoir",
+
+        lessonFinished:
+            "Leçon terminée",
+
+        lessonToDo:
+            "À terminer",
 
         noModules:
             "Aucun module disponible.",
 
-        quizTitle:
-            "🧠 Quiz du cours",
+        quiz:
+            "Quiz du cours",
 
         quizUnlocked:
-            "✓ Toutes les leçons sont terminées. Le quiz est maintenant débloqué.",
+            "Toutes les leçons sont terminées. Le quiz est maintenant débloqué.",
 
         startQuiz:
-            "🎯 Commencer le quiz",
+            "Commencer le quiz",
 
         quizLocked:
-            "🔒 Le quiz est verrouillé.",
+            "Quiz verrouillé.",
 
         quizRequirement:
             "Vous devez terminer toutes les leçons de ce cours avant de pouvoir passer le quiz.",
 
-        lockedButton:
-            "🔒 Quiz verrouillé",
+        quizNotFound:
+            "Quiz final introuvable ou non publié pour ce cours.",
 
-        finished:
-            "✓ Terminé",
+        quizError:
+            "Impossible d'ouvrir le quiz.",
 
-        error:
-            "❌ Impossible de charger les cours.",
-
-        module:
-            "MODULE"
+        languageLabel:
+            "Langue actuelle"
 
     },
 
 
     en: {
 
-        pageTitle:
+        dashboard:
+            "Dashboard",
+
+        myCourses:
             "My Courses",
 
-        pageDescription:
-            "Follow your courses, complete lessons and unlock your quizzes.",
+        coursesSubtitle:
+            "Follow your courses, complete the lessons and unlock your quizzes.",
 
         loading:
             "Loading your courses...",
 
-        dashboard:
-            "← Dashboard",
+        noCourses:
+            "No courses are currently available.",
+
+        impossible:
+            "Unable to load the courses.",
 
         level:
             "Level",
@@ -652,55 +823,54 @@ const translations = {
         lessons:
             "lessons",
 
-        lessonFinished:
-            "Lesson completed",
+        lessonsCompleted:
+            "lessons completed",
 
-        lessonToFinish:
-            "To complete",
-
-        review:
-            "Review",
+        module:
+            "MODULE",
 
         start:
             "Start",
 
-        noCourses:
-            "📚 No courses available at the moment.",
+        review:
+            "Review",
+
+        lessonFinished:
+            "Lesson completed",
+
+        lessonToDo:
+            "To complete",
 
         noModules:
             "No modules available.",
 
-        quizTitle:
-            "🧠 Course Quiz",
+        quiz:
+            "Course Quiz",
 
         quizUnlocked:
-            "✓ All lessons are completed. The quiz is now unlocked.",
+            "All lessons are completed. The quiz is now unlocked.",
 
         startQuiz:
-            "🎯 Start Quiz",
+            "Start Quiz",
 
         quizLocked:
-            "🔒 The quiz is locked.",
+            "Quiz locked.",
 
         quizRequirement:
             "You must complete all lessons in this course before taking the quiz.",
 
-        lockedButton:
-            "🔒 Quiz locked",
+        quizNotFound:
+            "Final quiz not found or not published for this course.",
 
-        finished:
-            "✓ Completed",
+        quizError:
+            "Unable to open the quiz.",
 
-        error:
-            "❌ Unable to load courses.",
-
-        module:
-            "MODULE"
+        languageLabel:
+            "Current language"
 
     }
 
 };
-
 
 
 let currentLanguage =
@@ -710,122 +880,367 @@ let currentLanguage =
 
 
 /* =========================================================
-   TRANSLATION HELPER
+   LANGUAGE HELPERS
 ========================================================= */
 
 function t(key){
 
     return (
-        translations[currentLanguage] &&
-        translations[currentLanguage][key]
-    )
-    ||
-    translations.ht[key]
-    ||
-    key;
+        translations[currentLanguage]?.[key]
+        ||
+        translations.fr[key]
+        ||
+        key
+    );
 
 }
 
 
+function changeLanguage(language){
 
-/* =========================================================
-   APPLY LANGUAGE
-========================================================= */
+    if(
+        !translations[language]
+    ){
 
-function applyLanguage(){
-
-    document.documentElement.lang =
-        currentLanguage;
-
-
-    document.getElementById(
-        "languageSelect"
-    ).value =
-        currentLanguage;
-
-
-    document.getElementById(
-        "pageTitle"
-    ).textContent =
-        t("pageTitle");
-
-
-    document.getElementById(
-        "pageDescription"
-    ).textContent =
-        t("pageDescription");
-
-
-    document.getElementById(
-        "loadingText"
-    ).textContent =
-        t("loading");
-
-
-    document.getElementById(
-        "backButton"
-    ).textContent =
-        t("dashboard");
-
-
-    /*
-       Si les cours sont déjà affichés,
-       on les recharge pour traduire
-       les éléments de l'interface.
-    */
-
-    if(window.courseReload){
-
-        window.courseReload();
+        return;
 
     }
 
+
+    currentLanguage =
+        language;
+
+
+    localStorage.setItem(
+        "academy_language",
+        language
+    );
+
+
+    updateStaticTranslations();
+
+
+    updateLanguageButton();
+
+
+    closeLanguageMenu();
+
+
+    /*
+       Recharge les cours afin que
+       titres/descriptions des lessons
+       prennent immédiatement la langue.
+    */
+
+    loadCourses();
+
 }
 
 
+function updateStaticTranslations(){
 
-/* =========================================================
-   LANGUAGE SELECT
-========================================================= */
+    document
+        .querySelectorAll("[data-i18n]")
+        .forEach(
+            element => {
 
-document
-    .getElementById("languageSelect")
-    .addEventListener(
-        "change",
-        function(){
+                const key =
+                    element.dataset.i18n;
 
-            currentLanguage =
-                this.value;
+                element.textContent =
+                    t(key);
 
+            }
+        );
 
-            localStorage.setItem(
-                "academy_language",
-                currentLanguage
-            );
+}
 
 
-            applyLanguage();
+function updateLanguageButton(){
+
+    const labels = {
+
+        ht:"🌐 HT",
+
+        fr:"🌐 FR",
+
+        en:"🌐 EN"
+
+    };
+
+
+    document
+        .getElementById(
+            "languageButton"
+        )
+        .textContent =
+        labels[currentLanguage];
+
+
+    ["ht","fr","en"].forEach(
+        lang => {
+
+            const button =
+                document.getElementById(
+                    "lang-" + lang
+                );
+
+            if(button){
+
+                button.classList.toggle(
+                    "active",
+                    lang === currentLanguage
+                );
+
+            }
 
         }
     );
 
+}
+
+
+function toggleLanguageMenu(){
+
+    const menu =
+        document.getElementById(
+            "languageMenu"
+        );
+
+
+    menu.style.display =
+        menu.style.display === "block"
+        ? "none"
+        : "block";
+
+}
+
+
+function closeLanguageMenu(){
+
+    document
+        .getElementById(
+            "languageMenu"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        const menu =
+            document.getElementById(
+                "languageMenu"
+            );
+
+        const button =
+            document.getElementById(
+                "languageButton"
+            );
+
+
+        if(
+            menu &&
+            !menu.contains(event.target) &&
+            !button.contains(event.target)
+        ){
+
+            menu.style.display =
+                "none";
+
+        }
+
+    }
+);
 
 
 /* =========================================================
-   HELPERS
+   TRANSLATION DATA
+=========================================================
+
+   Le système accepte plusieurs formats.
+
+   FORMAT 1 — JSONB:
+
+   translations: {
+       "ht": {
+           "title": "...",
+           "description": "..."
+       },
+       "fr": {
+           "title": "...",
+           "description": "..."
+       },
+       "en": {
+           "title": "...",
+           "description": "..."
+       }
+   }
+
+   FORMAT 2 — COLONNES:
+
+   title_ht
+   title_fr
+   title_en
+
+   description_ht
+   description_fr
+   description_en
+
+========================================================= */
+
+
+function getTranslation(
+    row,
+    field,
+    language
+){
+
+    if(!row){
+
+        return "";
+
+    }
+
+
+    /*
+       1. JSON translations
+    */
+
+    if(
+        row.translations &&
+        typeof row.translations === "object"
+    ){
+
+        const translation =
+            row.translations[language];
+
+
+        if(
+            translation &&
+            typeof translation === "object" &&
+            translation[field]
+        ){
+
+            return translation[field];
+
+        }
+
+    }
+
+
+    /*
+       2. Direct columns
+    */
+
+    const possibleColumns = [
+
+        field + "_" + language,
+
+        field + "_" +
+            (
+                language === "ht"
+                ? "kreyol"
+                : language
+            ),
+
+        field + "_" +
+            (
+                language === "ht"
+                ? "creole"
+                : language
+            )
+
+    ];
+
+
+    for(
+        const column
+        of possibleColumns
+    ){
+
+        if(
+            row[column] !== undefined &&
+            row[column] !== null &&
+            String(row[column]).trim() !== ""
+        ){
+
+            return row[column];
+
+        }
+
+    }
+
+
+    /*
+       3. Fallback
+    */
+
+    return row[field] || "";
+
+}
+
+
+function getTitle(row){
+
+    return getTranslation(
+        row,
+        "title",
+        currentLanguage
+    );
+
+}
+
+
+function getDescription(row){
+
+    return getTranslation(
+        row,
+        "description",
+        currentLanguage
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
 ========================================================= */
 
 function escapeHTML(value){
 
     return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
-
 
 
 /* =========================================================
@@ -843,14 +1258,10 @@ async function getCurrentUser(){
         .getUser();
 
 
-    if(error){
-
-        throw error;
-
-    }
-
-
-    if(!data || !data.user){
+    if(
+        error ||
+        !data.user
+    ){
 
         window.location.href =
             "login.html";
@@ -865,7 +1276,6 @@ async function getCurrentUser(){
 }
 
 
-
 /* =========================================================
    LOAD COURSES
 ========================================================= */
@@ -876,6 +1286,19 @@ async function loadCourses(){
         document.getElementById(
             "content"
         );
+
+
+    content.innerHTML = `
+
+        <div class="loading">
+
+            ${escapeHTML(
+                t("loading")
+            )}
+
+        </div>
+
+    `;
 
 
     try{
@@ -891,6 +1314,16 @@ async function loadCourses(){
         }
 
 
+        /*
+           IMPORTANT:
+           On récupère toutes les colonnes.
+
+           Cela permet au système de lire
+           les traductions JSON ou les colonnes
+           title_ht/title_fr/title_en sans
+           casser la requête.
+        */
+
         const {
             data:courses,
             error:courseError
@@ -899,15 +1332,7 @@ async function loadCourses(){
 
             .from("courses")
 
-            .select(`
-                id,
-                title,
-                description,
-                level,
-                language,
-                is_published,
-                created_at
-            `)
+            .select("*")
 
             .eq(
                 "is_published",
@@ -938,7 +1363,10 @@ async function loadCourses(){
 
                 <div class="empty">
 
-                    ${t("noCourses")}
+                    📚
+                    ${escapeHTML(
+                        t("noCourses")
+                    )}
 
                 </div>
 
@@ -966,6 +1394,7 @@ async function loadCourses(){
         }
 
     }
+
     catch(error){
 
         console.error(
@@ -978,7 +1407,10 @@ async function loadCourses(){
 
             <div class="error">
 
-                ${t("error")}
+                ❌
+                ${escapeHTML(
+                    t("impossible")
+                )}
 
                 <br><br>
 
@@ -997,7 +1429,6 @@ async function loadCourses(){
 }
 
 
-
 /* =========================================================
    RENDER COURSE
 ========================================================= */
@@ -1008,6 +1439,10 @@ async function renderCourse(
     container
 ){
 
+    /*
+       MODULES
+    */
+
     const {
         data:modules,
         error:moduleError
@@ -1016,13 +1451,7 @@ async function renderCourse(
 
         .from("modules")
 
-        .select(`
-            id,
-            module_number,
-            title,
-            description,
-            is_published
-        `)
+        .select("*")
 
         .eq(
             "course_id",
@@ -1051,10 +1480,9 @@ async function renderCourse(
     let modulesHTML = "";
 
 
-
-    /* =====================================================
+    /*
        MODULES + LESSONS
-    ===================================================== */
+    */
 
     for(
         const module
@@ -1069,13 +1497,7 @@ async function renderCourse(
 
             .from("lessons")
 
-            .select(`
-                id,
-                lesson_number,
-                title,
-                description,
-                is_published
-            `)
+            .select("*")
 
             .eq(
                 "module_id",
@@ -1100,22 +1522,22 @@ async function renderCourse(
 
 
         const lessonIds =
-            (lessons || [])
-                .map(
-                    lesson =>
-                        lesson.id
-                );
+            (lessons || []).map(
+                lesson =>
+                    lesson.id
+            );
 
 
         let progressMap = {};
 
 
+        /*
+           USER LESSON PROGRESS
+        */
 
-        /* =================================================
-           USER PROGRESS
-        ================================================= */
-
-        if(lessonIds.length){
+        if(
+            lessonIds.length
+        ){
 
             const {
                 data:progress,
@@ -1166,10 +1588,9 @@ async function renderCourse(
         }
 
 
-
-        /* =================================================
-           ALL LESSONS
-        ================================================= */
+        /*
+           SAVE PROGRESS
+        */
 
         (
             lessons || []
@@ -1194,13 +1615,12 @@ async function renderCourse(
         );
 
 
-
-        /* =================================================
-           LESSON HTML
-        ================================================= */
-
         let lessonsHTML = "";
 
+
+        /*
+           LESSON DISPLAY
+        */
 
         (
             lessons || []
@@ -1213,6 +1633,18 @@ async function renderCourse(
                     ]?.completed === true;
 
 
+                const title =
+                    getTitle(
+                        lesson
+                    );
+
+
+                const description =
+                    getDescription(
+                        lesson
+                    );
+
+
                 lessonsHTML += `
 
                     <div class="lesson ${
@@ -1221,7 +1653,9 @@ async function renderCourse(
                         : ""
                     }">
 
+
                         <div class="lesson-left">
+
 
                             <div class="lesson-icon">
 
@@ -1236,30 +1670,54 @@ async function renderCourse(
 
                             <div>
 
+
                                 <div class="lesson-title">
 
                                     ${escapeHTML(
-                                        lesson.title
+                                        title
                                     )}
 
                                 </div>
+
+
+                                ${
+                                    description
+                                    ? `
+
+                                        <div class="lesson-description">
+
+                                            ${escapeHTML(
+                                                description
+                                            )}
+
+                                        </div>
+
+                                    `
+                                    : ""
+                                }
 
 
                                 <div class="lesson-status">
 
                                     ${
                                         completed
-                                        ? t(
-                                            "lessonFinished"
+                                        ? escapeHTML(
+                                            t(
+                                                "lessonFinished"
+                                            )
                                         )
-                                        : t(
-                                            "lessonToFinish"
+                                        : escapeHTML(
+                                            t(
+                                                "lessonToDo"
+                                            )
                                         )
                                     }
 
                                 </div>
 
+
                             </div>
+
 
                         </div>
 
@@ -1270,13 +1728,20 @@ async function renderCourse(
                                 '${lesson.id}'
                             )">
 
+
                             ${
                                 completed
-                                ? t("review")
-                                : t("start")
+                                ? escapeHTML(
+                                    t("review")
+                                )
+                                : escapeHTML(
+                                    t("start")
+                                )
                             }
 
+
                         </button>
+
 
                     </div>
 
@@ -1286,22 +1751,37 @@ async function renderCourse(
         );
 
 
+        /*
+           MODULE TITLE
+        */
 
-        /* =================================================
-           MODULE HTML
-        ================================================= */
+        const moduleTitle =
+            getTitle(
+                module
+            );
+
+
+        const moduleDescription =
+            getDescription(
+                module
+            );
+
 
         modulesHTML += `
 
             <div class="module">
 
+
                 <div class="module-title">
+
 
                     <h3>
 
                         <span class="module-number">
 
-                            ${t("module")}
+                            ${escapeHTML(
+                                t("module")
+                            )}
 
                             ${escapeHTML(
                                 module.module_number
@@ -1312,25 +1792,52 @@ async function renderCourse(
                         —
 
                         ${escapeHTML(
-                            module.title
+                            moduleTitle
                         )}
 
                     </h3>
+
+
+                    ${
+                        moduleDescription
+                        ? `
+
+                            <div class="module-description">
+
+                                ${escapeHTML(
+                                    moduleDescription
+                                )}
+
+                            </div>
+
+                        `
+                        : ""
+                    }
+
 
                 </div>
 
 
                 ${
-                    lessonsHTML ||
+
+                    lessonsHTML
+
+                    ||
 
                     `
+
                         <div class="empty">
 
-                            ${t("noModules")}
+                            ${escapeHTML(
+                                t("noModules")
+                            )}
 
                         </div>
+
                     `
+
                 }
+
 
             </div>
 
@@ -1339,10 +1846,9 @@ async function renderCourse(
     }
 
 
-
-    /* =====================================================
+    /*
        COURSE PROGRESS
-    ===================================================== */
+    */
 
     const totalLessons =
         allLessons.length;
@@ -1361,24 +1867,34 @@ async function renderCourse(
         ? 0
 
         : Math.round(
-
             (
                 completedLessons /
                 totalLessons
             ) * 100
-
         );
 
 
     const courseCompleted =
         totalLessons > 0 &&
-        completedLessons === totalLessons;
+        completedLessons ===
+            totalLessons;
 
 
+    /*
+       COURSE TITLE
+    */
 
-    /* =====================================================
-       COURSE CARD
-    ===================================================== */
+    const courseTitle =
+        getTitle(
+            course
+        );
+
+
+    const courseDescription =
+        getDescription(
+            course
+        );
+
 
     const courseCard =
         document.createElement(
@@ -1394,55 +1910,118 @@ async function renderCourse(
 
         <div class="course-header">
 
+
             <h2>
 
                 ${escapeHTML(
-                    course.title
+                    courseTitle
                 )}
 
             </h2>
 
 
+            ${
+                courseDescription
+
+                ? `
+
+                    <div class="course-description">
+
+                        ${escapeHTML(
+                            courseDescription
+                        )}
+
+                    </div>
+
+                `
+
+                : ""
+
+            }
+
+
             <div class="course-meta">
 
-                ${t("level")}:
+                ${escapeHTML(
+                    t("level")
+                )}
+
+                :
+
                 ${escapeHTML(
                     course.level || "-"
                 )}
 
                 ·
 
-                ${t("language")}:
+                ${escapeHTML(
+                    t("language")
+                )}
+
+                :
+
                 ${escapeHTML(
                     course.language || "-"
                 )}
+
+
+                <div class="language-info">
+
+                    🌐
+
+                    ${escapeHTML(
+                        t("languageLabel")
+                    )}
+
+                    :
+
+                    ${
+                        currentLanguage === "ht"
+                        ? "Kreyòl"
+                        : currentLanguage === "fr"
+                        ? "Français"
+                        : "English"
+                    }
+
+                </div>
+
 
             </div>
 
 
             <div class="progress-box">
 
+
                 <div class="progress-info">
 
+
                     <span>
-                        ${t("progress")}
+
+                        ${escapeHTML(
+                            t("progress")
+                        )}
+
                     </span>
 
 
                     <strong>
 
                         ${completedLessons}
+
                         /
+
                         ${totalLessons}
 
                         (${progressPercent}%)
 
                     </strong>
 
+
                 </div>
 
 
                 <div class="progress">
+
 
                     <div
                         class="progress-bar ${
@@ -1452,48 +2031,70 @@ async function renderCourse(
                         }"
                         style="
                             width:${progressPercent}%
-                        ">
-
+                        "
+                    >
                     </div>
+
 
                 </div>
 
+
             </div>
+
 
         </div>
 
 
         ${
-            modulesHTML ||
+
+            modulesHTML
+
+            ||
 
             `
+
                 <div class="empty">
 
-                    ${t("noModules")}
+                    ${escapeHTML(
+                        t("noModules")
+                    )}
 
                 </div>
+
             `
+
         }
 
 
         <div class="quiz-box">
 
+
             <h3>
 
-                ${t("quizTitle")}
+                🧠
+
+                ${escapeHTML(
+                    t("quiz")
+                )}
 
             </h3>
 
 
             ${
+
                 courseCompleted
 
-                ? `
+                ?
 
-                    <p
-                        class="completed-message">
+                `
 
-                        ${t("quizUnlocked")}
+                    <p class="completed-message">
+
+                        ✓
+
+                        ${escapeHTML(
+                            t("quizUnlocked")
+                        )}
 
                     </p>
 
@@ -1504,21 +2105,33 @@ async function renderCourse(
                             '${course.id}'
                         )">
 
-                        ${t("startQuiz")}
+                        🎯
+
+                        ${escapeHTML(
+                            t("startQuiz")
+                        )}
 
                     </button>
 
                 `
 
-                : `
+                :
+
+                `
 
                     <p>
 
-                        ${t("quizLocked")}
+                        🔒
+
+                        ${escapeHTML(
+                            t("quizLocked")
+                        )}
 
                         <br><br>
 
-                        ${t("quizRequirement")}
+                        ${escapeHTML(
+                            t("quizRequirement")
+                        )}
 
                     </p>
 
@@ -1527,12 +2140,18 @@ async function renderCourse(
                         class="quiz-btn quiz-locked"
                         disabled>
 
-                        ${t("lockedButton")}
+                        🔒
+
+                        ${escapeHTML(
+                            t("quizLocked")
+                        )}
 
                     </button>
 
                 `
+
             }
+
 
         </div>
 
@@ -1546,12 +2165,13 @@ async function renderCourse(
 }
 
 
-
 /* =========================================================
    LESSON
 ========================================================= */
 
-function openLesson(lessonId){
+function openLesson(
+    lessonId
+){
 
     window.location.href =
         "lesson.html?id=" +
@@ -1562,37 +2182,146 @@ function openLesson(lessonId){
 }
 
 
-
 /* =========================================================
-   QUIZ
+   FINAL COURSE QUIZ
 ========================================================= */
 
-function openQuiz(courseId){
+async function openQuiz(
+    courseId
+){
 
-    window.location.href =
-        "quiz.html?course_id=" +
-        encodeURIComponent(
-            courseId
+    console.log(
+        "🎯 Recherche du quiz final..."
+    );
+
+    console.log(
+        "Course ID:",
+        courseId
+    );
+
+
+    try{
+
+
+        if(!courseId){
+
+            throw new Error(
+                "ID du cours manquant."
+            );
+
+        }
+
+
+        const {
+            data:quiz,
+            error
+        } =
+        await courseClient
+
+            .from("quizzes")
+
+            .select(`
+                id,
+                course_id,
+                lesson_id,
+                title,
+                is_published
+            `)
+
+            .eq(
+                "course_id",
+                courseId
+            )
+
+            .is(
+                "lesson_id",
+                null
+            )
+
+            .eq(
+                "is_published",
+                true
+            )
+
+            .limit(1)
+
+            .maybeSingle();
+
+
+        if(error){
+
+            console.error(
+                "QUIZ SEARCH ERROR:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        if(!quiz){
+
+            alert(
+                t("quizNotFound")
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "Quiz trouvé:",
+            quiz
         );
 
+
+        window.location.href =
+            "quiz.html?quiz_id=" +
+            encodeURIComponent(
+                quiz.id
+            );
+
+    }
+
+
+    catch(error){
+
+        console.error(
+            "OPEN QUIZ ERROR:",
+            error
+        );
+
+
+        alert(
+            t("quizError") +
+            " " +
+            (
+                error.message ||
+                ""
+            )
+        );
+
+    }
+
 }
-
-
-
-/* =========================================================
-   RELOAD COURSES
-========================================================= */
-
-window.courseReload =
-    loadCourses;
-
 
 
 /* =========================================================
    INITIAL LANGUAGE
 ========================================================= */
 
-applyLanguage();
+updateStaticTranslations();
+
+updateLanguageButton();
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadCourses();
 
 </script>
 
