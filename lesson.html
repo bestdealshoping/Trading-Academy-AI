@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ht">
 
 <head>
 
@@ -33,16 +33,21 @@ button{
 .header{
     background:#071226;
     color:white;
-    padding:22px 20px;
+    padding:20px;
 }
 
 .header-inner{
     max-width:1100px;
     margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
 }
 
 .brand{
-    font-size:27px;
+    font-size:24px;
     font-weight:800;
 }
 
@@ -50,14 +55,35 @@ button{
     color:#287cff;
 }
 
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.lang-btn{
+    border:1px solid #334155;
+    background:#172844;
+    color:white;
+    padding:9px 12px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.lang-btn.active{
+    background:#287cff;
+    border-color:#287cff;
+}
+
 .back{
     display:inline-block;
-    margin-top:18px;
     color:white;
     text-decoration:none;
     background:#172844;
-    padding:11px 18px;
-    border-radius:10px;
+    padding:10px 15px;
+    border-radius:9px;
 }
 
 .back:hover{
@@ -315,6 +341,10 @@ button,
         text-align:center;
     }
 
+    .header-inner{
+        align-items:flex-start;
+    }
+
 }
 
 </style>
@@ -325,29 +355,57 @@ button,
 <body>
 
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header class="header">
 
     <div class="header-inner">
 
         <div class="brand">
-
             Trading Academy <span>AI</span>
-
         </div>
 
 
-        <a
-            href="cours.html"
-            class="back"
-        >
+        <div class="header-actions">
 
-            ← Mes cours
+            <button
+                id="langHT"
+                class="lang-btn"
+                onclick="changerLangue('ht')">
 
-        </a>
+                🇭🇹 Kreyòl
+
+            </button>
+
+
+            <button
+                id="langFR"
+                class="lang-btn"
+                onclick="changerLangue('fr')">
+
+                🇫🇷 Français
+
+            </button>
+
+
+            <button
+                id="langEN"
+                class="lang-btn"
+                onclick="changerLangue('en')">
+
+                🇺🇸 English
+
+            </button>
+
+
+            <a
+                href="cours.html"
+                class="back"
+                id="backButton">
+
+                ← Mes cours
+
+            </a>
+
+        </div>
 
     </div>
 
@@ -355,17 +413,12 @@ button,
 
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main class="container">
 
 
     <div
         id="loading"
-        class="loading"
-    >
+        class="loading">
 
         Chargement de la leçon...
 
@@ -374,15 +427,13 @@ button,
 
     <div
         id="errorBox"
-        class="error hidden"
-    ></div>
-
+        class="error hidden">
+    </div>
 
 
     <div
         id="lessonPage"
-        class="hidden"
-    >
+        class="hidden">
 
 
         <div class="breadcrumb">
@@ -400,21 +451,15 @@ button,
         </div>
 
 
-
         <section class="lesson-card">
 
-
-            <!-- =================================================
-                 LESSON HEADER
-            ================================================== -->
 
             <div class="lesson-header">
 
 
                 <div
                     id="lessonNumber"
-                    class="lesson-number"
-                >
+                    class="lesson-number">
 
                     LEÇON
 
@@ -423,8 +468,7 @@ button,
 
                 <h1
                     id="lessonTitle"
-                    class="lesson-title"
-                >
+                    class="lesson-title">
 
                     —
 
@@ -433,20 +477,14 @@ button,
 
                 <div class="meta">
 
-
                     <span id="duration">
-
                         ⏱ Durée
-
                     </span>
 
 
                     <span id="lessonStatus">
-
                         ⏳ En cours
-
                     </span>
-
 
                 </div>
 
@@ -454,28 +492,22 @@ button,
 
 
 
-            <!-- =================================================
-                 VIDEO
-            ================================================== -->
-
             <div
                 id="videoContainer"
-                class="video-container hidden"
-            >
+                class="video-container hidden">
 
                 <video
                     id="lessonVideo"
                     controls
-                    playsinline
-                ></video>
+                    playsinline>
+                </video>
 
 
                 <a
                     id="videoLink"
                     class="video-link hidden"
                     target="_blank"
-                    rel="noopener"
-                >
+                    rel="noopener">
 
                     ▶ Ouvrir la vidéo
 
@@ -485,66 +517,49 @@ button,
 
 
 
-            <!-- =================================================
-                 CONTENT
-            ================================================== -->
-
             <div class="content">
 
 
-                <h2>
+                <h2 id="contentTitle">
                     Contenu de la leçon
                 </h2>
 
 
                 <div
                     id="lessonDescription"
-                    class="description"
-                ></div>
+                    class="description">
+                </div>
 
 
-
-                <!-- =================================================
-                     AUDIO
-                ================================================== -->
 
                 <div
                     id="audioBox"
-                    class="audio-box hidden"
-                >
+                    class="audio-box hidden">
 
-                    <strong>
-
+                    <strong id="audioTitle">
                         🎧 Audio de la leçon
-
                     </strong>
 
 
                     <audio
                         id="lessonAudio"
-                        controls
-                    ></audio>
+                        controls>
+                    </audio>
 
                 </div>
 
 
-
-                <!-- =================================================
-                     PROGRESSION
-                ================================================== -->
 
                 <div class="progress-box">
 
 
                     <div
                         id="statusText"
-                        class="status pending"
-                    >
+                        class="status pending">
 
                         ⏳ Cette leçon n'est pas encore terminée.
 
                     </div>
-
 
 
                     <div class="actions">
@@ -553,8 +568,7 @@ button,
                         <button
                             id="completeButton"
                             class="complete-btn"
-                            type="button"
-                        >
+                            type="button">
 
                             ✓ Marquer comme terminée
 
@@ -563,8 +577,7 @@ button,
 
                         <a
                             id="nextButton"
-                            class="action-link next-btn hidden"
-                        >
+                            class="action-link next-btn hidden">
 
                             Leçon suivante →
 
@@ -573,8 +586,7 @@ button,
 
                         <a
                             id="quizButton"
-                            class="action-link quiz-btn hidden"
-                        >
+                            class="action-link quiz-btn hidden">
 
                             📝 Passer au quiz
 
@@ -583,33 +595,26 @@ button,
 
                         <a
                             href="cours.html"
-                            class="action-link dashboard-btn"
-                        >
+                            id="coursesButton"
+                            class="action-link dashboard-btn">
 
                             Mes cours
 
                         </a>
 
-
                     </div>
-
 
 
                     <div
                         id="actionMessage"
-                        class="message"
-                    ></div>
+                        class="message">
+                    </div>
 
-
-
-                    <!-- =================================================
-                         COURSE PROGRESS
-                    ================================================== -->
 
                     <div class="course-progress">
 
 
-                        <strong>
+                        <strong id="courseProgressTitle">
 
                             Progression du cours
 
@@ -620,16 +625,15 @@ button,
 
                             <div
                                 id="progressBar"
-                                class="progress-bar"
-                            ></div>
+                                class="progress-bar">
+                            </div>
 
                         </div>
 
 
                         <div
                             id="progressText"
-                            class="progress-text"
-                        >
+                            class="progress-text">
 
                             0%
 
@@ -654,25 +658,15 @@ button,
 
 
 
-<!-- =====================================================
-     SUPABASE SDK
-===================================================== -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-<!-- =====================================================
-     CENTRAL SUPABASE CLIENT
-===================================================== -->
-
 <script src="supabase.js"></script>
-
 
 
 <script>
 
 /* =========================================================
-   GLOBAL VARIABLES
+   GLOBAL
 ========================================================= */
 
 let currentUser = null;
@@ -689,6 +683,247 @@ let courseLessons = [];
 
 let currentIndex = -1;
 
+let currentLanguage = "ht";
+
+
+/* =========================================================
+   UI TRANSLATIONS
+========================================================= */
+
+const UI = {
+
+    ht: {
+
+        loading:
+            "Ap chaje leson an...",
+
+        content:
+            "Kontni leson an",
+
+        audio:
+            "🎧 Odyo leson an",
+
+        duration:
+            "⏱ Dire",
+
+        durationUnknown:
+            "⏱ Dire pa defini",
+
+        inProgress:
+            "⏳ An kou",
+
+        completed:
+            "✓ Fini",
+
+        notCompleted:
+            "⏳ Leson sa a poko fini.",
+
+        completedLesson:
+            "✓ Leson an fini.",
+
+        markComplete:
+            "✓ Make kòm fini",
+
+        saving:
+            "⏳ Ap anrejistre...",
+
+        success:
+            "✅ Leson an fini avèk siksè.",
+
+        next:
+            "Leson apre a →",
+
+        quiz:
+            "📝 Pase nan quiz la",
+
+        courses:
+            "Kou mwen yo",
+
+        progress:
+            "Pwogrè kou a",
+
+        lessonProgress:
+            "leson fini",
+
+        openVideo:
+            "▶ Louvri videyo a",
+
+        error:
+            "❌ Li pa posib pou chaje leson an",
+
+        noLesson:
+            "Pa gen ID leson nan URL la. Louvri leson an depi paj Kou mwen yo.",
+
+        lessonNotFound:
+            "Leson an pa jwenn oswa li poko pibliye.",
+
+        moduleNotFound:
+            "Modil la pa jwenn oswa li poko pibliye.",
+
+        courseNotFound:
+            "Kou a pa jwenn oswa li poko pibliye.",
+
+        supabaseMissing:
+            "Supabase Client pa jwenn. Verifye supabase.js."
+
+    },
+
+
+    fr: {
+
+        loading:
+            "Chargement de la leçon...",
+
+        content:
+            "Contenu de la leçon",
+
+        audio:
+            "🎧 Audio de la leçon",
+
+        duration:
+            "⏱ Durée",
+
+        durationUnknown:
+            "⏱ Durée non définie",
+
+        inProgress:
+            "⏳ En cours",
+
+        completed:
+            "✓ Terminée",
+
+        notCompleted:
+            "⏳ Cette leçon n'est pas encore terminée.",
+
+        completedLesson:
+            "✓ Cette leçon est terminée.",
+
+        markComplete:
+            "✓ Marquer comme terminée",
+
+        saving:
+            "⏳ Enregistrement...",
+
+        success:
+            "✅ Leçon terminée avec succès.",
+
+        next:
+            "Leçon suivante →",
+
+        quiz:
+            "📝 Passer au quiz",
+
+        courses:
+            "Mes cours",
+
+        progress:
+            "Progression du cours",
+
+        lessonProgress:
+            "leçons terminées",
+
+        openVideo:
+            "▶ Ouvrir la vidéo",
+
+        error:
+            "❌ Impossible de charger la leçon",
+
+        noLesson:
+            "Aucun ID de leçon dans l'URL. Ouvrez la leçon depuis « Mes Cours ».",
+
+        lessonNotFound:
+            "Leçon introuvable ou non publiée.",
+
+        moduleNotFound:
+            "Module introuvable ou non publié.",
+
+        courseNotFound:
+            "Cours introuvable ou non publié.",
+
+        supabaseMissing:
+            "Supabase Client introuvable. Vérifiez supabase.js."
+
+    },
+
+
+    en: {
+
+        loading:
+            "Loading lesson...",
+
+        content:
+            "Lesson content",
+
+        audio:
+            "🎧 Lesson audio",
+
+        duration:
+            "⏱ Duration",
+
+        durationUnknown:
+            "⏱ Duration not defined",
+
+        inProgress:
+            "⏳ In progress",
+
+        completed:
+            "✓ Completed",
+
+        notCompleted:
+            "⏳ This lesson is not completed yet.",
+
+        completedLesson:
+            "✓ This lesson is completed.",
+
+        markComplete:
+            "✓ Mark as completed",
+
+        saving:
+            "⏳ Saving...",
+
+        success:
+            "✅ Lesson completed successfully.",
+
+        next:
+            "Next lesson →",
+
+        quiz:
+            "📝 Take the quiz",
+
+        courses:
+            "My courses",
+
+        progress:
+            "Course progress",
+
+        lessonProgress:
+            "lessons completed",
+
+        openVideo:
+            "▶ Open video",
+
+        error:
+            "❌ Unable to load the lesson",
+
+        noLesson:
+            "No lesson ID was found in the URL. Open the lesson from My Courses.",
+
+        lessonNotFound:
+            "Lesson not found or not published.",
+
+        moduleNotFound:
+            "Module not found or not published.",
+
+        courseNotFound:
+            "Course not found or not published.",
+
+        supabaseMissing:
+            "Supabase Client not found. Check supabase.js."
+
+    }
+
+};
+
 
 /* =========================================================
    DOM
@@ -702,90 +937,7 @@ function $(id){
 
 
 /* =========================================================
-   GET LESSON ID
-========================================================= */
-
-function getLessonId(){
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    /*
-       Supporte :
-
-       lesson.html?id=UUID
-
-       et également :
-
-       lesson.html?lesson_id=UUID
-
-       Cela rend la page plus robuste.
-    */
-
-    const id =
-        params.get("id") ||
-        params.get("lesson_id");
-
-
-    if(!id){
-
-        return null;
-
-    }
-
-
-    return String(id).trim();
-
-}
-
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-function showError(message){
-
-    $("loading")
-        .classList
-        .add("hidden");
-
-
-    const box =
-        $("errorBox");
-
-
-    box.innerHTML = `
-
-        <strong>
-            ❌ Impossible de charger la leçon
-        </strong>
-
-        <br><br>
-
-        ${escapeHTML(message)}
-
-        <div class="debug">
-
-            Vérifiez également la console
-            du navigateur.
-
-        </div>
-
-    `;
-
-
-    box.classList.remove(
-        "hidden"
-    );
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
+   ESCAPE
 ========================================================= */
 
 function escapeHTML(value){
@@ -801,7 +953,26 @@ function escapeHTML(value){
 
 
 /* =========================================================
-   AUTH
+   LESSON ID
+========================================================= */
+
+function getLessonId(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    return (
+        params.get("id") ||
+        params.get("lesson_id")
+    );
+
+}
+
+
+/* =========================================================
+   GET USER
 ========================================================= */
 
 async function getAuthenticatedUser(){
@@ -809,74 +980,31 @@ async function getAuthenticatedUser(){
     if(!window.supabaseClient){
 
         throw new Error(
-            "Supabase Client introuvable. Vérifiez supabase.js."
+            UI[currentLanguage].supabaseMissing
         );
 
     }
 
 
-    /*
-       On demande d'abord la session
-       au client central.
-
-       Supabase conserve normalement
-       cette session dans le storage
-       du navigateur.
-    */
-
     const {
-        data:sessionData,
-        error:sessionError
-    } =
-        await window.supabaseClient
-            .auth
-            .getSession();
-
-
-    if(sessionError){
-
-        throw sessionError;
-
-    }
-
-
-    if(
-        !sessionData ||
-        !sessionData.session
-    ){
-
-        window.location.href =
-            "login.html";
-
-        return null;
-
-    }
-
-
-    /*
-       Ensuite getUser() vérifie
-       l'utilisateur auprès de Supabase Auth.
-    */
-
-    const {
-        data:userData,
-        error:userError
+        data,
+        error
     } =
         await window.supabaseClient
             .auth
             .getUser();
 
 
-    if(userError){
+    if(error){
 
-        throw userError;
+        throw error;
 
     }
 
 
     if(
-        !userData ||
-        !userData.user
+        !data ||
+        !data.user
     ){
 
         window.location.href =
@@ -887,7 +1015,368 @@ async function getAuthenticatedUser(){
     }
 
 
-    return userData.user;
+    return data.user;
+
+}
+
+
+/* =========================================================
+   LOAD USER LANGUAGE
+========================================================= */
+
+async function chargerLangueUtilisateur(){
+
+    const {
+        data,
+        error
+    } =
+        await window.supabaseClient
+
+            .from("profils")
+
+            .select("langue")
+
+            .eq(
+                "id",
+                currentUser.id
+            )
+
+            .maybeSingle();
+
+
+    if(error){
+
+        console.warn(
+            "LANGUAGE ERROR:",
+            error
+        );
+
+        currentLanguage =
+            "ht";
+
+        return;
+
+    }
+
+
+    const lang =
+        data?.langue;
+
+
+    if(
+        lang === "ht" ||
+        lang === "fr" ||
+        lang === "en"
+    ){
+
+        currentLanguage =
+            lang;
+
+    }
+    else{
+
+        currentLanguage =
+            "ht";
+
+    }
+
+
+    updateLanguageButtons();
+
+}
+
+
+/* =========================================================
+   CHANGE LANGUAGE
+========================================================= */
+
+async function changerLangue(lang){
+
+    if(
+        lang !== "ht" &&
+        lang !== "fr" &&
+        lang !== "en"
+    ){
+
+        return;
+
+    }
+
+
+    currentLanguage =
+        lang;
+
+
+    updateLanguageButtons();
+
+
+    /*
+       Save language preference
+       in profiles.
+    */
+
+    try{
+
+        const {
+            error
+        } =
+            await window.supabaseClient
+
+                .from("profils")
+
+                .update({
+
+                    langue:lang
+
+                })
+
+                .eq(
+                    "id",
+                    currentUser.id
+                );
+
+
+        if(error){
+
+            console.warn(
+                "LANGUAGE SAVE ERROR:",
+                error
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.warn(
+            "LANGUAGE SAVE ERROR:",
+            error
+        );
+
+    }
+
+
+    /*
+       Reload translated lesson
+    */
+
+    await afficherLecon();
+
+    await afficherNavigation();
+
+}
+
+
+/* =========================================================
+   LANGUAGE BUTTONS
+========================================================= */
+
+function updateLanguageButtons(){
+
+    $("langHT")
+        .classList
+        .remove("active");
+
+    $("langFR")
+        .classList
+        .remove("active");
+
+    $("langEN")
+        .classList
+        .remove("active");
+
+
+    if(currentLanguage === "ht"){
+
+        $("langHT")
+            .classList
+            .add("active");
+
+    }
+
+    if(currentLanguage === "fr"){
+
+        $("langFR")
+            .classList
+            .add("active");
+
+    }
+
+    if(currentLanguage === "en"){
+
+        $("langEN")
+            .classList
+            .add("active");
+
+    }
+
+}
+
+
+/* =========================================================
+   TRANSLATION HELPER
+========================================================= */
+
+function t(key){
+
+    return (
+        UI[currentLanguage][key] ||
+        UI.ht[key] ||
+        key
+    );
+
+}
+
+
+/* =========================================================
+   LOAD TRANSLATIONS
+========================================================= */
+
+async function chargerTraductions(){
+
+    /*
+       LESSON TRANSLATION
+    */
+
+    const {
+        data:lessonTranslation,
+        error:lessonTranslationError
+    } =
+        await window.supabaseClient
+
+            .from("lesson_translations")
+
+            .select(`
+                title,
+                description
+            `)
+
+            .eq(
+                "lesson_id",
+                currentLesson.id
+            )
+
+            .eq(
+                "language_code",
+                currentLanguage
+            )
+
+            .maybeSingle();
+
+
+    if(lessonTranslationError){
+
+        console.warn(
+            "LESSON TRANSLATION ERROR:",
+            lessonTranslationError
+        );
+
+    }
+
+
+    /*
+       MODULE TRANSLATION
+    */
+
+    const {
+        data:moduleTranslation,
+        error:moduleTranslationError
+    } =
+        await window.supabaseClient
+
+            .from("module_translations")
+
+            .select(`
+                title,
+                description
+            `)
+
+            .eq(
+                "module_id",
+                currentModule.id
+            )
+
+            .eq(
+                "language_code",
+                currentLanguage
+            )
+
+            .maybeSingle();
+
+
+    if(moduleTranslationError){
+
+        console.warn(
+            "MODULE TRANSLATION ERROR:",
+            moduleTranslationError
+        );
+
+    }
+
+
+    /*
+       COURSE TRANSLATION
+    */
+
+    const {
+        data:courseTranslation,
+        error:courseTranslationError
+    } =
+        await window.supabaseClient
+
+            .from("course_translations")
+
+            .select(`
+                title,
+                description
+            `)
+
+            .eq(
+                "course_id",
+                currentCourse.id
+            )
+
+            .eq(
+                "language_code",
+                currentLanguage
+            )
+
+            .maybeSingle();
+
+
+    if(courseTranslationError){
+
+        console.warn(
+            "COURSE TRANSLATION ERROR:",
+            courseTranslationError
+        );
+
+    }
+
+
+    /*
+       FALLBACK
+    */
+
+    currentLesson.displayTitle =
+        lessonTranslation?.title ||
+        currentLesson.title;
+
+
+    currentLesson.displayDescription =
+        lessonTranslation?.description ||
+        currentLesson.description ||
+        "";
+
+
+    currentModule.displayTitle =
+        moduleTranslation?.title ||
+        currentModule.title;
+
+
+    currentCourse.displayTitle =
+        courseTranslation?.title ||
+        currentCourse.title;
 
 }
 
@@ -900,53 +1389,27 @@ async function chargerLecon(){
 
     try{
 
-
-        /* ---------------------------------------------
-           CLIENT
-        --------------------------------------------- */
-
-        if(
-            !window.supabaseClient
-        ){
+        if(!window.supabaseClient){
 
             throw new Error(
-                "Supabase Client introuvable."
+                t("supabaseMissing")
             );
 
         }
 
-
-        console.log(
-            "✅ Supabase Client OK"
-        );
-
-
-        /* ---------------------------------------------
-           LESSON ID
-        --------------------------------------------- */
 
         const lessonId =
             getLessonId();
 
 
-        console.log(
-            "🔎 Lesson ID:",
-            lessonId
-        );
-
-
         if(!lessonId){
 
             throw new Error(
-                "Aucun ID de leçon dans l'URL. Ouvrez la leçon depuis « Mes Cours »."
+                t("noLesson")
             );
 
         }
 
-
-        /* ---------------------------------------------
-           AUTH
-        --------------------------------------------- */
 
         currentUser =
             await getAuthenticatedUser();
@@ -959,15 +1422,16 @@ async function chargerLecon(){
         }
 
 
-        console.log(
-            "👤 User:",
-            currentUser.id
-        );
+        /*
+           USER LANGUAGE
+        */
+
+        await chargerLangueUtilisateur();
 
 
-        /* ---------------------------------------------
+        /*
            LESSON
-        --------------------------------------------- */
+        */
 
         const {
             data:lesson,
@@ -1012,7 +1476,7 @@ async function chargerLecon(){
         if(!lesson){
 
             throw new Error(
-                "Leçon introuvable ou non publiée."
+                t("lessonNotFound")
             );
 
         }
@@ -1022,15 +1486,9 @@ async function chargerLecon(){
             lesson;
 
 
-        console.log(
-            "📖 Lesson:",
-            currentLesson
-        );
-
-
-        /* ---------------------------------------------
+        /*
            MODULE
-        --------------------------------------------- */
+        */
 
         const {
             data:module,
@@ -1072,7 +1530,7 @@ async function chargerLecon(){
         if(!module){
 
             throw new Error(
-                "Module introuvable ou non publié."
+                t("moduleNotFound")
             );
 
         }
@@ -1082,9 +1540,9 @@ async function chargerLecon(){
             module;
 
 
-        /* ---------------------------------------------
+        /*
            COURSE
-        --------------------------------------------- */
+        */
 
         const {
             data:course,
@@ -1126,7 +1584,7 @@ async function chargerLecon(){
         if(!course){
 
             throw new Error(
-                "Cours introuvable ou non publié."
+                t("courseNotFound")
             );
 
         }
@@ -1136,29 +1594,34 @@ async function chargerLecon(){
             course;
 
 
-        /* ---------------------------------------------
-           PROGRESSION
-        --------------------------------------------- */
+        /*
+           TRANSLATIONS
+        */
+
+        await chargerTraductions();
+
+
+        /*
+           PROGRESS
+        */
 
         await chargerProgression();
 
 
-        /* ---------------------------------------------
-           LESSONS DU COURS
-        --------------------------------------------- */
+        /*
+           COURSE LESSONS
+        */
 
         await chargerLeconsCours();
 
 
-        /* ---------------------------------------------
+        /*
            DISPLAY
-        --------------------------------------------- */
+        */
 
-        afficherLecon();
-
+        await afficherLecon();
 
         await afficherProgression();
-
 
         await afficherNavigation();
 
@@ -1171,7 +1634,6 @@ async function chargerLecon(){
         $("lessonPage")
             .classList
             .remove("hidden");
-
 
     }
 
@@ -1194,7 +1656,7 @@ async function chargerLecon(){
 
 
 /* =========================================================
-   LOAD CURRENT PROGRESS
+   CURRENT PROGRESS
 ========================================================= */
 
 async function chargerProgression(){
@@ -1245,7 +1707,7 @@ async function chargerProgression(){
 
 
 /* =========================================================
-   LOAD ALL COURSE LESSONS
+   COURSE LESSONS
 ========================================================= */
 
 async function chargerLeconsCours(){
@@ -1378,7 +1840,6 @@ async function chargerLeconsCours(){
                     a.module_id
                 ] || 0;
 
-
             const moduleB =
                 moduleOrder[
                     b.module_id
@@ -1389,26 +1850,16 @@ async function chargerLeconsCours(){
                 moduleA !== moduleB
             ){
 
-                return (
-                    moduleA -
-                    moduleB
-                );
+                return moduleA - moduleB;
 
             }
 
 
             return (
-                (
-                    Number(
-                        a.lesson_number
-                    ) || 0
-                )
-                -
-                (
-                    Number(
-                        b.lesson_number
-                    ) || 0
-                )
+                Number(a.lesson_number) || 0
+            ) -
+            (
+                Number(b.lesson_number) || 0
             );
 
         }
@@ -1422,40 +1873,37 @@ async function chargerLeconsCours(){
                 currentLesson.id
         );
 
-
-    console.log(
-        "📚 Course lessons:",
-        courseLessons
-    );
-
-
-    console.log(
-        "📍 Current index:",
-        currentIndex
-    );
-
 }
 
 
 /* =========================================================
-   DISPLAY LESSON
+   DISPLAY
 ========================================================= */
 
-function afficherLecon(){
+async function afficherLecon(){
+
+    await chargerTraductions();
+
 
     $("courseName")
         .textContent =
-        currentCourse.title;
+        currentCourse.displayTitle;
 
 
     $("moduleName")
         .textContent =
-        currentModule.title;
+        currentModule.displayTitle;
 
 
     $("lessonNumber")
         .textContent =
-        "LEÇON " +
+        (
+            currentLanguage === "ht"
+            ? "LESON "
+            : currentLanguage === "fr"
+            ? "LEÇON "
+            : "LESSON "
+        ) +
         (
             currentLesson.lesson_number ||
             ""
@@ -1464,23 +1912,56 @@ function afficherLecon(){
 
     $("lessonTitle")
         .textContent =
-        currentLesson.title;
+        currentLesson.displayTitle;
 
 
     $("lessonDescription")
         .textContent =
-        currentLesson.description ||
-        "Aucun contenu détaillé disponible pour cette leçon.";
+        currentLesson.displayDescription ||
+        (
+            currentLanguage === "ht"
+            ? "Pa gen kontni detaye pou leson sa a."
+            : currentLanguage === "fr"
+            ? "Aucun contenu détaillé disponible pour cette leçon."
+            : "No detailed content is available for this lesson."
+        );
+
+
+    $("contentTitle")
+        .textContent =
+        t("content");
+
+
+    $("audioTitle")
+        .textContent =
+        t("audio");
+
+
+    $("courseProgressTitle")
+        .textContent =
+        t("progress");
+
+
+    $("backButton")
+        .textContent =
+        "← " +
+        t("courses");
+
+
+    $("coursesButton")
+        .textContent =
+        t("courses");
 
 
     $("duration")
         .textContent =
         currentLesson.estimated_duration
-        ? "⏱ " +
+        ? t("duration") +
+          " " +
           currentLesson.estimated_duration +
           " min"
 
-        : "⏱ Durée non définie";
+        : t("durationUnknown");
 
 
     afficherVideo();
@@ -1508,13 +1989,11 @@ function afficherVideo(){
         $("videoLink");
 
 
-    if(
-        !currentLesson.video_url
-    ){
+    if(!currentLesson.video_url){
 
-        container
-            .classList
-            .add("hidden");
+        container.classList.add(
+            "hidden"
+        );
 
         return;
 
@@ -1527,14 +2006,10 @@ function afficherVideo(){
         ).trim();
 
 
-    container
-        .classList
-        .remove("hidden");
+    container.classList.remove(
+        "hidden"
+    );
 
-
-    /*
-       Direct video files
-    */
 
     if(
         /\.(mp4|webm|ogg)(\?.*)?$/i
@@ -1544,33 +2019,31 @@ function afficherVideo(){
         video.src =
             url;
 
-        video.classList
-            .remove("hidden");
+        video.classList.remove(
+            "hidden"
+        );
 
-
-        link.classList
-            .add("hidden");
+        link.classList.add(
+            "hidden"
+        );
 
     }
 
     else{
 
-        /*
-           YouTube,
-           Vimeo,
-           autres URLs
-        */
-
-        video.classList
-            .add("hidden");
-
+        video.classList.add(
+            "hidden"
+        );
 
         link.href =
             url;
 
+        link.textContent =
+            t("openVideo");
 
-        link.classList
-            .remove("hidden");
+        link.classList.remove(
+            "hidden"
+        );
 
     }
 
@@ -1590,20 +2063,20 @@ function afficherAudio(){
         $("lessonAudio");
 
 
-    if(
-        !currentLesson.audio_url
-    ){
+    if(!currentLesson.audio_url){
 
-        box.classList
-            .add("hidden");
+        box.classList.add(
+            "hidden"
+        );
 
         return;
 
     }
 
 
-    box.classList
-        .remove("hidden");
+    box.classList.remove(
+        "hidden"
+    );
 
 
     audio.src =
@@ -1634,7 +2107,7 @@ function afficherStatut(){
     ){
 
         button.textContent =
-            "✓ Leçon terminée";
+            t("completedLesson");
 
 
         button.disabled =
@@ -1642,7 +2115,7 @@ function afficherStatut(){
 
 
         status.textContent =
-            "✓ Cette leçon est terminée.";
+            t("completedLesson");
 
 
         status.className =
@@ -1650,12 +2123,11 @@ function afficherStatut(){
 
 
         headerStatus.textContent =
-            "✓ Terminée";
+            t("completed");
 
 
         headerStatus.style.background =
             "#dcfce7";
-
 
         headerStatus.style.color =
             "#166534";
@@ -1665,7 +2137,7 @@ function afficherStatut(){
     else{
 
         button.textContent =
-            "✓ Marquer comme terminée";
+            t("markComplete");
 
 
         button.disabled =
@@ -1673,7 +2145,7 @@ function afficherStatut(){
 
 
         status.textContent =
-            "⏳ Cette leçon n'est pas encore terminée.";
+            t("notCompleted");
 
 
         status.className =
@@ -1681,12 +2153,11 @@ function afficherStatut(){
 
 
         headerStatus.textContent =
-            "⏳ En cours";
+            t("inProgress");
 
 
         headerStatus.style.background =
             "";
-
 
         headerStatus.style.color =
             "";
@@ -1709,19 +2180,16 @@ async function afficherNavigation(){
         $("quizButton");
 
 
-    nextButton
-        .classList
-        .add("hidden");
+    nextButton.classList.add(
+        "hidden"
+    );
+
+    quizButton.classList.add(
+        "hidden"
+    );
 
 
-    quizButton
-        .classList
-        .add("hidden");
-
-
-    if(
-        currentIndex === -1
-    ){
+    if(currentIndex === -1){
 
         return;
 
@@ -1750,9 +2218,13 @@ async function afficherNavigation(){
             );
 
 
-        nextButton
-            .classList
-            .remove("hidden");
+        nextButton.textContent =
+            t("next");
+
+
+        nextButton.classList.remove(
+            "hidden"
+        );
 
 
         return;
@@ -1772,10 +2244,6 @@ async function afficherNavigation(){
 
     }
 
-
-    /*
-       Check completed lessons
-    */
 
     const lessonIds =
         courseLessons.map(
@@ -1824,17 +2292,15 @@ async function afficherNavigation(){
 
     const completedIds =
         new Set(
-            (
-                progress || []
-            )
-            .filter(
-                row =>
-                    row.completed === true
-            )
-            .map(
-                row =>
-                    row.lesson_id
-            )
+            (progress || [])
+                .filter(
+                    row =>
+                        row.completed === true
+                )
+                .map(
+                    row =>
+                        row.lesson_id
+                )
         );
 
 
@@ -1847,11 +2313,6 @@ async function afficherNavigation(){
         );
 
 
-    /*
-       Only unlock quiz when
-       every lesson is completed.
-    */
-
     if(!allCompleted){
 
         return;
@@ -1860,7 +2321,7 @@ async function afficherNavigation(){
 
 
     /*
-       Find quiz belonging to course
+       FINAL COURSE QUIZ
     */
 
     const {
@@ -1873,12 +2334,23 @@ async function afficherNavigation(){
 
             .select(`
                 id,
-                course_id
+                course_id,
+                lesson_id
             `)
 
             .eq(
                 "course_id",
                 currentCourse.id
+            )
+
+            .is(
+                "lesson_id",
+                null
+            )
+
+            .eq(
+                "is_published",
+                true
             )
 
             .limit(1)
@@ -1899,10 +2371,6 @@ async function afficherNavigation(){
 
     if(!quiz){
 
-        console.warn(
-            "Aucun quiz trouvé pour ce cours."
-        );
-
         return;
 
     }
@@ -1915,9 +2383,13 @@ async function afficherNavigation(){
         );
 
 
-    quizButton
-        .classList
-        .remove("hidden");
+    quizButton.textContent =
+        t("quiz");
+
+
+    quizButton.classList.remove(
+        "hidden"
+    );
 
 }
 
@@ -1950,12 +2422,11 @@ async function terminerLecon(){
 
 
     button.textContent =
-        "⏳ Enregistrement...";
+        t("saving");
 
 
     message.className =
         "message";
-
 
     message.textContent =
         "";
@@ -1963,10 +2434,6 @@ async function terminerLecon(){
 
     try{
 
-
-        /*
-           Check existing row
-        */
 
         const {
             data:existing,
@@ -2002,10 +2469,6 @@ async function terminerLecon(){
 
         let saved;
 
-
-        /*
-           UPDATE
-        */
 
         if(existing){
 
@@ -2049,11 +2512,6 @@ async function terminerLecon(){
                 data;
 
         }
-
-
-        /*
-           INSERT
-        */
 
         else{
 
@@ -2108,7 +2566,7 @@ async function terminerLecon(){
 
 
         message.textContent =
-            "✅ Leçon terminée avec succès.";
+            t("success");
 
 
         message.className =
@@ -2117,9 +2575,7 @@ async function terminerLecon(){
 
         await afficherProgression();
 
-
         await afficherNavigation();
-
 
     }
 
@@ -2136,11 +2592,17 @@ async function terminerLecon(){
 
 
         button.textContent =
-            "✓ Marquer comme terminée";
+            t("markComplete");
 
 
         message.textContent =
-            "❌ Impossible d'enregistrer : " +
+            (
+                currentLanguage === "ht"
+                ? "❌ Li pa posib pou anrejistre: "
+                : currentLanguage === "fr"
+                ? "❌ Impossible d'enregistrer : "
+                : "❌ Unable to save: "
+            ) +
             (
                 error.message ||
                 error
@@ -2162,7 +2624,6 @@ async function terminerLecon(){
 async function afficherProgression(){
 
     try{
-
 
         if(
             !currentCourse ||
@@ -2215,14 +2676,12 @@ async function afficherProgression(){
 
 
         const completed =
-            (
-                data || []
-            )
-            .filter(
-                row =>
-                    row.completed === true
-            )
-            .length;
+            (data || [])
+                .filter(
+                    row =>
+                        row.completed === true
+                )
+                .length;
 
 
         const total =
@@ -2231,9 +2690,7 @@ async function afficherProgression(){
 
         const percentage =
             total === 0
-
             ? 0
-
             : Math.round(
                 (
                     completed /
@@ -2253,10 +2710,11 @@ async function afficherProgression(){
             completed +
             " / " +
             total +
-            " leçons terminées — " +
+            " " +
+            t("lessonProgress") +
+            " — " +
             percentage +
             "%";
-
 
     }
 
@@ -2273,7 +2731,7 @@ async function afficherProgression(){
 
 
 /* =========================================================
-   BUTTON EVENT
+   BUTTON
 ========================================================= */
 
 $("completeButton")
@@ -2284,36 +2742,17 @@ $("completeButton")
 
 
 /* =========================================================
-   AUTH STATE LISTENER
+   AUTH LISTENER
 ========================================================= */
 
-if(
-    window.supabaseClient
-){
+if(window.supabaseClient){
 
     window.supabaseClient
         .auth
         .onAuthStateChange(
             function(
-                event,
-                session
+                event
             ){
-
-                console.log(
-                    "🔐 AUTH EVENT:",
-                    event
-                );
-
-
-                /*
-                   Si Supabase vient de restaurer
-                   ou rafraîchir la session,
-                   on ne recharge pas inutilement
-                   la leçon.
-
-                   Si l'utilisateur se déconnecte,
-                   retour login.
-                */
 
                 if(
                     event ===
@@ -2339,23 +2778,6 @@ document.addEventListener(
     "DOMContentLoaded",
     async function(){
 
-        console.log(
-            "🚀 LESSON PAGE START"
-        );
-
-
-        console.log(
-            "🌐 URL:",
-            window.location.href
-        );
-
-
-        console.log(
-            "🆔 Lesson ID:",
-            getLessonId()
-        );
-
-
         await chargerLecon();
 
     }
@@ -2363,7 +2785,5 @@ document.addEventListener(
 
 </script>
 
-
 </body>
-
 </html>
