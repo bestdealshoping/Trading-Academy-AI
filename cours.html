@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ht">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mes Cours | Trading Academy AI</title>
+<title>Trading Academy AI</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -45,6 +47,27 @@ header{
     color:#3b82f6;
 }
 
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.language-select{
+    border:1px solid #475569;
+    background:#1e293b;
+    color:white;
+    padding:9px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    outline:none;
+}
+
+.language-select option{
+    color:#172033;
+    background:white;
+}
+
 .back-btn{
     border:0;
     background:#1e293b;
@@ -52,6 +75,10 @@ header{
     padding:9px 14px;
     border-radius:8px;
     cursor:pointer;
+}
+
+.back-btn:hover{
+    background:#334155;
 }
 
 .container{
@@ -82,6 +109,12 @@ header{
     border-radius:12px;
     padding:30px;
     text-align:center;
+}
+
+.error{
+    color:#991b1b;
+    background:#fef2f2;
+    border-color:#fecaca;
 }
 
 .course-card{
@@ -259,6 +292,10 @@ header{
     color:white;
 }
 
+.quiz-open:hover{
+    background:#1d4ed8;
+}
+
 .quiz-locked{
     background:#cbd5e1;
     color:#64748b;
@@ -271,8 +308,32 @@ header{
 }
 
 @media(max-width:600px){
+
+    .header{
+        padding:14px 12px;
+    }
+
     .header-inner{
-        flex-direction:row;
+        gap:8px;
+    }
+
+    .logo{
+        font-size:16px;
+    }
+
+    .header-actions{
+        gap:5px;
+    }
+
+    .language-select{
+        padding:8px 5px;
+        font-size:11px;
+        max-width:90px;
+    }
+
+    .back-btn{
+        padding:8px 9px;
+        font-size:11px;
     }
 
     .page-title h1{
@@ -285,49 +346,112 @@ header{
 
     .lesson-btn{
         padding:7px 9px;
+        white-space:nowrap;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
     <div class="header-inner">
 
         <div class="logo">
             Trading Academy <span>AI</span>
         </div>
 
-        <button
-            class="back-btn"
-            onclick="window.location.href='dashboard.html'">
-            ← Dashboard
-        </button>
+
+        <div class="header-actions">
+
+            <!-- LANGUAGE -->
+
+            <select
+                id="languageSelect"
+                class="language-select"
+                aria-label="Language">
+
+                <option value="ht">
+                    🇭🇹 Kreyòl
+                </option>
+
+                <option value="fr">
+                    🇫🇷 Français
+                </option>
+
+                <option value="en">
+                    🇬🇧 English
+                </option>
+
+            </select>
+
+
+            <!-- BACK -->
+
+            <button
+                id="backButton"
+                class="back-btn"
+                onclick="window.location.href='dashboard.html'">
+
+                ← Dashboard
+
+            </button>
+
+        </div>
 
     </div>
+
 </header>
+
+
 
 <main class="container">
 
+
     <section class="page-title">
-        <h1>Mes Cours</h1>
-        <p>
+
+        <h1 id="pageTitle">
+            Mes Cours
+        </h1>
+
+        <p id="pageDescription">
             Suivez vos cours, complétez les leçons et débloquez vos quiz.
         </p>
+
     </section>
 
+
     <div id="content">
+
         <div class="loading">
-            Chargement de vos cours...
+
+            <span id="loadingText">
+                Chargement de vos cours...
+            </span>
+
         </div>
+
     </div>
+
 
 </main>
 
+
+
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
+
 <script>
+
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -335,8 +459,10 @@ header{
 const COURSE_SUPABASE_URL =
 "https://jmkwekgpsogbdpkjqqyx.supabase.co";
 
+
 const COURSE_SUPABASE_KEY =
 "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
 
 const courseClient =
 window.supabase.createClient(
@@ -345,18 +471,361 @@ window.supabase.createClient(
 );
 
 
+
+/* =========================================================
+   LANGUAGE SYSTEM
+========================================================= */
+
+const translations = {
+
+    ht: {
+
+        pageTitle:
+            "Kou mwen yo",
+
+        pageDescription:
+            "Swiv kou ou yo, fini leson yo epi debloke quiz ou yo.",
+
+        loading:
+            "Ap chaje kou ou yo...",
+
+        dashboard:
+            "← Dashboard",
+
+        level:
+            "Nivo",
+
+        language:
+            "Lang",
+
+        progress:
+            "Pwogrè",
+
+        lessons:
+            "leson",
+
+        lessonFinished:
+            "Leson fini",
+
+        lessonToFinish:
+            "Pou fini",
+
+        review:
+            "Revize",
+
+        start:
+            "Kòmanse",
+
+        noCourses:
+            "📚 Pa gen okenn kou ki disponib pou moman an.",
+
+        noModules:
+            "Pa gen okenn modil ki disponib.",
+
+        quizTitle:
+            "🧠 Quiz kou a",
+
+        quizUnlocked:
+            "✓ Tout leson yo fini. Quiz la disponib kounya.",
+
+        startQuiz:
+            "🎯 Kòmanse quiz",
+
+        quizLocked:
+            "🔒 Quiz la bloke.",
+
+        quizRequirement:
+            "Ou dwe fini tout leson ki nan kou sa a anvan ou ka pase quiz la.",
+
+        lockedButton:
+            "🔒 Quiz bloke",
+
+        finished:
+            "✓ Fini",
+
+        error:
+            "❌ Li pa posib pou chaje kou yo.",
+
+        module:
+            "MODIL"
+
+    },
+
+
+    fr: {
+
+        pageTitle:
+            "Mes Cours",
+
+        pageDescription:
+            "Suivez vos cours, complétez les leçons et débloquez vos quiz.",
+
+        loading:
+            "Chargement de vos cours...",
+
+        dashboard:
+            "← Dashboard",
+
+        level:
+            "Niveau",
+
+        language:
+            "Langue",
+
+        progress:
+            "Progression",
+
+        lessons:
+            "leçons",
+
+        lessonFinished:
+            "Leçon terminée",
+
+        lessonToFinish:
+            "À terminer",
+
+        review:
+            "Revoir",
+
+        start:
+            "Commencer",
+
+        noCourses:
+            "📚 Aucun cours disponible pour le moment.",
+
+        noModules:
+            "Aucun module disponible.",
+
+        quizTitle:
+            "🧠 Quiz du cours",
+
+        quizUnlocked:
+            "✓ Toutes les leçons sont terminées. Le quiz est maintenant débloqué.",
+
+        startQuiz:
+            "🎯 Commencer le quiz",
+
+        quizLocked:
+            "🔒 Le quiz est verrouillé.",
+
+        quizRequirement:
+            "Vous devez terminer toutes les leçons de ce cours avant de pouvoir passer le quiz.",
+
+        lockedButton:
+            "🔒 Quiz verrouillé",
+
+        finished:
+            "✓ Terminé",
+
+        error:
+            "❌ Impossible de charger les cours.",
+
+        module:
+            "MODULE"
+
+    },
+
+
+    en: {
+
+        pageTitle:
+            "My Courses",
+
+        pageDescription:
+            "Follow your courses, complete lessons and unlock your quizzes.",
+
+        loading:
+            "Loading your courses...",
+
+        dashboard:
+            "← Dashboard",
+
+        level:
+            "Level",
+
+        language:
+            "Language",
+
+        progress:
+            "Progress",
+
+        lessons:
+            "lessons",
+
+        lessonFinished:
+            "Lesson completed",
+
+        lessonToFinish:
+            "To complete",
+
+        review:
+            "Review",
+
+        start:
+            "Start",
+
+        noCourses:
+            "📚 No courses available at the moment.",
+
+        noModules:
+            "No modules available.",
+
+        quizTitle:
+            "🧠 Course Quiz",
+
+        quizUnlocked:
+            "✓ All lessons are completed. The quiz is now unlocked.",
+
+        startQuiz:
+            "🎯 Start Quiz",
+
+        quizLocked:
+            "🔒 The quiz is locked.",
+
+        quizRequirement:
+            "You must complete all lessons in this course before taking the quiz.",
+
+        lockedButton:
+            "🔒 Quiz locked",
+
+        finished:
+            "✓ Completed",
+
+        error:
+            "❌ Unable to load courses.",
+
+        module:
+            "MODULE"
+
+    }
+
+};
+
+
+
+let currentLanguage =
+    localStorage.getItem(
+        "academy_language"
+    ) || "ht";
+
+
+/* =========================================================
+   TRANSLATION HELPER
+========================================================= */
+
+function t(key){
+
+    return (
+        translations[currentLanguage] &&
+        translations[currentLanguage][key]
+    )
+    ||
+    translations.ht[key]
+    ||
+    key;
+
+}
+
+
+
+/* =========================================================
+   APPLY LANGUAGE
+========================================================= */
+
+function applyLanguage(){
+
+    document.documentElement.lang =
+        currentLanguage;
+
+
+    document.getElementById(
+        "languageSelect"
+    ).value =
+        currentLanguage;
+
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        t("pageTitle");
+
+
+    document.getElementById(
+        "pageDescription"
+    ).textContent =
+        t("pageDescription");
+
+
+    document.getElementById(
+        "loadingText"
+    ).textContent =
+        t("loading");
+
+
+    document.getElementById(
+        "backButton"
+    ).textContent =
+        t("dashboard");
+
+
+    /*
+       Si les cours sont déjà affichés,
+       on les recharge pour traduire
+       les éléments de l'interface.
+    */
+
+    if(window.courseReload){
+
+        window.courseReload();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   LANGUAGE SELECT
+========================================================= */
+
+document
+    .getElementById("languageSelect")
+    .addEventListener(
+        "change",
+        function(){
+
+            currentLanguage =
+                this.value;
+
+
+            localStorage.setItem(
+                "academy_language",
+                currentLanguage
+            );
+
+
+            applyLanguage();
+
+        }
+    );
+
+
+
 /* =========================================================
    HELPERS
 ========================================================= */
 
 function escapeHTML(value){
+
     return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+
 }
+
 
 
 /* =========================================================
@@ -368,15 +837,33 @@ async function getCurrentUser(){
     const {
         data,
         error
-    } = await courseClient.auth.getUser();
+    } =
+    await courseClient
+        .auth
+        .getUser();
 
-    if(error || !data.user){
-        window.location.href="login.html";
-        return null;
+
+    if(error){
+
+        throw error;
+
     }
 
+
+    if(!data || !data.user){
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+
     return data.user;
+
 }
+
 
 
 /* =========================================================
@@ -386,58 +873,89 @@ async function getCurrentUser(){
 async function loadCourses(){
 
     const content =
-        document.getElementById("content");
+        document.getElementById(
+            "content"
+        );
+
 
     try{
 
         const user =
             await getCurrentUser();
 
-        if(!user) return;
 
+        if(!user){
 
-        /* -----------------------------------------
-           COURSES
-        ----------------------------------------- */
+            return;
+
+        }
+
 
         const {
             data:courses,
             error:courseError
         } =
         await courseClient
+
             .from("courses")
+
             .select(`
                 id,
                 title,
                 description,
                 level,
                 language,
-                is_published
+                is_published,
+                created_at
             `)
-            .eq("is_published",true)
-            .order("created_at",{ascending:true});
+
+            .eq(
+                "is_published",
+                true
+            )
+
+            .order(
+                "created_at",
+                {
+                    ascending:true
+                }
+            );
 
 
-        if(courseError)
+        if(courseError){
+
             throw courseError;
 
-
-        if(!courses || courses.length===0){
-
-            content.innerHTML=`
-                <div class="empty">
-                    📚 Aucun cours disponible pour le moment.
-                </div>
-            `;
-
-            return;
         }
 
 
-        content.innerHTML="";
+        if(
+            !courses ||
+            courses.length === 0
+        ){
+
+            content.innerHTML = `
+
+                <div class="empty">
+
+                    ${t("noCourses")}
+
+                </div>
+
+            `;
+
+            return;
+
+        }
 
 
-        for(const course of courses){
+        content.innerHTML = "";
+
+
+        for(
+            const course
+            of courses
+        ){
 
             await renderCourse(
                 course,
@@ -455,21 +973,29 @@ async function loadCourses(){
             error
         );
 
-        content.innerHTML=`
+
+        content.innerHTML = `
+
             <div class="error">
 
-                ❌ Impossible de charger les cours.
+                ${t("error")}
 
                 <br><br>
 
                 <small>
-                    ${escapeHTML(error.message)}
+                    ${escapeHTML(
+                        error.message
+                    )}
                 </small>
 
             </div>
+
         `;
+
     }
+
 }
+
 
 
 /* =========================================================
@@ -482,16 +1008,14 @@ async function renderCourse(
     container
 ){
 
-    /* -----------------------------------------
-       MODULES
-    ----------------------------------------- */
-
     const {
         data:modules,
         error:moduleError
     } =
     await courseClient
+
         .from("modules")
+
         .select(`
             id,
             module_number,
@@ -499,31 +1023,52 @@ async function renderCourse(
             description,
             is_published
         `)
-        .eq("course_id",course.id)
-        .eq("is_published",true)
-        .order("module_number");
+
+        .eq(
+            "course_id",
+            course.id
+        )
+
+        .eq(
+            "is_published",
+            true
+        )
+
+        .order(
+            "module_number"
+        );
 
 
-    if(moduleError)
+    if(moduleError){
+
         throw moduleError;
 
-
-    let allLessons=[];
-    let modulesHTML="";
+    }
 
 
-    /* -----------------------------------------
+    let allLessons = [];
+
+    let modulesHTML = "";
+
+
+
+    /* =====================================================
        MODULES + LESSONS
-    ----------------------------------------- */
+    ===================================================== */
 
-    for(const module of (modules || [])){
+    for(
+        const module
+        of (modules || [])
+    ){
 
         const {
             data:lessons,
             error:lessonError
         } =
         await courseClient
+
             .from("lessons")
+
             .select(`
                 id,
                 lesson_number,
@@ -531,27 +1076,44 @@ async function renderCourse(
                 description,
                 is_published
             `)
-            .eq("module_id",module.id)
-            .eq("is_published",true)
-            .order("lesson_number");
 
+            .eq(
+                "module_id",
+                module.id
+            )
 
-        if(lessonError)
-            throw lessonError;
+            .eq(
+                "is_published",
+                true
+            )
 
-
-        const lessonIds =
-            (lessons || []).map(
-                lesson => lesson.id
+            .order(
+                "lesson_number"
             );
 
 
-        let progressMap={};
+        if(lessonError){
+
+            throw lessonError;
+
+        }
 
 
-        /* -----------------------------------------
-           USER LESSON PROGRESS
-        ----------------------------------------- */
+        const lessonIds =
+            (lessons || [])
+                .map(
+                    lesson =>
+                        lesson.id
+                );
+
+
+        let progressMap = {};
+
+
+
+        /* =================================================
+           USER PROGRESS
+        ================================================= */
 
         if(lessonIds.length){
 
@@ -560,21 +1122,38 @@ async function renderCourse(
                 error:progressError
             } =
             await courseClient
-                .from("user_lesson_progress")
+
+                .from(
+                    "user_lesson_progress"
+                )
+
                 .select(`
                     lesson_id,
                     completed,
                     completed_at
                 `)
-                .eq("user_id",userId)
-                .in("lesson_id",lessonIds);
+
+                .eq(
+                    "user_id",
+                    userId
+                )
+
+                .in(
+                    "lesson_id",
+                    lessonIds
+                );
 
 
-            if(progressError)
+            if(progressError){
+
                 throw progressError;
 
+            }
 
-            (progress || []).forEach(
+
+            (
+                progress || []
+            ).forEach(
                 row => {
 
                     progressMap[
@@ -583,33 +1162,55 @@ async function renderCourse(
 
                 }
             );
+
         }
 
 
-        (lessons || []).forEach(
+
+        /* =================================================
+           ALL LESSONS
+        ================================================= */
+
+        (
+            lessons || []
+        ).forEach(
             lesson => {
 
                 const completed =
-                    progressMap[lesson.id]?.completed === true;
+                    progressMap[
+                        lesson.id
+                    ]?.completed === true;
 
 
                 allLessons.push({
+
                     ...lesson,
+
                     completed
+
                 });
 
             }
         );
 
 
-        let lessonsHTML="";
+
+        /* =================================================
+           LESSON HTML
+        ================================================= */
+
+        let lessonsHTML = "";
 
 
-        (lessons || []).forEach(
+        (
+            lessons || []
+        ).forEach(
             lesson => {
 
                 const completed =
-                    progressMap[lesson.id]?.completed === true;
+                    progressMap[
+                        lesson.id
+                    ]?.completed === true;
 
 
                 lessonsHTML += `
@@ -632,6 +1233,7 @@ async function renderCourse(
 
                             </div>
 
+
                             <div>
 
                                 <div class="lesson-title">
@@ -642,12 +1244,17 @@ async function renderCourse(
 
                                 </div>
 
+
                                 <div class="lesson-status">
 
                                     ${
                                         completed
-                                        ? "Leçon terminée"
-                                        : "À terminer"
+                                        ? t(
+                                            "lessonFinished"
+                                        )
+                                        : t(
+                                            "lessonToFinish"
+                                        )
                                     }
 
                                 </div>
@@ -665,8 +1272,8 @@ async function renderCourse(
 
                             ${
                                 completed
-                                ? "Revoir"
-                                : "Commencer"
+                                ? t("review")
+                                : t("start")
                             }
 
                         </button>
@@ -674,9 +1281,15 @@ async function renderCourse(
                     </div>
 
                 `;
+
             }
         );
 
+
+
+        /* =================================================
+           MODULE HTML
+        ================================================= */
 
         modulesHTML += `
 
@@ -687,12 +1300,17 @@ async function renderCourse(
                     <h3>
 
                         <span class="module-number">
-                            MODULE ${escapeHTML(
+
+                            ${t("module")}
+
+                            ${escapeHTML(
                                 module.module_number
                             )}
+
                         </span>
 
                         —
+
                         ${escapeHTML(
                             module.title
                         )}
@@ -701,35 +1319,54 @@ async function renderCourse(
 
                 </div>
 
-                ${lessonsHTML}
+
+                ${
+                    lessonsHTML ||
+
+                    `
+                        <div class="empty">
+
+                            ${t("noModules")}
+
+                        </div>
+                    `
+                }
 
             </div>
 
         `;
+
     }
 
 
-    /* -----------------------------------------
+
+    /* =====================================================
        COURSE PROGRESS
-    ----------------------------------------- */
+    ===================================================== */
 
     const totalLessons =
         allLessons.length;
 
+
     const completedLessons =
         allLessons.filter(
-            lesson => lesson.completed
+            lesson =>
+                lesson.completed
         ).length;
 
 
     const progressPercent =
         totalLessons === 0
+
         ? 0
+
         : Math.round(
+
             (
                 completedLessons /
                 totalLessons
             ) * 100
+
         );
 
 
@@ -738,8 +1375,15 @@ async function renderCourse(
         completedLessons === totalLessons;
 
 
+
+    /* =====================================================
+       COURSE CARD
+    ===================================================== */
+
     const courseCard =
-        document.createElement("section");
+        document.createElement(
+            "section"
+        );
 
 
     courseCard.className =
@@ -751,18 +1395,27 @@ async function renderCourse(
         <div class="course-header">
 
             <h2>
-                ${escapeHTML(course.title)}
+
+                ${escapeHTML(
+                    course.title
+                )}
+
             </h2>
+
 
             <div class="course-meta">
 
-                Niveau:
-                ${escapeHTML(course.level || "-")}
+                ${t("level")}:
+                ${escapeHTML(
+                    course.level || "-"
+                )}
 
                 ·
 
-                Langue:
-                ${escapeHTML(course.language || "-")}
+                ${t("language")}:
+                ${escapeHTML(
+                    course.language || "-"
+                )}
 
             </div>
 
@@ -772,14 +1425,18 @@ async function renderCourse(
                 <div class="progress-info">
 
                     <span>
-                        Progression
+                        ${t("progress")}
                     </span>
 
+
                     <strong>
+
                         ${completedLessons}
                         /
                         ${totalLessons}
+
                         (${progressPercent}%)
+
                     </strong>
 
                 </div>
@@ -796,6 +1453,7 @@ async function renderCourse(
                         style="
                             width:${progressPercent}%
                         ">
+
                     </div>
 
                 </div>
@@ -807,9 +1465,12 @@ async function renderCourse(
 
         ${
             modulesHTML ||
+
             `
                 <div class="empty">
-                    Aucun module disponible.
+
+                    ${t("noModules")}
+
                 </div>
             `
         }
@@ -818,7 +1479,9 @@ async function renderCourse(
         <div class="quiz-box">
 
             <h3>
-                🧠 Quiz du cours
+
+                ${t("quizTitle")}
+
             </h3>
 
 
@@ -827,10 +1490,10 @@ async function renderCourse(
 
                 ? `
 
-                    <p class="completed-message">
+                    <p
+                        class="completed-message">
 
-                        ✓ Toutes les leçons sont terminées.
-                        Le quiz est maintenant débloqué.
+                        ${t("quizUnlocked")}
 
                     </p>
 
@@ -841,24 +1504,21 @@ async function renderCourse(
                             '${course.id}'
                         )">
 
-                        🎯 Commencer le quiz
+                        ${t("startQuiz")}
 
                     </button>
 
-                  `
+                `
 
                 : `
 
                     <p>
 
-                        🔒 Le quiz est verrouillé.
+                        ${t("quizLocked")}
 
-                        <br>
+                        <br><br>
 
-                        Vous devez terminer
-                        toutes les leçons
-                        de ce cours avant
-                        de pouvoir passer le quiz.
+                        ${t("quizRequirement")}
 
                     </p>
 
@@ -867,11 +1527,11 @@ async function renderCourse(
                         class="quiz-btn quiz-locked"
                         disabled>
 
-                        🔒 Quiz verrouillé
+                        ${t("lockedButton")}
 
                     </button>
 
-                  `
+                `
             }
 
         </div>
@@ -882,7 +1542,9 @@ async function renderCourse(
     container.appendChild(
         courseCard
     );
+
 }
+
 
 
 /* =========================================================
@@ -891,150 +1553,50 @@ async function renderCourse(
 
 function openLesson(lessonId){
 
-    /*
-       Adapte ici le nom de ta page de leçon
-       si elle possède un autre nom.
-    */
-
     window.location.href =
         "lesson.html?id=" +
-        encodeURIComponent(lessonId);
+        encodeURIComponent(
+            lessonId
+        );
+
 }
 
 
+
 /* =========================================================
-   OUVRIR LE QUIZ FINAL DU COURS
+   QUIZ
 ========================================================= */
 
-async function openQuiz(courseId){
+function openQuiz(courseId){
 
-    console.log("🎯 Recherche du quiz final...");
-    console.log("Course ID:", courseId);
-
-    try {
-
-        if(!courseId){
-
-            throw new Error(
-                "ID du cours manquant."
-            );
-
-        }
-
-
-        const {
-            data: quiz,
-            error
-        } =
-        await courseClient
-
-            .from("quizzes")
-
-            .select(`
-                id,
-                course_id,
-                lesson_id,
-                title,
-                is_published
-            `)
-
-            .eq(
-                "course_id",
-                courseId
-            )
-
-            /*
-             * Quiz final = quiz ki pa
-             * asosye ak yon lesson espesifik.
-             */
-            .is(
-                "lesson_id",
-                null
-            )
-
-            .eq(
-                "is_published",
-                true
-            )
-
-            .limit(1)
-
-            .maybeSingle();
-
-
-        if(error){
-
-            console.error(
-                "❌ QUIZ SEARCH ERROR:",
-                error
-            );
-
-            throw error;
-
-        }
-
-
-        if(!quiz){
-
-            console.error(
-                "❌ Aucun quiz final trouvé."
-            );
-
-            alert(
-                "Quiz introuvable ou non publié pour ce cours."
-            );
-
-            return;
-
-        }
-
-
-        console.log(
-            "✅ Quiz trouvé:",
-            quiz
+    window.location.href =
+        "quiz.html?course_id=" +
+        encodeURIComponent(
+            courseId
         );
-
-
-        /*
-         * IMPORTANT:
-         * On envoie maintenant le ID du QUIZ,
-         * et non le ID du COURS.
-        
- */
-
-        window.location.href =
-    "quiz.html?quiz_id=" +
-    encodeURIComponent(
-        quiz.id
-    );
-
-    }
-    catch(error){
-
-        console.error(
-            "❌ OPEN QUIZ ERROR:",
-            error
-        );
-
-        alert(
-            "Impossible d'ouvrir le quiz : " +
-            (
-                error.message ||
-                "Erreur inconnue."
-            )
-        );
-
-    }
 
 }
 
+
+
 /* =========================================================
-   START
+   RELOAD COURSES
 ========================================================= */
 
-loadCourses();
+window.courseReload =
+    loadCourses;
+
+
+
+/* =========================================================
+   INITIAL LANGUAGE
+========================================================= */
+
+applyLanguage();
 
 </script>
 
+
 </body>
+
 </html>
