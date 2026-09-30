@@ -43,9 +43,11 @@ header{
 .header-inner{
     max-width:1000px;
     margin:auto;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:15px;
 }
 
@@ -58,38 +60,26 @@ header{
     color:#3b82f6;
 }
 
+
+/* ==============================
+   HEADER BUTTONS
+============================== */
+
 .header-actions{
     display:flex;
     align-items:center;
     gap:8px;
 }
 
-
-/* ==============================
-   LANGUAGE
-============================== */
-
-.language-select{
-    border:1px solid #475569;
-    background:#1e293b;
-    color:white;
-    padding:8px 10px;
-    border-radius:8px;
-    cursor:pointer;
-    outline:none;
-}
-
-
-/* ==============================
-   BUTTON
-============================== */
-
 .back-btn{
     border:0;
     background:#1e293b;
     color:white;
+
     padding:9px 13px;
+
     border-radius:8px;
+
     cursor:pointer;
 }
 
@@ -99,12 +89,35 @@ header{
 
 
 /* ==============================
+   LANGUAGE
+============================== */
+
+.language-select{
+    border:1px solid #475569;
+
+    background:#1e293b;
+
+    color:white;
+
+    padding:8px 10px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    outline:none;
+}
+
+
+/* ==============================
    CONTAINER
 ============================== */
 
 .container{
     max-width:900px;
+
     margin:25px auto;
+
     padding:0 18px 60px;
 }
 
@@ -115,10 +128,15 @@ header{
 
 .loading{
     background:white;
+
     border:1px solid #e5e7eb;
+
     border-radius:14px;
+
     padding:40px;
+
     text-align:center;
+
     color:#64748b;
 }
 
@@ -129,10 +147,15 @@ header{
 
 .error{
     background:#fef2f2;
+
     border:1px solid #fecaca;
+
     color:#991b1b;
+
     border-radius:12px;
+
     padding:20px;
+
     text-align:center;
 }
 
@@ -143,29 +166,41 @@ header{
 
 .lesson-header{
     background:white;
+
     border:1px solid #e5e7eb;
+
     border-radius:15px;
+
     padding:25px;
+
     margin-bottom:18px;
 }
 
 .lesson-number{
     color:#2563eb;
+
     font-size:12px;
+
     font-weight:bold;
+
     text-transform:uppercase;
+
     margin-bottom:8px;
 }
 
 .lesson-title{
     margin:0;
+
     font-size:28px;
+
     line-height:1.25;
 }
 
 .lesson-description{
     color:#64748b;
+
     line-height:1.6;
+
     margin-top:12px;
 }
 
@@ -176,37 +211,53 @@ header{
 
 .progress-card{
     background:white;
+
     border:1px solid #e5e7eb;
+
     border-radius:14px;
+
     padding:18px;
+
     margin-bottom:18px;
 }
 
 .progress-top{
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-bottom:8px;
+
     font-size:13px;
 }
 
 .progress-percent{
     color:#2563eb;
+
     font-weight:bold;
 }
 
 .progress{
     width:100%;
+
     height:9px;
+
     background:#e2e8f0;
+
     border-radius:20px;
+
     overflow:hidden;
 }
 
 .progress-fill{
     height:100%;
+
     width:0;
+
     background:#2563eb;
+
     transition:.3s;
 }
 
@@ -221,21 +272,29 @@ header{
 
 .lesson-content{
     background:white;
+
     border:1px solid #e5e7eb;
+
     border-radius:15px;
+
     padding:25px;
+
     margin-bottom:18px;
 }
 
 .lesson-content h2{
     margin:0 0 18px;
+
     font-size:19px;
 }
 
 .content-text{
     color:#334155;
+
     font-size:16px;
+
     line-height:1.8;
+
     white-space:pre-line;
 }
 
@@ -245,13 +304,16 @@ header{
 ============================== */
 
 .video-box{
-    margin-top:25px;
+    margin-top:20px;
 }
 
 .video-box video{
     width:100%;
+
     max-height:500px;
+
     border-radius:12px;
+
     background:#000;
 }
 
@@ -261,9 +323,12 @@ header{
 ============================== */
 
 .audio-box{
-    margin-top:25px;
+    margin-top:20px;
+
     padding:16px;
+
     background:#f8fafc;
+
     border-radius:10px;
 }
 
@@ -278,27 +343,41 @@ header{
 
 .complete-card{
     background:white;
+
     border:1px solid #e5e7eb;
+
     border-radius:15px;
+
     padding:22px;
+
     margin-bottom:18px;
+
     text-align:center;
 }
 
 .complete-message{
     color:#64748b;
+
     font-size:14px;
+
     margin-bottom:15px;
 }
 
 .complete-btn{
     border:0;
+
     background:#2563eb;
+
     color:white;
+
     padding:13px 20px;
+
     border-radius:9px;
+
     font-weight:bold;
+
     cursor:pointer;
+
     font-size:14px;
 }
 
@@ -308,6 +387,7 @@ header{
 
 .complete-btn.completed{
     background:#16a34a;
+
     cursor:default;
 }
 
@@ -318,22 +398,31 @@ header{
 
 .navigation{
     display:flex;
+
     justify-content:space-between;
+
     gap:10px;
 }
 
 .nav-btn{
     border:1px solid #d1d5db;
+
     background:white;
+
     color:#172033;
+
     padding:11px 15px;
+
     border-radius:8px;
+
     cursor:pointer;
+
     font-weight:bold;
 }
 
 .nav-btn:hover{
     background:#f8fafc;
+
     border-color:#2563eb;
 }
 
@@ -362,16 +451,19 @@ header{
 
     .back-btn{
         padding:8px 9px;
+
         font-size:11px;
     }
 
     .language-select{
         padding:7px 6px;
+
         font-size:11px;
     }
 
     .container{
         margin:18px auto;
+
         padding:0 13px 50px;
     }
 
@@ -413,12 +505,17 @@ header{
 
     <div class="header-inner">
 
+
         <div class="logo">
-            Trading Academy <span>AI</span>
+
+            Trading Academy
+            <span>AI</span>
+
         </div>
 
 
         <div class="header-actions">
+
 
             <select
                 id="languageSelect"
@@ -452,6 +549,7 @@ header{
 
             </button>
 
+
         </div>
 
     </div>
@@ -459,33 +557,45 @@ header{
 </header>
 
 
+
 <main class="container">
+
 
     <div id="content">
 
         <div class="loading">
-            Chajman leson an...
+
+            Chargement de la leçon...
+
         </div>
 
     </div>
 
+
 </main>
 
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+/* =========================================
+   SUPABASE CONFIG
+========================================= */
 
 const LESSON_SUPABASE_URL =
 "https://jmkwekgpsogbdpkjqqyx.supabase.co";
 
+
 const LESSON_SUPABASE_KEY =
 "sb_publishable_b8t3rG-3ErqKmrhdTT0qYA_IOFHFLKP";
+
 
 const lessonClient =
 window.supabase.createClient(
@@ -494,9 +604,9 @@ window.supabase.createClient(
 );
 
 
-/* =========================================================
-   GLOBAL
-========================================================= */
+/* =========================================
+   GLOBAL VARIABLES
+========================================= */
 
 let currentUser = null;
 
@@ -511,9 +621,9 @@ let currentLanguage = "ht";
 let isCompleted = false;
 
 
-/* =========================================================
-   INTERFACE TRANSLATIONS
-========================================================= */
+/* =========================================
+   TRANSLATIONS FOR INTERFACE
+========================================= */
 
 const UI = {
 
@@ -565,10 +675,7 @@ const UI = {
             "Leson an make kòm fini.",
 
         saveError:
-            "Pa posib anrejistre pwogrè a.",
-
-        saving:
-            "Anrejistreman..."
+            "Pa posib anrejistre pwogrè a."
 
     },
 
@@ -621,10 +728,7 @@ const UI = {
             "Leçon marquée comme terminée.",
 
         saveError:
-            "Impossible d'enregistrer la progression.",
-
-        saving:
-            "Enregistrement..."
+            "Impossible d'enregistrer la progression."
 
     },
 
@@ -677,71 +781,16 @@ const UI = {
             "Lesson marked as completed.",
 
         saveError:
-            "Unable to save lesson progress.",
-
-        saving:
-            "Saving..."
+            "Unable to save lesson progress."
 
     }
 
 };
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function escapeHTML(value){
-
-    return String(value ?? "")
-
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-function normalizeLanguage(language){
-
-    const value =
-        String(language || "ht")
-            .toLowerCase()
-            .trim();
-
-
-    if(
-        value === "fr" ||
-        value === "french" ||
-        value === "français" ||
-        value === "francais"
-    ){
-
-        return "fr";
-
-    }
-
-
-    if(
-        value === "en" ||
-        value === "english"
-    ){
-
-        return "en";
-
-    }
-
-
-    return "ht";
-
-}
-
-
-/* =========================================================
+/* =========================================
    GET LESSON ID
-========================================================= */
+========================================= */
 
 function getLessonId(){
 
@@ -755,9 +804,9 @@ function getLessonId(){
 }
 
 
-/* =========================================================
-   CURRENT USER
-========================================================= */
+/* =========================================
+   GET CURRENT USER
+========================================= */
 
 async function getCurrentUser(){
 
@@ -792,9 +841,9 @@ async function getCurrentUser(){
 }
 
 
-/* =========================================================
-   PROFILE
-========================================================= */
+/* =========================================
+   LOAD PROFILE
+========================================= */
 
 async function loadProfile(){
 
@@ -862,9 +911,50 @@ async function loadProfile(){
 }
 
 
-/* =========================================================
+/* =========================================
+   NORMALIZE LANGUAGE
+========================================= */
+
+function normalizeLanguage(language){
+
+    const value =
+        String(
+            language || "ht"
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if(
+        value === "fr" ||
+        value === "french" ||
+        value === "français" ||
+        value === "francais"
+    ){
+
+        return "fr";
+
+    }
+
+
+    if(
+        value === "en" ||
+        value === "english"
+    ){
+
+        return "en";
+
+    }
+
+
+    return "ht";
+
+}
+
+
+/* =========================================
    LOAD LESSON
-========================================================= */
+========================================= */
 
 async function loadLesson(){
 
@@ -880,6 +970,10 @@ async function loadLesson(){
 
     }
 
+
+    /* -----------------------------------------
+       LESSON BASE
+    ----------------------------------------- */
 
     const {
         data:lesson,
@@ -934,18 +1028,32 @@ async function loadLesson(){
         lesson;
 
 
+    /* -----------------------------------------
+       TRANSLATION
+    ----------------------------------------- */
+
     await loadLessonTranslation();
 
+
+    /* -----------------------------------------
+       PROGRESS
+    ----------------------------------------- */
+
     await loadLessonProgress();
+
+
+    /* -----------------------------------------
+       DISPLAY
+    ----------------------------------------- */
 
     displayLesson();
 
 }
 
 
-/* =========================================================
-   LESSON TRANSLATION
-========================================================= */
+/* =========================================
+   LOAD LESSON TRANSLATION
+========================================= */
 
 async function loadLessonTranslation(){
 
@@ -978,51 +1086,38 @@ async function loadLessonTranslation(){
     }
 
 
-    const list =
-        translations || [];
-
-
-    /*
-       Nou chèche lang itilizatè a an premye.
-    */
-
     const selected =
-        list.find(
+        (
+            translations || []
+        ).find(
             item =>
                 item.language_code ===
                 currentLanguage
         );
 
 
-    /*
-       Si li pa genyen,
-       nou pran français.
-    */
-
-    const fallbackFR =
-        list.find(
-            item =>
-                item.language_code === "fr"
-        );
-
-
-    /*
-       Apre sa Kreyòl.
-    */
-
     const fallbackHT =
-        list.find(
+        (
+            translations || []
+        ).find(
             item =>
                 item.language_code === "ht"
         );
 
 
-    /*
-       Apre sa English.
-    */
+    const fallbackFR =
+        (
+            translations || []
+        ).find(
+            item =>
+                item.language_code === "fr"
+        );
+
 
     const fallbackEN =
-        list.find(
+        (
+            translations || []
+        ).find(
             item =>
                 item.language_code === "en"
         );
@@ -1030,17 +1125,17 @@ async function loadLessonTranslation(){
 
     currentTranslation =
         selected ||
-        fallbackFR ||
         fallbackHT ||
+        fallbackFR ||
         fallbackEN ||
         null;
 
 }
 
 
-/* =========================================================
-   PROGRESS
-========================================================= */
+/* =========================================
+   LOAD PROGRESS
+========================================= */
 
 async function loadLessonProgress(){
 
@@ -1081,16 +1176,16 @@ async function loadLessonProgress(){
 
 
     isCompleted =
-        Array.isArray(data) &&
+        data &&
         data.length > 0 &&
         data[0].completed === true;
 
 }
 
 
-/* =========================================================
-   DISPLAY
-========================================================= */
+/* =========================================
+   DISPLAY LESSON
+========================================= */
 
 function displayLesson(){
 
@@ -1118,7 +1213,10 @@ function displayLesson(){
 
     content.innerHTML = `
 
+        <!-- LESSON HEADER -->
+
         <section class="lesson-header">
+
 
             <div class="lesson-number">
 
@@ -1132,7 +1230,9 @@ function displayLesson(){
 
             <h1 class="lesson-title">
 
-                ${escapeHTML(title)}
+                ${escapeHTML(
+                    title
+                )}
 
             </h1>
 
@@ -1150,25 +1250,28 @@ function displayLesson(){
 
                     </div>
 
-                `
+                  `
 
                 : ""
 
             }
 
+
         </section>
 
 
+
+        <!-- PROGRESS -->
+
         <section class="progress-card">
+
 
             <div class="progress-top">
 
                 <span>
-
                     ${escapeHTML(
                         ui.progress
                     )}
-
                 </span>
 
 
@@ -1197,19 +1300,26 @@ function displayLesson(){
                         ? "completed"
                         : ""
                     }"
-                    style="width:${
-                        isCompleted
-                        ? "100%"
-                        : "0%"
-                    }"
+                    style="
+                        width:${
+                            isCompleted
+                            ? "100%"
+                            : "0%"
+                        };
+                    "
                 ></div>
 
             </div>
 
+
         </section>
 
 
+
+        <!-- CONTENT -->
+
         <section class="lesson-content">
+
 
             <h2>
 
@@ -1225,11 +1335,14 @@ function displayLesson(){
                 ${
                     description
 
-                    ? escapeHTML(description)
+                    ? escapeHTML(
+                        description
+                    )
 
                     : escapeHTML(
                         ui.noContent
                     )
+
                 }
 
             </div>
@@ -1266,7 +1379,7 @@ function displayLesson(){
 
                     </div>
 
-                `
+                  `
 
                 : ""
 
@@ -1304,16 +1417,21 @@ function displayLesson(){
 
                     </div>
 
-                `
+                  `
 
                 : ""
 
             }
 
+
         </section>
 
 
+
+        <!-- COMPLETE -->
+
         <section class="complete-card">
+
 
             <div
                 class="complete-message"
@@ -1360,10 +1478,15 @@ function displayLesson(){
 
             </button>
 
+
         </section>
 
 
+
+        <!-- NAVIGATION -->
+
         <section class="navigation">
+
 
             <button
                 class="nav-btn"
@@ -1386,10 +1509,10 @@ function displayLesson(){
                 ${escapeHTML(
                     ui.dashboard
                 )}
-
                 →
 
             </button>
+
 
         </section>
 
@@ -1398,9 +1521,9 @@ function displayLesson(){
 }
 
 
-/* =========================================================
-   COMPLETE LESSON
-========================================================= */
+/* =========================================
+   MARK LESSON COMPLETED
+========================================= */
 
 async function markLessonCompleted(){
 
@@ -1423,12 +1546,18 @@ async function markLessonCompleted(){
             true;
 
         button.textContent =
-            UI[currentLanguage].saving;
+            "Enregistrement...";
 
     }
 
 
     try{
+
+
+        /*
+         * On vérifie d'abord s'il existe
+         * déjà une ligne de progression.
+         */
 
         const {
             data:existing,
@@ -1438,7 +1567,9 @@ async function markLessonCompleted(){
 
                 .from("user_lesson_progress")
 
-                .select("id")
+                .select(`
+                    id
+                `)
 
                 .eq(
                     "user_id",
@@ -1464,6 +1595,11 @@ async function markLessonCompleted(){
             existing &&
             existing.length > 0
         ){
+
+            /*
+             * La ligne existe.
+             * Nou mete completed = true.
+             */
 
             const {
                 error:updateError
@@ -1499,6 +1635,11 @@ async function markLessonCompleted(){
         }
         else{
 
+            /*
+             * Aucune ligne.
+             * Nou kreye li.
+             */
+
             const {
                 error:insertError
             } =
@@ -1522,7 +1663,7 @@ async function markLessonCompleted(){
                             new Date()
                                 .toISOString()
 
-                    );
+                    });
 
 
             if(insertError){
@@ -1538,8 +1679,16 @@ async function markLessonCompleted(){
             true;
 
 
+        /*
+         * Nou mete UI a ajou.
+         */
+
         updateCompletedUI();
 
+
+        /*
+         * Nou montre yon mesaj.
+         */
 
         alert(
             UI[currentLanguage].saved
@@ -1581,9 +1730,9 @@ async function markLessonCompleted(){
 }
 
 
-/* =========================================================
+/* =========================================
    UPDATE COMPLETED UI
-========================================================= */
+========================================= */
 
 function updateCompletedUI(){
 
@@ -1660,9 +1809,9 @@ function updateCompletedUI(){
 }
 
 
-/* =========================================================
+/* =========================================
    CHANGE LANGUAGE
-========================================================= */
+========================================= */
 
 async function changeLanguage(language){
 
@@ -1673,9 +1822,8 @@ async function changeLanguage(language){
 
 
     /*
-       Save language preference.
-       La table profils utilise l'ID de auth.users.
-    */
+     * Nou mete lang lan nan profils.
+     */
 
     try{
 
@@ -1720,8 +1868,8 @@ async function changeLanguage(language){
 
 
     /*
-       Recharger la traduction.
-    */
+     * Nou recharge tradiksyon an.
+     */
 
     await loadLessonTranslation();
 
@@ -1731,9 +1879,9 @@ async function changeLanguage(language){
 }
 
 
-/* =========================================================
+/* =========================================
    NAVIGATION
-========================================================= */
+========================================= */
 
 function goToCourses(){
 
@@ -1751,9 +1899,47 @@ function goToDashboard(){
 }
 
 
-/* =========================================================
-   LANGUAGE SELECT
-========================================================= */
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================
+   LANGUAGE SELECT EVENT
+========================================= */
 
 document
     .getElementById(
@@ -1771,9 +1957,9 @@ document
     );
 
 
-/* =========================================================
+/* =========================================
    INITIALIZE
-========================================================= */
+========================================= */
 
 async function initializeLesson(){
 
@@ -1849,9 +2035,9 @@ async function initializeLesson(){
 }
 
 
-/* =========================================================
+/* =========================================
    START
-========================================================= */
+========================================= */
 
 initializeLesson();
 
